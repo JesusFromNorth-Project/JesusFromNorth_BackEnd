@@ -1,2 +1,2 @@
 # JesusFromNoth_BackEnd
-compren pan
+compren pan no
