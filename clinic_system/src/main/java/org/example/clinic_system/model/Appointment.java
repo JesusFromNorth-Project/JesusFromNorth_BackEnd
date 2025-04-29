@@ -1,5 +1,6 @@
 package org.example.clinic_system.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +24,11 @@ public class Appointment {
     @Column(name = "id_appointment")
     private UUID id_appointment;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false)
     private LocalDateTime date_appointment;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false)
     private LocalDateTime date_attention;
 
@@ -37,10 +40,10 @@ public class Appointment {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
     @JoinColumn(
-            name = "id_nurse",
-            referencedColumnName = "id_nurse"
+            name = "id_admin",
+            referencedColumnName = "id_admin"
     )
-    private Nurse nurse;
+    private Admin admin;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
@@ -61,4 +64,7 @@ public class Appointment {
             referencedColumnName = "id_patient"
     )
     private Patient patient;
+
+    @Builder.Default
+    private Boolean is_deleted=false;
 }

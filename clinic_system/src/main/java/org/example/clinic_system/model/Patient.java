@@ -1,5 +1,6 @@
 package org.example.clinic_system.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -23,6 +24,7 @@ public class Patient extends Person {
     @Column(name = "id_patient")
     protected UUID id_patient;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     private LocalDate birthdate;
 
@@ -40,9 +42,11 @@ public class Patient extends Person {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
     @JoinColumn(
-            name = "id_nurse",
-            referencedColumnName = "id_nurse",
-            nullable = false
+            name = "id_admin",
+            referencedColumnName = "id_admin"
     )
-    private Nurse nurse;
+    private Admin admin;
+
+    @Builder.Default
+    private Boolean is_deleted=false;
 }

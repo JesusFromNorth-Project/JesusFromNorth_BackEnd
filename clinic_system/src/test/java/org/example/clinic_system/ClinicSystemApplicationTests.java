@@ -10,4 +10,8 @@ class ClinicSystemApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void hello(){
+        System.out.println("hello");
+    }
 }

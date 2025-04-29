@@ -32,4 +32,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Rol role;
+
+    @Builder.Default
+    private Boolean is_deleted=false;
+
 }

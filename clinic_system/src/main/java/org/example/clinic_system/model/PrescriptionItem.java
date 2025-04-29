@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.clinic_system.model.enums.MedicationFormat;
 
 import java.util.UUID;
 
@@ -40,6 +41,8 @@ public class PrescriptionItem {
 
     @Column(nullable = false)
     private Byte duration;
+
+    private MedicationFormat medicationFormat;
 
     @ManyToOne(
             fetch = FetchType.LAZY,

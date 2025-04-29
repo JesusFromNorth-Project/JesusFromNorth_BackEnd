@@ -23,7 +23,7 @@ public class Attention {
     @Column(name = "id_attention")
     private UUID id_attention;
 
-    @ManyToOne(
+    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
@@ -42,4 +42,8 @@ public class Attention {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AttentionType attentionType;
+
+    @Builder.Default
+    private Boolean is_deleted=false;
+
 }

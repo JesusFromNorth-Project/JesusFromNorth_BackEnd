@@ -38,4 +38,17 @@ public class Medicine {
     @JsonFormat(pattern = "yyyy-MM-dd") //use example : 2025-04-16
     @Column(nullable = false)
     private LocalDate medicine_date;
+
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    )
+    @JoinColumn(
+            name = "id_admin",
+            referencedColumnName = "id_admin"
+    )
+    protected Admin admin;
+
+    @Builder.Default
+    private Boolean is_deleted=false;
 }

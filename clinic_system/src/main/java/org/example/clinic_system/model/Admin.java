@@ -7,19 +7,18 @@ import lombok.experimental.SuperBuilder;
 import java.util.UUID;
 
 @Entity
-@Table(name = "nurse")
+@Table(name = "admin")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
 @Getter
 @Setter
-@ToString
-public class Nurse extends Person {
+public class Admin extends Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_nurse")
-    private UUID id_nurse;
+    @Column(name = "id_admin")
+    private UUID id_admin;
 
     @OneToOne(
             fetch = FetchType.EAGER,

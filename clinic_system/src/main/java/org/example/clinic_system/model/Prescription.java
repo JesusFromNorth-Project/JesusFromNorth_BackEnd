@@ -23,7 +23,7 @@ public class Prescription {
     @Column(name = "id_prescription")
     private UUID id_prescription;
 
-    @ManyToOne(
+    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
@@ -37,4 +37,6 @@ public class Prescription {
     @Column(nullable = false)
     private LocalDate date;
 
+    @Builder.Default
+    private Boolean is_deleted=false;
 }
