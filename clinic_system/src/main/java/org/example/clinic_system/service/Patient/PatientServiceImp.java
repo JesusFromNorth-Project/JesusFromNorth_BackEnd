@@ -38,5 +38,4 @@ public class PatientServiceImp implements PatientService{
         return patientRepository.findAll();
     }
 
-
 }

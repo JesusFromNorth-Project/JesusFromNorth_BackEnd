@@ -11,20 +11,22 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "ticket")
+@Table(name = "bill")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class Ticket {
+public class Bill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_ticket")
-    private UUID id_ticket;
+    @Column(name = "id_bill")
+    private UUID id_bill;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate creation_date;
+
+    private String ruc;
 
     @OneToOne(
             cascade ={CascadeType.PERSIST, CascadeType.MERGE},
