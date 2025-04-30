@@ -2,7 +2,6 @@ package org.example.clinic_system.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.enums.Gender;
 
@@ -12,7 +11,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
+
+
 public class PatientDTO extends PersonDTO {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
