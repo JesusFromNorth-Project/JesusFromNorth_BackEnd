@@ -23,5 +23,5 @@ public class AppointmentDTO {
     private Admin admin;
     private Doctor doctor;
     private Patient patient;
-
+    private Boolean is_deleted;
 }

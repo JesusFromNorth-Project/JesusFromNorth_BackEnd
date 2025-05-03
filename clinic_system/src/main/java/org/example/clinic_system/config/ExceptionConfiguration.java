@@ -14,7 +14,7 @@ public class ExceptionConfiguration {
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<?>NotFountException(NotFoundException e) {
+    public ResponseEntity<?> notFoundException(NotFoundException e) {
         ErrorMessage errorMessage = new ErrorMessage(
                 HttpStatus.NOT_FOUND,
                 e.getMessage()

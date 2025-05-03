@@ -15,13 +15,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-
-
-public class DoctorDTO extends UserDTO {
+public class DoctorDTO extends PersonDTO {
     private Specialty specialty;
     private String cmp;
-    protected User user;
-    protected Admin admin;
-
-    
+    private User user;
+    private Admin admin;
+    private Boolean is_deleted;
 }

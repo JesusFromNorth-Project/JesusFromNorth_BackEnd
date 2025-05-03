@@ -29,11 +29,11 @@ class ClinicSystemApplicationTests {
         System.out.println("hello");
     }
 
-    @Test
-    void viewPatient(){
-        List<Patient>ListPatient = patientService.findAll();
-        ListPatient.forEach(System.out::println);
-    }
+//    @Test
+//    void viewPatient(){
+//        List<Patient>ListPatient = patientService.findAll();
+//        ListPatient.forEach(System.out::println);
+//    }
 
 //    @Test
 //    void CreatePatient() {

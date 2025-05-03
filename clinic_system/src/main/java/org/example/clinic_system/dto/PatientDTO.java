@@ -11,15 +11,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-
-
 public class PatientDTO extends PersonDTO {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthdate;
+
     private Gender gender;
     private Integer age;
     private String antecedent;
     private Admin admin;
-
+    private Boolean is_deleted;
 }
