@@ -19,6 +19,7 @@ import java.util.UUID;
 @RequestMapping(value = "api/v1/{userId}/appointment")
 @RequiredArgsConstructor
 public class AppointmentController {
+
     private final AppointmentService appointmentService;
 
     @PostMapping("save")
