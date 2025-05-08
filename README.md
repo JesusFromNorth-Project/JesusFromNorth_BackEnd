@@ -63,39 +63,301 @@ Jesús del Norte surge como solución para modernizar la gestión clínica, mejo
 
 ### 2.1. Alternativas de Solución
 #### 2.1.1. Solución 1
-_Ilustración 1_
+Ilustración 1
 
 _Título. Dashboard Solución 1_
 
    ![image](https://github.com/user-attachments/assets/e18f5b2c-5c72-4e01-ae55-3f9e31c026a7)
    
-_Nota: página de Dashboard de la aplicación_
-
+_Nota_: página de Dashboard de la aplicación
 
 ---
 
-_Ilustración 2_
+Ilustración 2
 
 _Título. Citas Pendientes Solución 1_
 
   ![image](https://github.com/user-attachments/assets/754d9872-191b-4cc6-914c-a9a797b0478c)
 
-_Nota: página de Citas Médicas_
+_Nota_: página de Citas Médicas
 
 ---
 
-_Ilustración 3_
+Ilustración 3
 
 _Título. Médicos y Pacientes Solución 1_
 
 ![image](https://github.com/user-attachments/assets/e106122e-8fdf-4b87-8072-8854fa39d65f)
 
-_Nota: página de Vista del Admin sobre Médicos y Pacientes_
+_Nota_: página de Vista del Admin sobre Médicos y Pacientes
 
 ---
 
-_Ilustración 4_
+Ilustración 4
+
 _Título. Agregar Paciente Solución 1_
+
+![image](https://github.com/user-attachments/assets/d0c24a20-602e-4ace-a1ff-dfdf111db06e)
+
+_Nota_: página para agregar nuevo paciente
+
+---
+
+Ilustración 5
+
+_Título. Agregar Atenciones Solución 1_
+
+![image](https://github.com/user-attachments/assets/a63bc368-c778-468b-8d78-766aacf72217)
+
+_Nota_: página de adición de atenciones
+
+---
+
+#### 2.1.2. Solución 2
+Ilustración 6
+
+_Título. Dashboard Solución 2_
+
+![image](https://github.com/user-attachments/assets/a93f492d-485a-4106-b30f-5ff0447bd93e)
+
+_Nota_: página de dashboard de la aplicación solución 2
+
+---
+
+Ilustración 7
+
+_Título. Agregar Paciente Solución 2_
+
+![image](https://github.com/user-attachments/assets/bf783db0-7522-469f-9edd-f429a578d24c)
+
+_Nota_: página para agregar nuevo paciente
+
+---
+
+Ilustración 8
+
+_Título. Médicos y Pacientes Solución 2_
+
+![image](https://github.com/user-attachments/assets/b99ce149-c4b8-431a-a7c3-31ebea26666c)
+
+_Nota_: página de Vista del Admin sobre Médicos y Pacientes
+
+---
+
+Ilustración 9
+
+_Título. Citas Pendientes Solución 2_
+
+![image](https://github.com/user-attachments/assets/329a37bc-91a2-4c5e-9c74-19de85a20524)
+
+_Nota_: página de Citas Médicas
+
+---
+
+Ilustración 10
+
+_Título. Agregar Atenciones Solución 2_
+
+![image](https://github.com/user-attachments/assets/563e7240-97b5-4fe2-b578-128586df90a9)
+
+_Nota_: página de adición de atenciones
+
+---
+
+#### 2.1.3. Solución 3
+Ilustración 11
+
+_Título. Dashboard Solución 3_
+
+![image](https://github.com/user-attachments/assets/b52ec528-3016-4690-881a-147df03f776b)
+
+_Nota_: página de dashboard de la aplicación solución 3
+
+---
+
+Ilustración 12
+
+_Título. Agregar Atenciones Solución 4_
+
+![image](https://github.com/user-attachments/assets/6439417b-d447-4e46-8dab-ce51a7926857)
+
+_Nota_: página de adición de atenciones
+
+---
+
+Ilustración 13
+
+_Título. Médicos y Pacientes Solución 3_
+
+![image](https://github.com/user-attachments/assets/25b7529a-7182-4923-9157-00f530bc6766)
+
+_Nota_: página de Vista del Admin sobre Médicos y Pacientes
+
+---
+
+Ilustración 14
+
+_Título. Citas Pendientes Solución 3_
+
+![image](https://github.com/user-attachments/assets/b15231a3-a883-465f-b0cf-9508902ab8b1)
+
+_Nota_: página de Citas Médicas
+
+---
+
+Ilustración 15
+
+_Título. Agregar Paciente Solución 3_
+
+![image](https://github.com/user-attachments/assets/2e7891d4-f793-49b2-a889-53c7021900ce)
+
+_Nota_: página para agregar nuevo paciente
+
+---
+
+## 3. Alcances
+### 3.1. Implementación de un módulo de gestión clínica:
+El sistema permitirá a los usuarios registrar y consultar historias clínicas, programar citas, emitir recetas electrónicas y llevar el seguimiento médico de cada paciente.
+Se desarrollará un sistema de asignación de citas con control de horarios y especialidades.
+El médico podrá acceder al historial del paciente, emitir diagnósticos y registrar tratamientos en tiempo real.
+
+### 3.2. Seguridad en transacciones y protección de datos:
+Se implementará un sistema de autenticación para el acceso a información sensible como historias clínicas.
+Se incluirá un sistema de auditoría que registre accesos, ediciones y visualizaciones de datos clínicos para garantizar trazabilidad.
+
+#### 3.2.1. Optimización de experiencia de usuario:
+La interfaz será adaptable para dispositivos móviles y escritorio, facilitando el uso tanto para el personal de salud como para pacientes.
+Se optimizará la navegación interna del sistema para mejorar los tiempos de carga.
+Se incorporará un sistema de notificaciones para recordar citas, tratamientos o disponibilidad de recetas.
+
+#### 3.2.2. Escalabilidad y mantenimiento:
+El sistema será modular y permitirá agregar nuevas funcionalidades médicas o administrativas sin afectar la operatividad actual.
+Se garantizará el uso de servidores escalables y compatibles con servicios en la nube para asegurar disponibilidad y rendimiento.
+
+## 4. Limitaciones
+### 4.1. Infraestructura Tecnológica
+Capacidad limitada de servidores: La infraestructura actual podría no soportar un crecimiento rápido en el número de usuarios, lo que podría generar problemas de rendimiento en horarios de alta demanda (por ejemplo, agendamiento de citas masivo).
+
+Dependencia de terceros: El sistema depende del uso de servicios de terceros como servidores en la nube, sistemas de mensajería o integraciones externas (como laboratorios o farmacias), lo que podría limitar el control total sobre la operación tecnológica del sistema.
+
+### 4.2. Costos
+Restricciones presupuestarias: El desarrollo, implementación y mantenimiento de nuevas funcionalidades médicas (como recetas electrónicas o historial clínico digital) pueden representar costos elevados que podrían limitar el despliegue completo del sistema en todas las áreas clínicas.
+
+Costos de cumplimiento normativo: La necesidad de cumplir con leyes sobre protección de datos personales en salud (como la Ley N° 29733 en Perú) puede generar gastos adicionales en certificaciones, auditorías y asesorías legales.(cuadro de costos)
+
+### 4.3. Seguridad
+Riesgos de vulnerabilidades: Aunque se apliquen buenas prácticas de ciberseguridad, pueden existir vulnerabilidades que comprometan la privacidad de los datos clínicos o administrativos.
+
+Limitaciones en la autenticación: Sistemas robustos como la autenticación de dos factores pueden ralentizar el acceso del personal, especialmente en situaciones de emergencia médica, generando resistencia al cambio.
+
+### 4.4. Experiencia del usuario
+Curva de aprendizaje: Algunos usuarios (como personal administrativo o médicos mayores) pueden tener dificultades al adaptarse al uso del sistema, lo que podría retrasar su implementación efectiva.
+Limitaciones en la accesibilidad: Si no se considera adecuadamente el diseño inclusivo, los usuarios con discapacidades visuales o que usan dispositivos antiguos podrían tener problemas al interactuar con la plataforma.
+
+### 4.5. Integración con sistemas existentes
+Compatibilidad limitada: La conexión con sistemas ya implementados en algunas clínicas (como laboratorios externos o facturación) puede requerir desarrollos personalizados, aumentando tiempo y costo.
+
+Escalabilidad restringida: La plataforma puede requerir reestructuración tecnológica si se planea integrar con otros módulos más complejos (como farmacia, seguros o historial médico compartido entre clínicas).
+
+## 5. Requerimientos funcionales del sistema
+### 5.1. Requerimientos funcionales del sistema.
+
+Tabla 1
+
+_Tabla de informes de los requerimientos del Sistema_
+
+![image](https://github.com/user-attachments/assets/482dc85a-e218-46af-829f-565c45491f22)
+
+_Nota_. En esta tabla se detalla los requerimientos para el manejo de aplicativo para la clínica Jesús del Norte.
+
+---
+
+### 5.2. Requerimientos no funcionales del sistema.
+#### Requisitos de Usabilidad
+El sistema deberá contar con un menú claro, accesible y constante en pantalla para permitir la navegación fluida entre los diferentes formularios (pacientes, doctores, atenciones, etc.).
+
+#### Requisitos de Eficiencia
+El sistema deberá permitir generar archivos PDF con los datos consultados (atenciones, pacientes, etc.) en un tiempo no mayor a 3 segundos por reporte.
+
+#### Requisitos de Seguridad
+El sistema deberá requerir un proceso de autenticación mediante usuario y contraseña para acceder a los recursos.
+
+## 6. Lean Canvas
+Tabla 2
+
+_Tabla del Lean Canvas del Proyecto_
+
+![image](https://github.com/user-attachments/assets/1955f29d-03d0-4598-a413-4f33df3531a3)
+
+_Nota_. Esta tabla resume los elementos clave del modelo de negocio de la aplicación "Jesús del Norte" utilizando el enfoque Lean Canvas.
+
+---
+
+## 7. EDT
+Tabla 3
+
+_Tabla de EDT del Proyecto_
+
+![image](https://github.com/user-attachments/assets/6bf99107-551d-424c-ba6f-b61f390be62b)
+
+_Nota_: Se presenta la Estructura de Desglose del Trabajo (EDT) como base para la planificación detallada del proyecto.
+
+---
+
+## 8. Mapa de Proceso
+Tabla 4
+
+_Mapas de Procesos del Sistema Web_
+
+![image](https://github.com/user-attachments/assets/9c5b1e9e-809f-41a0-bdc2-163f7dde418e)
+
+_Nota_. Este diagrama representa los procesos principales y su interacción dentro de la gestión clínica digital.
+
+---
+
+## 9. Project Charter
+Tabla 5
+
+_Project Charter Del Proyecto_
+
+![image](https://github.com/user-attachments/assets/1ad7bd16-97a8-48f1-b4f0-d56086d9a091)
+
+_Nota_. La tabla refleja el Project Charter de nuestro Proyecto de Aplicación Web de la Clínica
+
+---
+
+## 10. Diagrama de Gantt
+Tabla 6
+
+_Título. Diagrama de Gantt_
+
+![image](https://github.com/user-attachments/assets/3f3a4200-fb90-4100-9f96-5398fe9f364e)
+
+_Nota_. Diagrama de Gantt Del Proyecto
+
+---
+
+## 11. Diagrama de capas
+Tabla 7
+
+_Título. Diagrama de Capas_
+
+![image](https://github.com/user-attachments/assets/d13ca206-acd8-4da8-8822-4f7872363708)
+
+_Nota_. Diagrama de Capas para la construcción de la aplicación
+
+---
+
+## 12. Bibliografía y Antecedentes:
+Sistemas de Información y Salud Digital (IS). (s. f.). OPS/OMS | Organización Panamericana de la Salud. https://www.paho.org/es/sistemas-informacion-salud-digital
+
+De Salud, M. (s. f.). .: SIHCE :. Sistema de Información de Historia Clínica Electrónica - Ministerio de Salud. Ministerio de Salud. https://www.minsa.gob.pe/sihce/manuales.asp
+
+Uppermat. (2024, 4 enero). Cómo digitalizar una clínica dental: ¿Por dónde empezar? - Uppermat. Uppermat. https://uppermat.com/como-digitalizar-una-clinica-dental-por-donde-empezar/
+
+
+
+
 
 
 
