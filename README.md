@@ -68,7 +68,11 @@ _Ilustración 1_
 _Título. Dashboard Solución 1_
 
    ![image](https://github.com/user-attachments/assets/e18f5b2c-5c72-4e01-ae55-3f9e31c026a7)
+   
+_Nota: página de Dashboard de la aplicación_
 
+
+---
 
 _Ilustración 2_
 
@@ -76,7 +80,22 @@ _Título. Citas Pendientes Solución 1_
 
   ![image](https://github.com/user-attachments/assets/754d9872-191b-4cc6-914c-a9a797b0478c)
 
+_Nota: página de Citas Médicas_
 
+---
+
+_Ilustración 3_
+
+_Título. Médicos y Pacientes Solución 1_
+
+![image](https://github.com/user-attachments/assets/e106122e-8fdf-4b87-8072-8854fa39d65f)
+
+_Nota: página de Vista del Admin sobre Médicos y Pacientes_
+
+---
+
+_Ilustración 4_
+_Título. Agregar Paciente Solución 1_
 
 
 
