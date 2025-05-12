@@ -20,4 +20,7 @@ public class Specialty {
 
     private String specialty_name;
 
+    @Builder.Default
+    private Boolean is_deleted=false;
+
 }

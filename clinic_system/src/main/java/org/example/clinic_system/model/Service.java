@@ -25,7 +25,7 @@ public class Service {
 
     private Double price;
 
-    @OneToOne(
+    @ManyToOne(
             fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
