@@ -22,7 +22,7 @@ public class PrescriptionItem {
     @Column(name = "id_prescription_item")
     private UUID id_prescription_item;
 
-    @ManyToOne(
+    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
