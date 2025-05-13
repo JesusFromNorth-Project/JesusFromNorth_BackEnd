@@ -1,27 +1,17 @@
 package org.example.clinic_system.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.clinic_system.dto.AppointmentDTO;
-import org.example.clinic_system.dto.SuccessMessage;
-import org.example.clinic_system.handler.NotFoundException;
-import org.example.clinic_system.model.Appointment;
 import org.example.clinic_system.service.Appointment.AppointmentService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
 
-@Controller
 @RestController
-@RequestMapping(value = "api/v1/{userId}/appointment")
+@RequestMapping(value = "/appointment")
 @RequiredArgsConstructor
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
-
+    /*
     @PostMapping("save")
     public ResponseEntity<SuccessMessage<Appointment>> saveAppointment(@PathVariable UUID userId, @RequestBody AppointmentDTO appointmentDTO) {
         Appointment appointment = appointmentService.saveAppointment(appointmentDTO);
@@ -98,4 +88,5 @@ public class AppointmentController {
                 .build();
         return ResponseEntity.ok(response);
     }
+*/
 }

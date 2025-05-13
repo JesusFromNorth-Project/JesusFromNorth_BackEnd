@@ -1,7 +1,6 @@
 package org.example.clinic_system.controller;
 
-import org.example.clinic_system.dto.LoginDTO;
-import org.example.clinic_system.dto.UserDTO;
+import org.example.clinic_system.dto.entityDTO.LoginDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

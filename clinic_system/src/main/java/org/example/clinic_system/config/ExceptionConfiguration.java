@@ -1,6 +1,6 @@
 package org.example.clinic_system.config;
 
-import org.example.clinic_system.dto.ErrorMessage;
+import org.example.clinic_system.dto.responseDTO.ErrorMessage;
 import org.example.clinic_system.handler.BadRequestException;
 import org.example.clinic_system.handler.NotFoundException;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,6 @@
 package org.example.clinic_system.util;
 
-import org.example.clinic_system.dto.PatientDTO;
-import org.example.clinic_system.handler.NotFoundException;
+import org.example.clinic_system.dto.entityDTO.PatientDTO;
 import org.example.clinic_system.model.Patient;
 
 public class PatientProcesses {

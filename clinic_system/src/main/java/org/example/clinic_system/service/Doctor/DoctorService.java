@@ -1,6 +1,6 @@
 package org.example.clinic_system.service.Doctor;
 
-import org.example.clinic_system.dto.DoctorDTO;
+import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.model.Doctor;
 

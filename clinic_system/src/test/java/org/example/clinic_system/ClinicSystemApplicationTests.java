@@ -1,18 +1,9 @@
 package org.example.clinic_system;
 
-import lombok.RequiredArgsConstructor;
-import org.example.clinic_system.dto.PatientDTO;
-
-import org.example.clinic_system.model.Admin;
-import org.example.clinic_system.model.Patient;
-import org.example.clinic_system.model.enums.Gender;
 import org.example.clinic_system.service.Patient.PatientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @SpringBootTest
 class ClinicSystemApplicationTests {

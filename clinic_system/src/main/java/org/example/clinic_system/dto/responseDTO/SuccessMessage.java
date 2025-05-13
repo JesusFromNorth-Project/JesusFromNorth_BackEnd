@@ -1,4 +1,4 @@
-package org.example.clinic_system.dto;
+package org.example.clinic_system.dto.responseDTO;
 
 import lombok.Builder;
 import org.springframework.http.HttpStatus;

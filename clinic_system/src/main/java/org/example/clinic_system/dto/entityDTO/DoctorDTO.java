@@ -1,4 +1,4 @@
-package org.example.clinic_system.dto;
+package org.example.clinic_system.dto.entityDTO;
 
 import org.apache.catalina.User;
 import org.example.clinic_system.model.Admin;

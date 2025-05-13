@@ -1,10 +1,7 @@
 package org.example.clinic_system.util;
 
-import org.example.clinic_system.dto.AppointmentDTO;
-import org.example.clinic_system.handler.NotFoundException;
+import org.example.clinic_system.dto.entityDTO.AppointmentDTO;
 import org.example.clinic_system.model.Appointment;
-
-import java.util.UUID;
 
 public class AppointmentProcesses {
     public static Appointment CreateAppointment(AppointmentDTO appointmentDTO) {

@@ -3,7 +3,6 @@ package org.example.clinic_system.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import java.util.UUID;
 
 @Entity

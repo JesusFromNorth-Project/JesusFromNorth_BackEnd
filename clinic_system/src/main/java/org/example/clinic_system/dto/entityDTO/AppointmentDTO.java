@@ -1,4 +1,4 @@
-package org.example.clinic_system.dto;
+package org.example.clinic_system.dto.entityDTO;
 
 import java.time.LocalDateTime;
 
