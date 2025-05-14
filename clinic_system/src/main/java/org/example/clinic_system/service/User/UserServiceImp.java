@@ -9,15 +9,24 @@ import org.example.clinic_system.repository.UserRepository;
 import org.example.clinic_system.util.UserProcesses;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {
+
     private final UserRepository userRepository;
+
     @Override
     public UserDTO findUser(LoginDTO loginDTO) throws NotFoundException {
         User Finduser = userRepository.findByUsername(loginDTO.getUsername())
                 .orElseThrow( () -> new NotFoundException("No se encontro el user"));
         return UserProcesses.CreateuserDTO(Finduser);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 }
