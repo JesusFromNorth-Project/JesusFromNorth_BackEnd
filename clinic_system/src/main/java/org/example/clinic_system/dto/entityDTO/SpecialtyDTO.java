@@ -1,10 +1,11 @@
 package org.example.clinic_system.dto.entityDTO;
 
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.clinic_system.model.enums.Rol;
 
 import java.util.UUID;
 
@@ -12,8 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-public class UserDTO {
-    private UUID id_user;
-    private Rol role;
-    private Boolean is_deleted=false;
+public class SpecialtyDTO {
+    private UUID id_specialty;
+    private String specialty_name;
 }

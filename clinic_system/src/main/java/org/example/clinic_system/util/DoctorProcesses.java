@@ -1,11 +1,22 @@
 package org.example.clinic_system.util;
 
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
+import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
+import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
+import org.example.clinic_system.dto.responseDTO.RegisterDoctorNoUsernameDTO;
+import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.Doctor;
+import org.example.clinic_system.model.Specialty;
+import org.example.clinic_system.model.User;
+import org.example.clinic_system.model.enums.Rol;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class DoctorProcesses {
-    public static Doctor CreateDoctor(DoctorDTO doctorDTO) {
+
+    public static Doctor CreateDoctorWithUsername(RegisterDoctorDTO doctorDTO, Specialty specialty, Admin admin) {
         return Doctor.builder()
                 .first_name(doctorDTO.getFirst_name())
                 .last_name(doctorDTO.getLast_name())
@@ -14,42 +25,85 @@ public class DoctorProcesses {
                 .phone(doctorDTO.getPhone())
                 .landline_phone(doctorDTO.getLandline_phone())
                 .dni(doctorDTO.getDni())
-                .specialty(null)
                 .cmp(doctorDTO.getCmp())
-                .user(null)
-                .admin(null)
-                .is_deleted(doctorDTO.getIs_deleted())
+                .specialty(specialty)
+                .user(
+                        User.builder()
+                                .username(doctorDTO.getUsername())
+                                .password(doctorDTO.getPassword())
+                                .role(Rol.DOCTOR)
+                                .build()
+                )
+                .admin(admin)
                 .build();
     }
 
-    public static Doctor UpdateDoctor(Doctor doctor, DoctorDTO doctorDTO) {
-        if (doctorDTO.getFirst_name() != null) {
-            doctor.setFirst_name(doctorDTO.getFirst_name());
+    public static Doctor CreateDoctorNoUsername(RegisterDoctorNoUsernameDTO doctorDTO, Specialty specialty, Admin admin) {
+        return Doctor.builder()
+                .first_name(doctorDTO.getFirst_name())
+                .last_name(doctorDTO.getLast_name())
+                .email(doctorDTO.getEmail())
+                .address(doctorDTO.getAddress())
+                .phone(doctorDTO.getPhone())
+                .landline_phone(doctorDTO.getLandline_phone())
+                .dni(doctorDTO.getDni())
+                .cmp(doctorDTO.getCmp())
+                .specialty(specialty)
+                .user(
+                        User.builder()
+                                .username(doctorDTO.getDni())
+                                .password(doctorDTO.getPassword())
+                                .role(Rol.DOCTOR)
+                                .build()
+                )
+                .admin(admin)
+                .build();
+    }
+
+    public static Doctor UpdateDoctor(Doctor doctor, DoctorResponseDTO doctorResponseDTO) {
+        PersonProcesses.UpdatePerson(doctor, doctorResponseDTO);
+        if(doctorResponseDTO.getSpecialty()!=null){
+            doctor.setSpecialty(doctorResponseDTO.getSpecialty());
         }
-        if (doctorDTO.getLast_name() != null) {
-            doctor.setLast_name(doctorDTO.getLast_name());
-        }
-        if (doctorDTO.getEmail() != null) {
-            doctor.setEmail(doctorDTO.getEmail());
-        }
-        if (doctorDTO.getAddress() != null) {
-            doctor.setAddress(doctorDTO.getAddress());
-        }
-        if (doctorDTO.getPhone() != null) {
-            doctor.setPhone(doctorDTO.getPhone());
-        }
-        if (doctorDTO.getLandline_phone() != null) {
-            doctor.setLandline_phone(doctorDTO.getLandline_phone());
-        }
-        if (doctorDTO.getDni() != null) {
-            doctor.setDni(doctorDTO.getDni());
-        }
-        if (doctorDTO.getCmp() != null) {
-            doctor.setCmp(doctorDTO.getCmp());
-        }
-        if (doctorDTO.getIs_deleted() != null) {
-            doctor.setIs_deleted(doctorDTO.getIs_deleted());
+        if (doctorResponseDTO.getCmp() != null) {
+            doctor.setCmp(doctorResponseDTO.getCmp());
         }
         return doctor;
     }
+
+    public static DoctorResponseDTO CreateDoctorEntity(Doctor doctor) {
+        return DoctorResponseDTO.builder()
+                .first_name(doctor.getFirst_name())
+                .last_name(doctor.getLast_name())
+                .email(doctor.getEmail())
+                .address(doctor.getAddress())
+                .phone(doctor.getPhone())
+                .landline_phone(doctor.getLandline_phone())
+                .dni(doctor.getDni())
+                .cmp(doctor.getCmp())
+                .specialty(doctor.getSpecialty())
+                .build();
+    }
+
+    public static DoctorDTO CreateDoctorDTO(Doctor doctor) {
+        return DoctorDTO.builder()
+                .id_doctor(doctor.getId_doctor())
+                .specialty(doctor.getSpecialty())
+                .cmp(doctor.getCmp())
+                .first_name(doctor.getFirst_name())
+                .last_name(doctor.getLast_name())
+                .email(doctor.getEmail())
+                .address(doctor.getAddress())
+                .phone(doctor.getPhone())
+                .landline_phone(doctor.getLandline_phone())
+                .dni(doctor.getDni())
+                .build();
+    }
+
+    public static List<DoctorDTO> CreateDoctorResponseDTO(List<Doctor>listDoctor) {
+        return listDoctor.stream()
+                .map(DoctorProcesses::CreateDoctorDTO)
+                .toList();
+    }
+
 }

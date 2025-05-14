@@ -1,4 +1,4 @@
-package org.example.clinic_system.dto.entityDTO;
+package org.example.clinic_system.dto.responseDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class LoginDTO {
-    private String username;
-    private String password;
+public class SpecialtyResponseDTO {
+    private String name_specialty;
 }

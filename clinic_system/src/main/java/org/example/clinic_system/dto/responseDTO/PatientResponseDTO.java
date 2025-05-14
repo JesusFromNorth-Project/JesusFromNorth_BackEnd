@@ -1,8 +1,11 @@
-package org.example.clinic_system.dto.entityDTO;
+package org.example.clinic_system.dto.responseDTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import org.example.clinic_system.model.Admin;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.example.clinic_system.model.enums.Gender;
 
 import java.time.LocalDate;
@@ -11,15 +14,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PatientDTO extends PersonDTO {
-
+@SuperBuilder
+public class PatientResponseDTO extends PersonDTO{
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthdate;
-
     private Gender gender;
     private Integer age;
     private String antecedent;
-
-    private Admin admin;
-    private Boolean is_deleted;
 }
