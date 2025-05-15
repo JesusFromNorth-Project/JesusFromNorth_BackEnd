@@ -2,10 +2,19 @@ package org.example.clinic_system.controller;
 
 import lombok.RequiredArgsConstructor;
 
+import org.example.clinic_system.dto.entityDTO.DoctorDTO;
+import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
+import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
+import org.example.clinic_system.dto.responseDTO.RegisterDoctorNoUsernameDTO;
+import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.service.Doctor.DoctorService;
 
+import org.example.clinic_system.util.Tuple;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -14,105 +23,76 @@ import org.springframework.web.bind.annotation.*;
 public class DoctorController {
 
     private final DoctorService doctorService;
-/*
-    @PostMapping("save")
-    public ResponseEntity<SuccessMessage<Doctor>> saveDoctor(@PathVariable UUID userId, @RequestBody DoctorDTO doctorDTO) {
-        Doctor doctor = doctorService.save(doctorDTO);
-        SuccessMessage<Doctor> response = SuccessMessage.<Doctor>builder()
-                .status(HttpStatus.OK)
-                .message("Doctor created successfully")
-                .data(doctor)
-                .build();
-        return ResponseEntity.ok(response);
+
+    // Para crear un doctor con usuario y contraseña personalizados
+    @PostMapping("/with-username/{adminId}/{specialistId}")
+    public ResponseEntity<Tuple> saveDoctorWithUsername(
+            @RequestBody RegisterDoctorDTO registerDoctorDTO,
+            @PathVariable("adminId") UUID adminId,
+            @PathVariable("specialistId") UUID specialistId) {
+        try {
+            Tuple response = doctorService.SaveDoctorWithUsername(registerDoctorDTO, adminId, specialistId);
+            return ResponseEntity.ok(response);
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @GetMapping("findByCmp/{cmp}")
-    public ResponseEntity<SuccessMessage<Doctor>> findByCmp(@PathVariable UUID userId, @PathVariable String cmp) throws NotFoundException {
-        Doctor doctor = doctorService.findByCmp(cmp);
-        SuccessMessage<Doctor> response = SuccessMessage.<Doctor>builder()
-                .status(HttpStatus.OK)
-                .message("Doctor found")
-                .data(doctor)
-                .build();
-        return ResponseEntity.ok(response);
+    // Para crear un doctor con DNI como username y contraseña
+    @PostMapping("/{adminId}/{specialistId}")
+    public ResponseEntity<Tuple> saveDoctor(
+            @RequestBody RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO,
+            @PathVariable("adminId") UUID adminId,
+            @PathVariable("specialistId") UUID specialistId) {
+        try {
+            Tuple response = doctorService.SaveDoctor(registerDoctorNoUsernameDTO, adminId, specialistId);
+            return ResponseEntity.ok(response);
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @GetMapping("findByDni/{dni}")
-    public ResponseEntity<SuccessMessage<Doctor>> findByDni(@PathVariable UUID userId, @PathVariable String dni) throws NotFoundException {
-        Doctor doctor = doctorService.findByDni(dni);
-        SuccessMessage<Doctor> response = SuccessMessage.<Doctor>builder()
-                .status(HttpStatus.OK)
-                .message("Doctor found")
-                .data(doctor)
-                .build();
-        return ResponseEntity.ok(response);
+    // Para obtener un doctor por su ID
+    @GetMapping("/{doctorId}")
+    public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable("doctorId") UUID doctorId) {
+        try {
+            DoctorDTO doctor = doctorService.getDoctorById(doctorId);
+            return ResponseEntity.ok(doctor);
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @GetMapping("findById/{id}")
-    public ResponseEntity<SuccessMessage<Doctor>> findById(@PathVariable UUID userId, @PathVariable UUID id) throws NotFoundException {
-        Doctor doctor = doctorService.findByidDoctor(id);
-        SuccessMessage<Doctor> response = SuccessMessage.<Doctor>builder()
-                .status(HttpStatus.OK)
-                .message("Doctor found")
-                .data(doctor)
-                .build();
-        return ResponseEntity.ok(response);
+    // Para obtener todos los doctores
+    @GetMapping
+    public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
+        List<DoctorDTO> doctors = doctorService.getAllDoctors();
+        return ResponseEntity.ok(doctors);
     }
 
-    @DeleteMapping("deleteByCmp/{cmp}")
-    public ResponseEntity<SuccessMessage<Void>> deleteByCmp(@PathVariable UUID userId, @PathVariable String cmp) throws NotFoundException {
-        doctorService.deleteByCmp(cmp);
-        SuccessMessage<Void> response = SuccessMessage.<Void>builder()
-                .status(HttpStatus.NO_CONTENT)
-                .message("Doctor deleted by CMP")
-                .data(null)
-                .build();
-        return ResponseEntity.ok(response);
+    // Para actualizar un doctor por su ID
+    @PutMapping("/{doctorId}")
+    public ResponseEntity<DoctorResponseDTO> updateDoctor(
+            @PathVariable("doctorId") UUID doctorId,
+            @RequestBody DoctorResponseDTO doctorResponseDTO) {
+        try {
+            DoctorResponseDTO updatedDoctor = doctorService.updateDoctor(doctorId, doctorResponseDTO);
+            return ResponseEntity.ok(updatedDoctor);
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @DeleteMapping("deleteByDni/{dni}")
-    public ResponseEntity<SuccessMessage<Void>> deleteByDni(@PathVariable UUID userId, @PathVariable String dni) throws NotFoundException {
-        doctorService.deleteByDni(dni);
-        SuccessMessage<Void> response = SuccessMessage.<Void>builder()
-                .status(HttpStatus.NO_CONTENT)
-                .message("Doctor deleted by DNI")
-                .data(null)
-                .build();
-        return ResponseEntity.ok(response);
+    // Endpoint para buscar un doctor por CMP
+    @GetMapping("/cmp/{cmp}")
+    public ResponseEntity<DoctorDTO> getDoctorByCmp(@PathVariable("cmp") String cmp) {
+        try {
+            DoctorDTO doctor = doctorService.getDoctorByCmp(cmp);
+            return ResponseEntity.ok(doctor);
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @DeleteMapping("deleteById/{id}")
-    public ResponseEntity<SuccessMessage<Void>> deleteById(@PathVariable UUID userId, @PathVariable UUID id) throws NotFoundException {
-        doctorService.deleteByidDoctor(id);
-        SuccessMessage<Void> response = SuccessMessage.<Void>builder()
-                .status(HttpStatus.NO_CONTENT)
-                .message("Doctor deleted by ID")
-                .data(null)
-                .build();
-        return ResponseEntity.ok(response);
-    }
 
-    @GetMapping("all")
-    public ResponseEntity<SuccessMessage<List<Doctor>>> findAll(@PathVariable UUID userId) {
-        List<Doctor> doctors = doctorService.findAll();
-        SuccessMessage<List<Doctor>> response = SuccessMessage.<List<Doctor>>builder()
-                .status(HttpStatus.OK)
-                .message("List of doctors")
-                .data(doctors)
-                .build();
-        return ResponseEntity.ok(response);
-    }
-
-    @PutMapping("update/{id}")
-    public ResponseEntity<SuccessMessage<Doctor>> updateDoctor(@PathVariable UUID userId, @PathVariable UUID id, @RequestBody DoctorDTO doctorDTO) throws NotFoundException {
-        Doctor updatedDoctor = doctorService.UpdateDoctor(id, doctorDTO);
-        SuccessMessage<Doctor> response = SuccessMessage.<Doctor>builder()
-                .status(HttpStatus.OK)
-                .message("Doctor updated successfully")
-                .data(updatedDoctor)
-                .build();
-        return ResponseEntity.ok(response);
-    }
-
- */
 }

@@ -16,4 +16,8 @@ public interface DoctorService {
     DoctorDTO getDoctorById(UUID id_doctor) throws NotFoundException;
     List<DoctorDTO> getAllDoctors();
     DoctorResponseDTO updateDoctor(UUID id_doctor,DoctorResponseDTO doctorResponseDTO) throws NotFoundException;
+
+    //NEW METHODS
+    DoctorDTO getDoctorByCmp(String cmp) throws NotFoundException;
+//    DoctorDTO getDoctorByName(String name) throws NotFoundException;
 }
