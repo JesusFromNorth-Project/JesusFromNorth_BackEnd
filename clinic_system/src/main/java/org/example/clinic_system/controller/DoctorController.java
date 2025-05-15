@@ -27,7 +27,7 @@ import java.util.UUID;
 public class DoctorController {
 
     private final DoctorService doctorService;
-    
+
     // Para crear un doctor con usuario y contraseña personalizados
     @PostMapping("/save/assignAdmin/{adminId}/assignSpecialty/{specialistId}")
     public ResponseEntity<?> saveDoctorWithUsername(
@@ -75,7 +75,7 @@ public class DoctorController {
     }
 
     // Para obtener todos los doctores
-    @GetMapping
+    @GetMapping("list")
     public ResponseEntity<?> getAllDoctors() {
         List<DoctorDTO> doctors = doctorService.getAllDoctors();
         return ResponseEntity.ok(SuccessMessage.<List<DoctorDTO>>builder()

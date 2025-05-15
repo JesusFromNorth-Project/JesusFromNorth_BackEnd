@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class DoctorProcesses {
 
-    public static Doctor CreateDoctorWithUsername(RegisterDoctorDTO doctorDTO, Specialty specialty, Admin admin) {
+    public static Doctor CreateDoctorWithUsername(RegisterDoctorDTO doctorDTO, Specialty specialty, Admin admin,User user) {
         return Doctor.builder()
                 .first_name(doctorDTO.getFirst_name())
                 .last_name(doctorDTO.getLast_name())
@@ -27,13 +27,7 @@ public class DoctorProcesses {
                 .dni(doctorDTO.getDni())
                 .cmp(doctorDTO.getCmp())
                 .specialty(specialty)
-                .user(
-                        User.builder()
-                                .username(doctorDTO.getUsername())
-                                .password(doctorDTO.getPassword())
-                                .role(Rol.DOCTOR)
-                                .build()
-                )
+                .user(user)
                 .admin(admin)
                 .build();
     }

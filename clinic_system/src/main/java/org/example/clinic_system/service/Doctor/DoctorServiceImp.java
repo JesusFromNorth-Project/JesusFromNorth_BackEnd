@@ -10,11 +10,15 @@ import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.Doctor;
 import org.example.clinic_system.model.Specialty;
+import org.example.clinic_system.model.User;
+import org.example.clinic_system.model.enums.Rol;
 import org.example.clinic_system.repository.DoctorRepository;
+import org.example.clinic_system.repository.UserRepository;
 import org.example.clinic_system.service.Admin.AdminService;
 import org.example.clinic_system.service.Specialty.SpecialtyService;
 import org.example.clinic_system.util.DoctorProcesses;
 import org.example.clinic_system.util.Tuple;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,12 +33,26 @@ public class DoctorServiceImp implements DoctorService {
     private final SpecialtyService specialtyService;
     private final AdminService adminService;
 
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
     //Este crear al doctor con su usuario pero necesita que le ingrese el username y el password para crear : retorna (entidad,uuid)
     @Override
     public Tuple SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
+
         Admin admin = adminService.findById(id_admin);
-        Doctor doctorResponseDTO = doctorRepository.save(DoctorProcesses.CreateDoctorWithUsername(registerDoctorDTO,specialty,admin));
+
+        User user = User.builder()
+                .username(registerDoctorDTO.getUsername())
+                .password(passwordEncoder.encode(registerDoctorDTO.getPassword()))
+                .role(Rol.DOCTOR)
+                .build();
+
+        user = userRepository.save(user);
+
+        Doctor doctorResponseDTO = doctorRepository.save(DoctorProcesses.CreateDoctorWithUsername(registerDoctorDTO,specialty,admin,user));
 
         return Tuple.
                 <DoctorResponseDTO,UUID>builder()
