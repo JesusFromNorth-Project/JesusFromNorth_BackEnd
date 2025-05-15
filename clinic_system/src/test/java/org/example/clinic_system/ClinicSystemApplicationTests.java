@@ -31,7 +31,7 @@ class ClinicSystemApplicationTests {
                 .address("123 Main St")
                 .landline_phone("867423")
                 .phone("354675453")
-                .username("admin")
+                .username("admin23243")
                 .password("admin")
                 .build();
         adminService.save(registerAdminDTO);

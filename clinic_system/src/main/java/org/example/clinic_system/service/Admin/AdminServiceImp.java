@@ -4,8 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.clinic_system.dto.responseDTO.RegisterAdminDTO;
 import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.model.Admin;
+import org.example.clinic_system.model.User;
+import org.example.clinic_system.model.enums.Rol;
 import org.example.clinic_system.repository.AdminRepository;
+import org.example.clinic_system.repository.UserRepository;
+import org.example.clinic_system.service.User.AuthService;
 import org.example.clinic_system.util.AdminProcesses;
+import org.example.clinic_system.util.UserProcesses;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -16,9 +22,23 @@ public class AdminServiceImp implements AdminService {
 
     private final AdminRepository adminRepository;
 
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+
     @Override
     public void save(RegisterAdminDTO registerAdminDTO) {
-        Admin newAdmin = AdminProcesses.CreateAdmin(registerAdminDTO);
+        // Crear y guardar User directamente
+        User user = User.builder()
+                .username(registerAdminDTO.getUsername())
+                .password(passwordEncoder.encode(registerAdminDTO.getPassword()))
+                .role(Rol.ADMIN)
+                .build();
+
+        user = userRepository.save(user); // sin usar AuthService
+
+        // Crear y guardar Admin
+        Admin newAdmin = AdminProcesses.CreateAdmin(registerAdminDTO, user);
         adminRepository.save(newAdmin);
     }
 

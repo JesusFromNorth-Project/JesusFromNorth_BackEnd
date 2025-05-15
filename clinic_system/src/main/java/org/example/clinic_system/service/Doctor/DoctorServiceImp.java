@@ -91,6 +91,12 @@ public class DoctorServiceImp implements DoctorService {
 
     }
 
+    @Override
+    public Doctor getDoctorByIdUser(UUID id_user) throws NotFoundException {
+        return doctorRepository.findByUser(id_user)
+                .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
+    }
+
     //para obtener por nombres
 //    @Override
 //    public List<DoctorDTO> getDoctorByName(String name) {

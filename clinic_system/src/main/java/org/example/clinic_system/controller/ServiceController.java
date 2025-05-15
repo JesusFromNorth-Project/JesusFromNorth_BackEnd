@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ServiceController {
     private final ServiceService serviceService;
-
+/*
     // Endpoint para guardar un servicio asociado a una especialidad
     @PostMapping("/save/assignSpecialty/{specialtyId}")
     public ResponseEntity<?> saveServiceWithDetails(
@@ -94,5 +94,7 @@ public class ServiceController {
                 .build();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(successMessage);
     }
+
+ */
 
 }

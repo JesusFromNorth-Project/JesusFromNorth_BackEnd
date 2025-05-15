@@ -28,8 +28,9 @@ public class DoctorController {
 
     private final DoctorService doctorService;
 
+    /*
     // Para crear un doctor con usuario y contraseña personalizados
-    @PostMapping("/save/asingAdmin/{adminId}/asingSpecialty/{specialistId}")
+    @PostMapping("/save/assignAdmin/{adminId}/assignSpecialty/{specialistId}")
     public ResponseEntity<?> saveDoctorWithUsername(
             @RequestBody RegisterDoctorDTO registerDoctorDTO,
             @PathVariable("adminId") UUID adminId,
@@ -141,5 +142,7 @@ public class DoctorController {
         }
     }
 
+
+     */
 
 }

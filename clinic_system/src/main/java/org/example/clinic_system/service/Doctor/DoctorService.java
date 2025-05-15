@@ -5,6 +5,7 @@ import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorNoUsernameDTO;
 import org.example.clinic_system.handler.NotFoundException;
+import org.example.clinic_system.model.Doctor;
 import org.example.clinic_system.util.Tuple;
 
 import java.util.List;
@@ -20,4 +21,5 @@ public interface DoctorService {
     //NEW METHODS
     DoctorDTO getDoctorByCmp(String cmp) throws NotFoundException;
 //    DoctorDTO getDoctorByName(String name) throws NotFoundException;
+    Doctor getDoctorByIdUser(UUID id_user) throws NotFoundException;
 }

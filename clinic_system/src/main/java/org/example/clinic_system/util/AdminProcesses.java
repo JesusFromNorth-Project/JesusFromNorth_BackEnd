@@ -1,12 +1,13 @@
 package org.example.clinic_system.util;
 
+import org.example.clinic_system.dto.entityDTO.AdminDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterAdminDTO;
 import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.User;
 import org.example.clinic_system.model.enums.Rol;
 
 public class AdminProcesses {
-    public static Admin CreateAdmin(RegisterAdminDTO registerAdminDTO) {
+    public static Admin CreateAdmin(RegisterAdminDTO registerAdminDTO,User newUser) {
         return Admin.builder()
                 .first_name(registerAdminDTO.getFirst_name())
                 .last_name(registerAdminDTO.getLast_name())
@@ -15,13 +16,19 @@ public class AdminProcesses {
                 .address(registerAdminDTO.getAddress())
                 .phone(registerAdminDTO.getPhone())
                 .landline_phone(registerAdminDTO.getLandline_phone())
-                .user(
-                        User.builder()
-                                .username(registerAdminDTO.getUsername())
-                                .password(registerAdminDTO.getPassword())
-                                .role(Rol.ADMIN)
-                                .build()
-                )
+                .user(newUser)
+                .build();
+    }
+    public static AdminDTO CreateAdminDTO(Admin admin) {
+        return AdminDTO.builder()
+                .first_name(admin.getFirst_name())
+                .last_name(admin.getLast_name())
+                .email(admin.getEmail())
+                .address(admin.getAddress())
+                .phone(admin.getPhone())
+                .landline_phone(admin.getLandline_phone())
+                .dni(admin.getDni())
+                .id_admin(admin.getId_admin())
                 .build();
     }
 }

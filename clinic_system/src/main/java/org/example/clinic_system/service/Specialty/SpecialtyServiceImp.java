@@ -25,6 +25,7 @@ public class SpecialtyServiceImp implements SpecialtyService{
     @Override
     public Tuple saveSpecialty(SpecialtyResponseDTO specialtyDTO) {
         Specialty specialty = specialtyRepository.save(SpecialtyProcesses.CreateSpecialty(specialtyDTO));
+
         return Tuple.
                 <SpecialtyResponseDTO,UUID>builder()
                 .first(SpecialtyProcesses.CreateSpecialtyDTO(specialty))
