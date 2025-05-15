@@ -14,4 +14,5 @@ public interface SpecialtyService {
     void deleteSpecialty(UUID id_specialty) throws NotFoundException;
     List<SpecialtyDTO> getAllSpecialties();
     Specialty getSpecialtyById(UUID id_specialty) throws NotFoundException;
+    Specialty getSpecialtyByName(String name) throws NotFoundException;
 }

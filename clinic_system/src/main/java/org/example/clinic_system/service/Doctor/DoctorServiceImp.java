@@ -1,6 +1,7 @@
 package org.example.clinic_system.service.Doctor;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
@@ -80,5 +81,22 @@ public class DoctorServiceImp implements DoctorService {
         doc = doctorRepository.save(DoctorProcesses.UpdateDoctor(doc,doctorResponseDTO));
         return DoctorProcesses.CreateDoctorEntity(doc);
     }
+
+    //para obtener por cmp
+    @Override
+    public DoctorDTO getDoctorByCmp(String cmp) throws NotFoundException {
+        Doctor doctor = doctorRepository.findByCmp(cmp)
+                .orElseThrow(() -> new NotFoundException("No se encontró un doctor con el CMP: " + cmp));
+        return DoctorProcesses.CreateDoctorDTO(doctor);
+
+    }
+
+    //para obtener por nombres
+//    @Override
+//    public List<DoctorDTO> getDoctorByName(String name) {
+//        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCase(name);
+//        return DoctorProcesses.CreateDoctorResponseDTO(doctors);
+//    }
+
 
 }

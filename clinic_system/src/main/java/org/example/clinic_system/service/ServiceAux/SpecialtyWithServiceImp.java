@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.clinic_system.dto.responseDTO.SpecialtyResponseDTO;
 import org.example.clinic_system.dto.responseDTO.SpecialtyWithServicesDTO;
 import org.example.clinic_system.handler.NotFoundException;
+import org.example.clinic_system.model.Specialty;
 import org.example.clinic_system.service.Service.ServiceService;
 import org.example.clinic_system.service.Specialty.SpecialtyService;
 import org.example.clinic_system.util.SpecialtyProcesses;
@@ -29,6 +30,12 @@ public class SpecialtyWithServiceImp implements SpecialtyWithService{
 
     @Override
     public SpecialtyWithServicesDTO getSpecialtyByNameSpecialty(String nameSpecialty) throws NotFoundException {
-        return null;
+        // Obtener la especialidad por nombre utilizando specialtyService
+        Specialty specialty = specialtyService.getSpecialtyByName(nameSpecialty);
+        return  SpecialtyProcesses.TransformSpecialtyWithServiceDTO(
+                specialty,
+                serviceService.getAllServicesBySpecialty(specialty.getId_specialty())
+        );
     }
+
 }

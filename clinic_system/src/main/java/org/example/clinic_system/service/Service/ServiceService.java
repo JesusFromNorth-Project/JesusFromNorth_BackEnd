@@ -14,4 +14,5 @@ public interface ServiceService {
     ServiceResponseDTO updateService(ServiceDTO service, UUID id_specialty);
     void deleteService(UUID id_service);
     List<ServiceResponseDTO> getAllServicesBySpecialty(UUID id_specialty);
+    Boolean existsServiceById(UUID id_service);
 }
