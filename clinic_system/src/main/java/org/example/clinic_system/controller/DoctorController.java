@@ -27,8 +27,7 @@ import java.util.UUID;
 public class DoctorController {
 
     private final DoctorService doctorService;
-
-    /*
+    
     // Para crear un doctor con usuario y contraseña personalizados
     @PostMapping("/save/assignAdmin/{adminId}/assignSpecialty/{specialistId}")
     public ResponseEntity<?> saveDoctorWithUsername(
@@ -39,7 +38,7 @@ public class DoctorController {
         Tuple<DoctorResponseDTO, UUID> response = doctorService.SaveDoctorWithUsername(registerDoctorDTO, adminId, specialistId);
 
         SuccessMessage<DoctorResponseDTO> successMessage  = SuccessMessage.<DoctorResponseDTO>builder()
-                .status(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
                 .message("Se agrego el doctor")
                 .data(response.getFirst())
                 .build();
@@ -51,52 +50,36 @@ public class DoctorController {
 
     // Para crear un doctor con DNI como username y contraseña
     @PostMapping("/{adminId}/{specialistId}")
-    public ResponseEntity<SuccessMessage<Tuple<String, String>>> saveDoctor(
+    public ResponseEntity<?> saveDoctor(
             @RequestBody RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO,
             @PathVariable("adminId") UUID adminId,
-            @PathVariable("specialistId") UUID specialistId) {
-        try {
-            Tuple<String, String> response = doctorService.SaveDoctor(registerDoctorNoUsernameDTO, adminId, specialistId);
-            return ResponseEntity.ok(SuccessMessage.<Tuple<String, String>>builder()
-                    .status(HttpStatus.OK)
-                    .message("Doctor creado con DNI como nombre de usuario.")
-                    .data(response)
-                    .build());
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SuccessMessage.<Tuple<String, String>>builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .message("Admin o Especialista no encontrado.")
-                    .data(null)
-                    .build());
-        }
+            @PathVariable("specialistId") UUID specialistId) throws NotFoundException {
+        Tuple<String, String> response = doctorService.SaveDoctor(registerDoctorNoUsernameDTO, adminId, specialistId);
+        return ResponseEntity.ok(SuccessMessage.<Tuple<String, String>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor creado con DNI como nombre de usuario.")
+                .data(response)
+                .build());
     }
 
 
     // Para obtener un doctor por su ID
     @GetMapping("/{doctorId}")
-    public ResponseEntity<SuccessMessage<DoctorDTO>> getDoctorById(@PathVariable("doctorId") UUID doctorId) {
-        try {
-            DoctorDTO doctor = doctorService.getDoctorById(doctorId);
-            return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
-                    .status(HttpStatus.OK)
-                    .message("Doctor obtenido con éxito.")
-                    .data(doctor)
-                    .build());
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SuccessMessage.<DoctorDTO>builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .message("Doctor no encontrado.")
-                    .data(null)
-                    .build());
-        }
+    public ResponseEntity<?> getDoctorById(@PathVariable("doctorId") UUID doctorId) throws NotFoundException {
+        DoctorDTO doctor = doctorService.getDoctorById(doctorId);
+        return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor obtenido con éxito.")
+                .data(doctor)
+                .build());
     }
 
     // Para obtener todos los doctores
     @GetMapping
-    public ResponseEntity<SuccessMessage<List<DoctorDTO>>> getAllDoctors() {
+    public ResponseEntity<?> getAllDoctors() {
         List<DoctorDTO> doctors = doctorService.getAllDoctors();
         return ResponseEntity.ok(SuccessMessage.<List<DoctorDTO>>builder()
-                .status(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
                 .message("Lista de todos los doctores obtenida con éxito.")
                 .data(doctors)
                 .build());
@@ -104,45 +87,26 @@ public class DoctorController {
 
     // Para actualizar un doctor por su ID
     @PutMapping("/{doctorId}")
-    public ResponseEntity<SuccessMessage<DoctorResponseDTO>> updateDoctor(
+    public ResponseEntity<?> updateDoctor(
             @PathVariable("doctorId") UUID doctorId,
-            @RequestBody DoctorResponseDTO doctorResponseDTO) {
-        try {
+            @RequestBody DoctorResponseDTO doctorResponseDTO) throws NotFoundException {
             DoctorResponseDTO updatedDoctor = doctorService.updateDoctor(doctorId, doctorResponseDTO);
             return ResponseEntity.ok(SuccessMessage.<DoctorResponseDTO>builder()
-                    .status(HttpStatus.OK)
+                    .status(HttpStatus.OK.value())
                     .message("Doctor actualizado con éxito.")
                     .data(updatedDoctor)
                     .build());
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SuccessMessage.<DoctorResponseDTO>builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .message("Doctor no encontrado.")
-                    .data(null)
-                    .build());
-        }
     }
 
     // Endpoint para buscar un doctor por CMP
     @GetMapping("/cmp/{cmp}")
-    public ResponseEntity<SuccessMessage<DoctorDTO>> getDoctorByCmp(@PathVariable("cmp") String cmp) {
-        try {
+    public ResponseEntity<SuccessMessage<DoctorDTO>> getDoctorByCmp(@PathVariable("cmp") String cmp) throws NotFoundException {
             DoctorDTO doctor = doctorService.getDoctorByCmp(cmp);
             return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
-                    .status(HttpStatus.OK)
+                    .status(HttpStatus.OK.value())
                     .message("Doctor obtenido con éxito por CMP.")
                     .data(doctor)
                     .build());
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SuccessMessage.<DoctorDTO>builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .message("Doctor no encontrado con el CMP proporcionado.")
-                    .data(null)
-                    .build());
-        }
     }
-
-
-     */
 
 }

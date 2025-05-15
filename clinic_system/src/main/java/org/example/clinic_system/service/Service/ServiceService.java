@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public interface ServiceService {
     Tuple saveService(ServiceDTO service, UUID id_specialty) throws NotFoundException;
-    ServiceDTO getServiceById(UUID id_service);
-    ServiceResponseDTO updateService(ServiceDTO service, UUID id_specialty);
-    void deleteService(UUID id_service);
+    ServiceDTO getServiceById(UUID id_service) throws NotFoundException;
+    ServiceResponseDTO updateService(ServiceDTO service, UUID id_specialty) throws NotFoundException;
+    void deleteService(UUID id_service) throws NotFoundException;
     List<ServiceResponseDTO> getAllServicesBySpecialty(UUID id_specialty);
     Boolean existsServiceById(UUID id_service);
 }
