@@ -135,6 +135,20 @@ Las clínicas pequeñas y medianas aún usan papel o herramientas poco especiali
 | 15 | Agregar Paciente Solución 3 | ![image](https://github.com/user-attachments/assets/2e7891d4-f793-49b2-a889-53c7021900ce) |
 
 
+---
+
+### ✅ Solución Elegida (Prototipo)
+
+La **Solución 3** fue seleccionada como la opción final por su diseño limpio, interfaz intuitiva y facilidad de navegación. Representa adecuadamente los procesos clave de la clínica Jesús del Norte.
+
+#### 🎯 Prototipo Final
+
+![image](https://github.com/user-attachments/assets/6ed65d63-dda2-4cfb-b58f-83afe6993384)
+
+_Nota_: Vista general del prototipo funcional de la aplicación, basado en la Solución 3.
+
+---
+
 
 ## 3. Alcances
 
