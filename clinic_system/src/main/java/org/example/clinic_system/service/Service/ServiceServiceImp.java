@@ -58,5 +58,10 @@ public class ServiceServiceImp implements ServiceService {
                 .TransformListServiceResponseDTO(serviceRepository.findBySpecialtyId(id_specialty));
     }
 
+    @Override
+    public Boolean existsServiceById(UUID id_service) {
+        return serviceRepository.existsById(id_service);
+    }
+
 
 }

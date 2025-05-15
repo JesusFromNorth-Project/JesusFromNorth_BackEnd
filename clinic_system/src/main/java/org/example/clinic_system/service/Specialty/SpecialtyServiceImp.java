@@ -10,6 +10,7 @@ import org.example.clinic_system.repository.SpecialtyRepository;
 import org.example.clinic_system.util.SpecialtyProcesses;
 import org.example.clinic_system.util.Tuple;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +52,12 @@ public class SpecialtyServiceImp implements SpecialtyService{
     public Specialty getSpecialtyById(UUID id_specialty) throws NotFoundException {
         return specialtyRepository.findById(id_specialty)
                 .orElseThrow( () -> new NotFoundException("No se encontro la especialidad con el id: " + id_specialty));
+    }
+
+    @Override
+    public Specialty getSpecialtyByName(String name) throws NotFoundException {
+        return specialtyRepository.findByName(name)
+                .orElseThrow( () -> new NotFoundException("No se encontro la especialidad con el nombre: " + name));
     }
 
 }

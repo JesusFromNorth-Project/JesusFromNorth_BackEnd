@@ -16,6 +16,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, UUID> {
     Optional<Doctor> findByUser(UUID id_user);
 
     //Busqueda parcial por nombre
-    List<Doctor> findByNameContainingIgnoreCase(String name);
+//    List<Doctor> findByNameContainingIgnoreCase(String name);
 
 }
