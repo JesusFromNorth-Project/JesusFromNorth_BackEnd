@@ -31,7 +31,7 @@ public class SpecialtyController {
 
     // Endpoint para guardar una especialidad
     @PostMapping("/")
-    public ResponseEntity<SuccessMessage<SpecialtyResponseDTO>> saveSpecialty(@RequestBody SpecialtyResponseDTO specialtyDTO) {
+    public ResponseEntity<?> saveSpecialty(@RequestBody SpecialtyResponseDTO specialtyDTO) {
         Tuple<SpecialtyResponseDTO, UUID> result = specialtyService.saveSpecialty(specialtyDTO);
         SuccessMessage<SpecialtyResponseDTO> successMessage = SuccessMessage.<SpecialtyResponseDTO>builder()
                 .status(HttpStatus.CREATED.value())  // Usa el código numérico
