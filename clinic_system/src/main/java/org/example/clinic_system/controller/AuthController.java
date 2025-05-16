@@ -14,6 +14,7 @@ public class AuthController {
 
     private final AuthService authService;
 
+    //ME DEVUELVE EL TOKEN Y EL USER(ADMIN O DOCTOR)
     @PostMapping("/login")
     public ResponseEntity<?>login(@RequestBody LoginDTO loginDTO) {
         try {
@@ -25,6 +26,8 @@ public class AuthController {
         }
     }
 
+    //RUTA PARA PROBAR EL TOKEN,ESTA PROTEGIDA POR DEFECTO
+    //PARA PROBARLA SOLO TIENEN QUE EJECUTAR LA RUTA CON EL TOKEN QUE TE DIO AL INICIAR SESION
     @GetMapping("/check")
     public ResponseEntity<String> check() {
         return ResponseEntity.ok().body("permitido");
