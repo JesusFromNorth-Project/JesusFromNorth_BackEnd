@@ -3,7 +3,6 @@ package org.example.clinic_system.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.clinic_system.dto.entityDTO.SpecialtyDTO;
 import org.example.clinic_system.dto.responseDTO.SpecialtyResponseDTO;
-import org.example.clinic_system.dto.responseDTO.SpecialtySavedResponseDTO;
 import org.example.clinic_system.dto.responseDTO.SpecialtyWithServicesDTO;
 import org.example.clinic_system.dto.responseDTO.SuccessMessage;
 import org.example.clinic_system.handler.NotFoundException;
@@ -12,10 +11,8 @@ import org.example.clinic_system.service.Specialty.SpecialtyService;
 import org.example.clinic_system.util.Tuple;
 import org.example.clinic_system.util.UriGeneric;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -31,7 +28,7 @@ public class SpecialtyController {
 
     // Endpoint para guardar una especialidad
     @PostMapping("/")
-    public ResponseEntity<SuccessMessage<SpecialtyResponseDTO>> saveSpecialty(@RequestBody SpecialtyResponseDTO specialtyDTO) {
+    public ResponseEntity<?> saveSpecialty(@RequestBody SpecialtyResponseDTO specialtyDTO) {
         Tuple<SpecialtyResponseDTO, UUID> result = specialtyService.saveSpecialty(specialtyDTO);
         SuccessMessage<SpecialtyResponseDTO> successMessage = SuccessMessage.<SpecialtyResponseDTO>builder()
                 .status(HttpStatus.CREATED.value())  // Usa el código numérico

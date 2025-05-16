@@ -29,7 +29,7 @@ public class AuthController {
     //RUTA PARA PROBAR EL TOKEN,ESTA PROTEGIDA POR DEFECTO
     //PARA PROBARLA SOLO TIENEN QUE EJECUTAR LA RUTA CON EL TOKEN QUE TE DIO AL INICIAR SESION
     @GetMapping("/check")
-    public ResponseEntity<String> check() {
+    public ResponseEntity<?> check() {
         return ResponseEntity.ok().body("permitido");
     }
 }

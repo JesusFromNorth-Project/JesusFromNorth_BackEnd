@@ -100,7 +100,7 @@ public class DoctorController {
 
     // Endpoint para buscar un doctor por CMP
     @GetMapping("/cmp/{cmp}")
-    public ResponseEntity<SuccessMessage<DoctorDTO>> getDoctorByCmp(@PathVariable("cmp") String cmp) throws NotFoundException {
+    public ResponseEntity<?> getDoctorByCmp(@PathVariable("cmp") String cmp) throws NotFoundException {
             DoctorDTO doctor = doctorService.getDoctorByCmp(cmp);
             return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
                     .status(HttpStatus.OK.value())
