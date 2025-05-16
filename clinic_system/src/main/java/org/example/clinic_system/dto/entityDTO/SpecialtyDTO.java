@@ -1,7 +1,5 @@
 package org.example.clinic_system.dto.entityDTO;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
