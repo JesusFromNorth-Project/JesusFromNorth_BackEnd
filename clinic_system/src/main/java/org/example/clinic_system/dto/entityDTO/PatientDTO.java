@@ -19,6 +19,7 @@ public class PatientDTO extends PersonDTO {
     private Gender gender;
     private Integer age;
     private String antecedent;
+
     private Admin admin;
     private Boolean is_deleted;
 }

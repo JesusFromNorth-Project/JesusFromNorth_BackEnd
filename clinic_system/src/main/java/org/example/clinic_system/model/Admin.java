@@ -21,7 +21,7 @@ public class Admin extends Person {
 
     @OneToOne(
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            cascade = {CascadeType.MERGE, CascadeType.REFRESH} // ✅ NO uses ALL
     )
     @JoinColumn(
             name = "id_user",

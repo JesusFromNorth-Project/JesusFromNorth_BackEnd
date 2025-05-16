@@ -1,24 +1,21 @@
 package org.example.clinic_system.dto.entityDTO;
 
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.apache.catalina.User;
 import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.Specialty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-
+import java.util.UUID;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@SuperBuilder
 public class DoctorDTO extends PersonDTO {
+    private UUID id_doctor;
     private Specialty specialty;
     private String cmp;
-    private User user;
-    private Admin admin;
-    private Boolean is_deleted;
 }

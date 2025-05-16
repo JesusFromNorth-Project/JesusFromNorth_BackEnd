@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-public class Service {
+public class ServiceSpecialty {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

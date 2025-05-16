@@ -1,106 +1,126 @@
 package org.example.clinic_system.service.Doctor;
 
+import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
+import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
+import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
+import org.example.clinic_system.dto.responseDTO.RegisterDoctorNoUsernameDTO;
 import org.example.clinic_system.handler.NotFoundException;
+import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.Doctor;
+import org.example.clinic_system.model.Specialty;
+import org.example.clinic_system.model.User;
+import org.example.clinic_system.model.enums.Rol;
 import org.example.clinic_system.repository.DoctorRepository;
+import org.example.clinic_system.repository.UserRepository;
+import org.example.clinic_system.service.Admin.AdminService;
+import org.example.clinic_system.service.Specialty.SpecialtyService;
 import org.example.clinic_system.util.DoctorProcesses;
+import org.example.clinic_system.util.Tuple;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class DoctorServiceImp implements DoctorService {
 
     private final DoctorRepository doctorRepository;
+    private final SpecialtyService specialtyService;
+    private final AdminService adminService;
 
-    public DoctorServiceImp(DoctorRepository doctorRepository){
-        this.doctorRepository = doctorRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    //Este crear al doctor con su usuario pero necesita que le ingrese el username y el password para crear : retorna (entidad,uuid)
+    @Override
+    public Tuple SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+
+        Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
+
+        Admin admin = adminService.findById(id_admin);
+
+        User user = User.builder()
+                .username(registerDoctorDTO.getUsername())
+                .password(passwordEncoder.encode(registerDoctorDTO.getPassword()))
+                .role(Rol.DOCTOR)
+                .build();
+
+        user = userRepository.save(user);
+
+        Doctor doctorResponseDTO = doctorRepository.save(DoctorProcesses.CreateDoctorWithUsername(registerDoctorDTO,specialty,admin,user));
+
+        return Tuple.
+                <DoctorResponseDTO,UUID>builder()
+                .first(DoctorProcesses.CreateDoctorEntity(doctorResponseDTO))
+                .second(doctorResponseDTO.getId_doctor())
+                .build();
+
+    }
+
+    //Este crear al doctor con su usuario pero necesitas solo el password para crear ya que su usename es su dni : retorna (entidad,uuid)
+    @Override
+    public Tuple SaveDoctor(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+
+        Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
+        Admin admin = adminService.findById(id_admin);
+        Doctor doctorResponseDTO = doctorRepository.save(DoctorProcesses.CreateDoctorNoUsername(registerDoctorNoUsernameDTO,specialty,admin));
+
+        return Tuple.
+                <DoctorResponseDTO,UUID>builder()
+                .first(DoctorProcesses.CreateDoctorEntity(doctorResponseDTO))
+                .second(doctorResponseDTO.getId_doctor())
+                .build();
     }
 
     @Override
-    public Doctor save(DoctorDTO doctorDTO) {
-       Doctor doctor = DoctorProcesses.CreateDoctor(doctorDTO);
-        return doctorRepository.save(doctor);
+    public DoctorDTO getDoctorById(UUID id_doctor) throws NotFoundException {
+        Doctor doc = doctorRepository.findById(id_doctor)
+                .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
+        return DoctorProcesses.CreateDoctorDTO(doc);
+    }
+
+    //Me trae todos los doctores
+    @Override
+    public List<DoctorDTO> getAllDoctors() {
+        return DoctorProcesses
+                .CreateDoctorResponseDTO(doctorRepository.findAll());
+    }
+
+    //Este es para actualizar el doctor incluso su tipo de especialidad
+    @Override
+    public DoctorResponseDTO updateDoctor(UUID id_doctor, DoctorResponseDTO doctorResponseDTO) throws NotFoundException {
+        Doctor doc = doctorRepository.findById(id_doctor)
+                .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
+        doc = doctorRepository.save(DoctorProcesses.UpdateDoctor(doc,doctorResponseDTO));
+        return DoctorProcesses.CreateDoctorEntity(doc);
+    }
+
+    //para obtener por cmp
+    @Override
+    public DoctorDTO getDoctorByCmp(String cmp) throws NotFoundException {
+        Doctor doctor = doctorRepository.findByCmp(cmp)
+                .orElseThrow(() -> new NotFoundException("No se encontró un doctor con el CMP: " + cmp));
+        return DoctorProcesses.CreateDoctorDTO(doctor);
+
     }
 
     @Override
-    public Doctor findByCmp(String cmp) throws NotFoundException {
-        Optional<Doctor>doctorOptional = doctorRepository.findByCmp(cmp);
-        if (!doctorOptional.isPresent() || doctorOptional.get().getIs_deleted()) {
-            throw new NotFoundException("Doctor not found or delete");
-        }
-        return doctorOptional.get();
+    public Doctor getDoctorByIdUser(UUID id_user) throws NotFoundException {
+        return doctorRepository.findByUser(id_user)
+                .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
     }
 
-    @Override
-    public Doctor findByDni(String dni) throws NotFoundException {
-        Optional<Doctor>doctorOptional = doctorRepository.findByDni(dni);
-        if (!doctorOptional.isPresent() || doctorOptional.get().getIs_deleted()) {
-            throw new NotFoundException("Doctor not found or delete");
-        }
-        return doctorOptional.get();
-    }
+    //para obtener por nombres
+//    @Override
+//    public List<DoctorDTO> getDoctorByName(String name) {
+//        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCase(name);
+//        return DoctorProcesses.CreateDoctorResponseDTO(doctors);
+//    }
 
-    @Override
-    public Doctor findByidDoctor(UUID id) throws NotFoundException {
-        Optional<Doctor>doctorOptional = doctorRepository.findById(id);
-        if (!doctorOptional.isPresent() || doctorOptional.get().getIs_deleted()) {
-            throw new NotFoundException("Doctor not found or delete");
-        }
-        return doctorOptional.get();
-    }
 
-    @Override
-    public void deleteByCmp(String cmp) throws NotFoundException {
-        Optional<Doctor> doctorOptional = doctorRepository.findByCmp(cmp);
-        if(!doctorOptional.isPresent() || doctorOptional.get().getIs_deleted()) {
-            throw new NotFoundException("Doctor not found or delete");
-        }
-        Doctor doctor = doctorOptional.get();
-        doctor.setIs_deleted(true);
-        doctorRepository.save(doctor);
-    }
-
-    @Override
-    public void deleteByDni(String dni) throws NotFoundException {
-        Optional<Doctor> doctorOptional = doctorRepository.findByDni(dni);
-        if(!doctorOptional.isPresent() || doctorOptional.get().getIs_deleted()) {
-            throw new NotFoundException("Doctor not found or delete");
-        }
-        Doctor doctor = doctorOptional.get();
-        doctor.setIs_deleted(true);
-        doctorRepository.save(doctor);
-    }
-
-    @Override
-    public void deleteByidDoctor(UUID id) throws NotFoundException {
-        Optional<Doctor> doctorOptional = doctorRepository.findById(id);
-        if(!doctorOptional.isPresent() || doctorOptional.get().getIs_deleted()) {
-            throw new NotFoundException("Doctor not found or delete");
-        }
-        Doctor doctor = doctorOptional.get();
-        doctor.setIs_deleted(true);
-        doctorRepository.save(doctor);
-    }
-
-    @Override
-    public List<Doctor> findAll() {
-        return doctorRepository.findAll()
-                .stream()
-                .filter(doctor -> !doctor.getIs_deleted())
-                .toList();
-    }
-
-    @Override
-    public Doctor UpdateDoctor(UUID id, DoctorDTO doctorDTO) throws NotFoundException {
-        Optional<Doctor>DoctorOptional = doctorRepository.findById(id);
-        if(!DoctorOptional.isPresent() || DoctorOptional.get().getIs_deleted()) {
-            throw new NotFoundException("Doctor not found or delete");
-        }
-        Doctor doctorUpdate = DoctorProcesses.UpdateDoctor(DoctorOptional.get(), doctorDTO);
-        return doctorRepository.save(doctorUpdate);
-    }
 }

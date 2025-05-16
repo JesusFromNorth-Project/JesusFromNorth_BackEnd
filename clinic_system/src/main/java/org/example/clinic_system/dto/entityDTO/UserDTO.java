@@ -1,23 +1,19 @@
 package org.example.clinic_system.dto.entityDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.example.clinic_system.model.User;
+import lombok.NoArgsConstructor;
+import org.example.clinic_system.model.enums.Rol;
 
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
 public class UserDTO {
-    private UUID id;
-    private String username;
-    private String role;
-
-    public static UserDTO fromEntity(User user) {
-        return UserDTO.builder()
-                .id(user.getId_user())
-                .username(user.getUsername())
-                .role(user.getRole().name())
-                .build();
-    }
+    private UUID id_user;
+    private Rol role;
+    private Boolean is_deleted=false;
 }

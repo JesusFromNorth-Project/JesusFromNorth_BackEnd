@@ -1,6 +1,11 @@
 package org.example.clinic_system;
 
+import lombok.RequiredArgsConstructor;
+import org.example.clinic_system.dto.responseDTO.RegisterAdminDTO;
+import org.example.clinic_system.model.Admin;
+import org.example.clinic_system.service.Admin.AdminService;
 import org.example.clinic_system.service.Patient.PatientService;
+import org.example.clinic_system.util.AdminProcesses;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,15 +14,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ClinicSystemApplicationTests {
 
     @Autowired
-    private PatientService patientService;
+    private AdminService adminService;
 
     @Test
     void contextLoads() {
     }
 
+
     @Test
-    void hello(){
-        System.out.println("hello");
+    void addAdmin(){
+        RegisterAdminDTO registerAdminDTO = RegisterAdminDTO.builder()
+                .first_name("John")
+                .last_name("Smith")
+                .dni("123456789")
+                .email("Jhon@gmail.com")
+                .address("123 Main St")
+                .landline_phone("867423")
+                .phone("354675453")
+                .username("admin23243")
+                .password("admin")
+                .build();
+        adminService.save(registerAdminDTO);
     }
 
 //    @Test
