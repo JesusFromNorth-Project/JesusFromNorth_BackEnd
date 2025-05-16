@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
+import org.example.clinic_system.dto.responseDTO.DoctorResponseWithIDSpecialtyDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorNoUsernameDTO;
 import org.example.clinic_system.handler.NotFoundException;
@@ -93,11 +94,15 @@ public class DoctorServiceImp implements DoctorService {
 
     //Este es para actualizar el doctor incluso su tipo de especialidad
     @Override
-    public DoctorResponseDTO updateDoctor(UUID id_doctor, DoctorResponseDTO doctorResponseDTO) throws NotFoundException {
+    public DoctorResponseWithIDSpecialtyDTO updateDoctor(UUID id_doctor, DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException {
         Doctor doc = doctorRepository.findById(id_doctor)
                 .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
-        doc = doctorRepository.save(DoctorProcesses.UpdateDoctor(doc,doctorResponseDTO));
-        return DoctorProcesses.CreateDoctorEntity(doc);
+
+        Specialty specialty = specialtyService.getSpecialtyById(doctorResponseDTO.getId_specialty());
+
+        doc = doctorRepository.save(DoctorProcesses.UpdateDoctor(doc,doctorResponseDTO,specialty));
+
+        return DoctorProcesses.CreateDoctorEntityWithIDSpecialty(doc);
     }
 
     //para obtener por cmp

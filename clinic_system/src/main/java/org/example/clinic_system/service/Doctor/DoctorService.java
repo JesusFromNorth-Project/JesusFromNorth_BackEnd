@@ -2,6 +2,7 @@ package org.example.clinic_system.service.Doctor;
 
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
+import org.example.clinic_system.dto.responseDTO.DoctorResponseWithIDSpecialtyDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorNoUsernameDTO;
 import org.example.clinic_system.handler.NotFoundException;
@@ -17,7 +18,7 @@ public interface DoctorService {
 
     DoctorDTO getDoctorById(UUID id_doctor) throws NotFoundException;
     List<DoctorDTO> getAllDoctors();
-    DoctorResponseDTO updateDoctor(UUID id_doctor,DoctorResponseDTO doctorResponseDTO) throws NotFoundException;
+    DoctorResponseWithIDSpecialtyDTO updateDoctor(UUID id_doctor, DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException;
 
     //NEW METHODS
     DoctorDTO getDoctorByCmp(String cmp) throws NotFoundException;

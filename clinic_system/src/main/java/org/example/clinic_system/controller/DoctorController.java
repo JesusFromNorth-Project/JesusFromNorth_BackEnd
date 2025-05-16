@@ -3,10 +3,7 @@ package org.example.clinic_system.controller;
 import lombok.RequiredArgsConstructor;
 
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
-import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
-import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
-import org.example.clinic_system.dto.responseDTO.RegisterDoctorNoUsernameDTO;
-import org.example.clinic_system.dto.responseDTO.SuccessMessage;
+import org.example.clinic_system.dto.responseDTO.*;
 import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.service.Doctor.DoctorService;
 
@@ -89,9 +86,9 @@ public class DoctorController {
     @PutMapping("/{doctorId}")
     public ResponseEntity<?> updateDoctor(
             @PathVariable("doctorId") UUID doctorId,
-            @RequestBody DoctorResponseDTO doctorResponseDTO) throws NotFoundException {
-            DoctorResponseDTO updatedDoctor = doctorService.updateDoctor(doctorId, doctorResponseDTO);
-            return ResponseEntity.ok(SuccessMessage.<DoctorResponseDTO>builder()
+            @RequestBody DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException {
+        DoctorResponseWithIDSpecialtyDTO updatedDoctor = doctorService.updateDoctor(doctorId, doctorResponseDTO);
+            return ResponseEntity.ok(SuccessMessage.<DoctorResponseWithIDSpecialtyDTO>builder()
                     .status(HttpStatus.OK.value())
                     .message("Doctor actualizado con éxito.")
                     .data(updatedDoctor)

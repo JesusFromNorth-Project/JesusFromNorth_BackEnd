@@ -2,6 +2,7 @@ package org.example.clinic_system.util;
 
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
+import org.example.clinic_system.dto.responseDTO.DoctorResponseWithIDSpecialtyDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterDoctorNoUsernameDTO;
 import org.example.clinic_system.model.Admin;
@@ -54,11 +55,13 @@ public class DoctorProcesses {
                 .build();
     }
 
-    public static Doctor UpdateDoctor(Doctor doctor, DoctorResponseDTO doctorResponseDTO) {
+    public static Doctor UpdateDoctor(Doctor doctor, DoctorResponseWithIDSpecialtyDTO doctorResponseDTO, Specialty specialty) {
         PersonProcesses.UpdatePerson(doctor, doctorResponseDTO);
-        if(doctorResponseDTO.getSpecialty()!=null){
-            doctor.setSpecialty(doctorResponseDTO.getSpecialty());
+
+        if(specialty!=null){
+            doctor.setSpecialty(specialty);
         }
+
         if (doctorResponseDTO.getCmp() != null) {
             doctor.setCmp(doctorResponseDTO.getCmp());
         }
@@ -76,6 +79,20 @@ public class DoctorProcesses {
                 .dni(doctor.getDni())
                 .cmp(doctor.getCmp())
                 .specialty(doctor.getSpecialty())
+                .build();
+    }
+
+    public static DoctorResponseWithIDSpecialtyDTO CreateDoctorEntityWithIDSpecialty(Doctor doctor) {
+        return DoctorResponseWithIDSpecialtyDTO.builder()
+                .first_name(doctor.getFirst_name())
+                .last_name(doctor.getLast_name())
+                .email(doctor.getEmail())
+                .address(doctor.getAddress())
+                .phone(doctor.getPhone())
+                .landline_phone(doctor.getLandline_phone())
+                .dni(doctor.getDni())
+                .cmp(doctor.getCmp())
+                .id_specialty(doctor.getSpecialty().getId_specialty())
                 .build();
     }
 
