@@ -14,6 +14,7 @@ import java.util.UUID;
 public interface DoctorService {
     Tuple SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException;
     Tuple SaveDoctor(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO,UUID id_admin,UUID id_specialist) throws NotFoundException;
+
     DoctorDTO getDoctorById(UUID id_doctor) throws NotFoundException;
     List<DoctorDTO> getAllDoctors();
     DoctorResponseDTO updateDoctor(UUID id_doctor,DoctorResponseDTO doctorResponseDTO) throws NotFoundException;

@@ -19,6 +19,7 @@ public class RegisterDoctorNoUsernameDTO {
     private String landline_phone;
     private String dni;
     private String cmp;
+
     private String password;
 
 }
