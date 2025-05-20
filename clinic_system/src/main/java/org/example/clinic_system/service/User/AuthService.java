@@ -61,6 +61,7 @@ public class AuthService {
                     .build();
         }
 
+        //Si el dotor esta eliminado no puede iniciar sesion
         if (user.getRole() == Rol.DOCTOR) {
             Doctor doctor = doctorService.getDoctorByIdUser(id_user);
             return AuthResponse.<DoctorDTO>builder()
