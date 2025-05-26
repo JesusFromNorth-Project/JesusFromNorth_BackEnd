@@ -55,6 +55,7 @@ public class SpecialtyServiceImp implements SpecialtyService{
                 .orElseThrow( () -> new NotFoundException("No se encontro la especialidad con el id: " + id_specialty));
     }
 
+    //Esto lo usa otro servicio,No va ser usando en el controlador
     @Override
     public Specialty getSpecialtyByName(String name) throws NotFoundException {
         return specialtyRepository.findByName(name)

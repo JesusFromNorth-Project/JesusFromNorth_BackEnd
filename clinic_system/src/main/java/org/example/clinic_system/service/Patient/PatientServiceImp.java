@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class PatientServiceImp implements PatientService{
+public class PatientServiceImp {
 
     private final PatientRepository patientRepository;
 
