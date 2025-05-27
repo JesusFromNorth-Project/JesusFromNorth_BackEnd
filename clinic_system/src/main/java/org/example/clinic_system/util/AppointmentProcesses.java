@@ -1,6 +1,7 @@
 package org.example.clinic_system.util;
 
 import org.example.clinic_system.dto.entityDTO.AppointmentDTO;
+import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.dto.responseDTO.AppointmentResponseDTO;
 import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.Appointment;
@@ -27,7 +28,22 @@ public class AppointmentProcesses {
                 .build();
     }
 
-    public static Appointment UpdateAppointment(Appointment appointment, AppointmentDTO appointmentDTO) {
+    public static AppointmentDTO CreateAppointmentDTO(Appointment appointment){
+        return AppointmentDTO.builder()
+                .id_appointment(appointment.getId_appointment())
+                .date_appointment(appointment.getDate_appointment())
+                .date_attention(appointment.getDate_attention())
+                .description(appointment.getDescription())
+                .doctor(
+                        DoctorProcesses.CreateDoctorDTO(appointment.getDoctor())
+                )
+                .patient(
+                        PatientProcesses.createPatientDTO(appointment.getPatient())
+                )
+                .build();
+    }
+
+    public static Appointment UpdateAppointment(Appointment appointment, AppointmentResponseDTO appointmentDTO) {
         if (appointmentDTO.getDate_appointment() != null)
             appointment.setDate_appointment(appointmentDTO.getDate_appointment());
 

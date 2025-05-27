@@ -16,6 +16,9 @@ import org.example.clinic_system.service.Doctor.DoctorService;
 import org.example.clinic_system.service.Patient.PatientService;
 import org.example.clinic_system.util.AppointmentProcesses;
 import org.example.clinic_system.util.Tuple;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,11 +38,13 @@ public class AppointmentServiceImp implements AppointmentService{
     private final PatientService patientService;
 
     @Override
-    public Tuple<AppointmentResponseDTO, UUID> saveAppointment(UUID id_admin, UUID id_doctor, UUID id_patient, AppointmentResponseDTO responseDTO) throws NotFoundException {
+    public Tuple<AppointmentResponseDTO, UUID> saveAppointment(
+            UUID id_admin, UUID id_doctor, UUID id_patient, AppointmentResponseDTO responseDTO
+    ) throws NotFoundException {
         Admin admin = adminService.findById(id_admin);
         Doctor doctor = doctorService.getDoctorById(id_doctor);
         Patient patient = patientService.getPatientById(id_patient);
-        Appointment appointment = AppointmentProcesses.CreateAppointment(responseDTO,doctor,patient,admin);
+        Appointment appointment = appointmentRepository.save(AppointmentProcesses.CreateAppointment(responseDTO,doctor,patient,admin));
         return new Tuple<>(
                 AppointmentProcesses.CreateAppointmentResponseDTO(appointment),
                 appointment.getId_appointment()
@@ -48,32 +53,61 @@ public class AppointmentServiceImp implements AppointmentService{
 
     @Override
     public AppointmentResponseDTO updateAppointment(UUID id_appointment, AppointmentResponseDTO appointmentResponseDTO) throws NotFoundException {
-        return null;
+        Appointment appointment = AppointmentProcesses.UpdateAppointment(
+                appointmentRepository.findByIdAppointment(id_appointment)
+                        .orElseThrow( () -> new NotFoundException("No se encontro la cita con el id: " + id_appointment) ),
+                appointmentResponseDTO
+        );
+        appointmentRepository.save(appointment);
+        return AppointmentProcesses.CreateAppointmentResponseDTO(appointment);
     }
 
     @Override
-    public AppointmentDTO getAppointmentById(UUID id_appointment) throws NotFoundException {
-        return null;
+    public AppointmentDTO getAppointmentDTOById(UUID id_appointment) throws NotFoundException {
+        return AppointmentProcesses.CreateAppointmentDTO(
+                appointmentRepository.findByIdAppointment(id_appointment)
+                        .orElseThrow( () -> new NotFoundException("No se encontro la cita con el id: " + id_appointment))
+        );
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointmentsByPatient(UUID id_patient) throws NotFoundException {
+    public Appointment getAppointmentById(UUID id_appointment) throws NotFoundException {
+        return appointmentRepository.findByIdAppointment(id_appointment)
+                .orElseThrow( () -> new NotFoundException("No se encontro la cita con el id: " + id_appointment));
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointmentsByIdPatient(UUID id_patient) throws NotFoundException {
         return List.of();
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointmentsByDoctor(UUID id_doctor) throws NotFoundException {
+    public List<AppointmentDTO> getAllAppointmentsByIdDoctor(UUID id_doctor) throws NotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointmentsByCmpDoctor(String cmp) throws NotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointmentsByDniPatient(String cmp) throws NotFoundException {
         return List.of();
     }
 
     @Override
     public List<AppointmentDTO> getAllAppointments() {
-        return List.of();
+        final Pageable pageable = PageRequest.of(0, 10);
+        return appointmentRepository.findAll(pageable).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
     }
 
     @Override
-    public AppointmentResponseDTO deleteAppointment(UUID id_appointment) throws NotFoundException {
-        return null;
+    public void deleteAppointment(UUID id_appointment) throws NotFoundException {
+        Appointment appointment = appointmentRepository.findByIdAppointment(id_appointment)
+                .orElseThrow( () -> new NotFoundException("No se encontro la cita con el id: " + id_appointment));
+        appointment.setIs_deleted(true);
+        appointmentRepository.save(appointment);
     }
 
 }
