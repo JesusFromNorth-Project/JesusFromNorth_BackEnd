@@ -79,7 +79,7 @@ public class DoctorServiceImp implements DoctorService {
     }
 
     @Override
-    public DoctorDTO getDoctorById(UUID id_doctor) throws NotFoundException {
+    public DoctorDTO getDoctorDTOById(UUID id_doctor) throws NotFoundException {
         Doctor doc = doctorRepository.findById(id_doctor)
                 .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
         return DoctorProcesses.CreateDoctorDTO(doc);
@@ -103,6 +103,12 @@ public class DoctorServiceImp implements DoctorService {
         doc = doctorRepository.save(DoctorProcesses.UpdateDoctor(doc,doctorResponseDTO,specialty));
 
         return DoctorProcesses.CreateDoctorEntityWithIDSpecialty(doc);
+    }
+
+    @Override
+    public Doctor getDoctorById(UUID id_doctor) throws NotFoundException{
+        return doctorRepository.findById(id_doctor)
+                .orElseThrow(() -> new NotFoundException("No se encontro al doctor"));
     }
 
     //para obtener por cmp

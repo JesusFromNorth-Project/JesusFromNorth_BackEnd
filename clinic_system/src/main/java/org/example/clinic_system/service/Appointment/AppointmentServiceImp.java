@@ -1,88 +1,79 @@
 package org.example.clinic_system.service.Appointment;
 
+
+import lombok.RequiredArgsConstructor;
 import org.example.clinic_system.dto.entityDTO.AppointmentDTO;
+import org.example.clinic_system.dto.responseDTO.AppointmentResponseDTO;
 import org.example.clinic_system.handler.NotFoundException;
+import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.Appointment;
+import org.example.clinic_system.model.Doctor;
+import org.example.clinic_system.model.Patient;
 import org.example.clinic_system.repository.AppointmentRepository;
+
+import org.example.clinic_system.service.Admin.AdminService;
+import org.example.clinic_system.service.Doctor.DoctorService;
+import org.example.clinic_system.service.Patient.PatientService;
 import org.example.clinic_system.util.AppointmentProcesses;
+import org.example.clinic_system.util.Tuple;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+
 @Service
+@RequiredArgsConstructor
 public class AppointmentServiceImp implements AppointmentService{
 
     private final AppointmentRepository appointmentRepository;
 
-    public AppointmentServiceImp(AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
-    }
+    private final AdminService adminService;
+
+    private final DoctorService doctorService;
+
+    private final PatientService patientService;
 
     @Override
-    public Appointment saveAppointment(AppointmentDTO appointmentDTO)  {
-        Appointment appointment = AppointmentProcesses.CreateAppointment(appointmentDTO);
-        return appointmentRepository.save(appointment);
-    }
-
-    @Override
-    public Appointment findById(UUID id) throws NotFoundException {
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
-        if(!appointmentOptional.isPresent() || appointmentOptional.get().getIs_deleted()){
-            throw new NotFoundException("Appointment not found or deleted");
-        }
-        return appointmentOptional.get();
-    }
-
-    @Override
-    public List<Appointment> findPatientById(UUID id) {
-        List<Appointment> appointmentOptional = appointmentRepository.findByIdPatient(id);
-        return appointmentOptional.stream()
-                .filter(appointment -> !appointment.getIs_deleted())
-                .toList();
-    }
-
-    @Override
-    public List<Appointment> findDoctorById(UUID id) {
-        List<Appointment> appointmentOptional = appointmentRepository.findByIdDoctor(id);
-        return appointmentOptional.stream()
-                .filter(appointment -> !appointment.getIs_deleted())
-                .toList();
-    }
-
-    @Override
-    public List<Appointment> findAll(String dni) {
-        return appointmentRepository.findAll()
-                .stream()
-                .filter(appointment -> !appointment.getIs_deleted())
-                .toList();
-    }
-
-    @Override
-    public void deleteAppointment(UUID id) throws NotFoundException {
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
-        if(!appointmentOptional.isPresent() || appointmentOptional.get().getIs_deleted()){
-            throw new NotFoundException("Appointment not found or deleted");
-        }
-        Appointment appointment = appointmentOptional.get();
-        appointment.setIs_deleted(true);
-        appointmentRepository.save(appointment);
-    }
-
-    @Override
-    public Appointment update(UUID id, AppointmentDTO appointment) {
-        Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
-        if(!appointmentOptional.isPresent() || appointmentOptional.get().getIs_deleted()){
-            new NotFoundException("Appointment not found or deleted");
-        }
-
-        Appointment appointmentUpdate = AppointmentProcesses.UpdateAppointment(
-                appointmentOptional.get(),
-                appointment
+    public Tuple<AppointmentResponseDTO, UUID> saveAppointment(UUID id_admin, UUID id_doctor, UUID id_patient, AppointmentResponseDTO responseDTO) throws NotFoundException {
+        Admin admin = adminService.findById(id_admin);
+        Doctor doctor = doctorService.getDoctorById(id_doctor);
+        Patient patient = patientService.getPatientById(id_patient);
+        Appointment appointment = AppointmentProcesses.CreateAppointment(responseDTO,doctor,patient,admin);
+        return new Tuple<>(
+                AppointmentProcesses.CreateAppointmentResponseDTO(appointment),
+                appointment.getId_appointment()
         );
+    }
 
-        return appointmentRepository.save(appointmentUpdate);
+    @Override
+    public AppointmentResponseDTO updateAppointment(UUID id_appointment, AppointmentResponseDTO appointmentResponseDTO) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public AppointmentDTO getAppointmentById(UUID id_appointment) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointmentsByPatient(UUID id_patient) throws NotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointmentsByDoctor(UUID id_doctor) throws NotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointments() {
+        return List.of();
+    }
+
+    @Override
+    public AppointmentResponseDTO deleteAppointment(UUID id_appointment) throws NotFoundException {
+        return null;
     }
 
 }

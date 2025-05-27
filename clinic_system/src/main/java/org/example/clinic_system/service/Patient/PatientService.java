@@ -12,16 +12,18 @@ import java.util.UUID;
 
 public interface PatientService {
 
-    Tuple<PatientResponseDTO,UUID> savePatient(UUID id_admin,Patient patient) throws NotFoundException;
+    Tuple<PatientResponseDTO,UUID> savePatient(UUID id_admin,PatientResponseDTO patientResponseDTO) throws NotFoundException;
 
-    PatientDTO getPatientById(UUID id_patient) throws NotFoundException;
+    PatientDTO getPatientDTOById(UUID id_patient) throws NotFoundException;
 
-    PatientDTO getPatientByDni(String dni) throws NotFoundException;
+    PatientDTO getPatientDTOByDni(String dni) throws NotFoundException;
+
+    Patient getPatientById(UUID id_patient) throws NotFoundException;
 
     PatientResponseDTO updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException;
 
-    //Hacer logica para devolver una lista de PacienteResponseDTO por el id del doctor
+    void deletePatient(UUID id_patient) throws NotFoundException;
 
-    //Hacer lista de total de pacientes inscriptos de la posta
+    List<PatientDTO> getAllPatients();
 
 }

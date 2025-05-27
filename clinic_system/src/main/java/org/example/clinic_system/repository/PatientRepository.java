@@ -12,8 +12,12 @@ import java.util.UUID;
 
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
+    @Query("SELECT p FROM Patient p WHERE p.dni=?1 and p.is_deleted=false")
     Optional<Patient> findByDni(String dni);
 
-    boolean existsByDni(String dni);
+    @Query("SELECT p FROM Patient p WHERE p.id_patient=?1 and p.is_deleted=false")
+    Optional<Patient> findByIdPatient(UUID id_patient);
 
+    @Query("SELECT p FROM Patient p WHERE p.is_deleted=false")
+    List<Patient> findAllPatients();
 }

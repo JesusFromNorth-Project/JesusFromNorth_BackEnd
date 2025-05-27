@@ -63,7 +63,7 @@ public class DoctorController {
     // Para obtener un doctor por su ID
     @GetMapping("/{doctorId}")
     public ResponseEntity<?> getDoctorById(@PathVariable("doctorId") UUID doctorId) throws NotFoundException {
-        DoctorDTO doctor = doctorService.getDoctorById(doctorId);
+        DoctorDTO doctor = doctorService.getDoctorDTOById(doctorId);
         return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor obtenido con éxito.")
