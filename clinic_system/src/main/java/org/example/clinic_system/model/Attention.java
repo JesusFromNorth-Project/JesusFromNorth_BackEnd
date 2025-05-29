@@ -24,7 +24,7 @@ public class Attention {
     private UUID id_attention;
 
     @OneToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
     @JoinColumn(

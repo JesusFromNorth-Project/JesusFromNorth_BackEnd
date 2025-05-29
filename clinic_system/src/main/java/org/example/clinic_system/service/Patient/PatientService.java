@@ -1,24 +1,29 @@
 package org.example.clinic_system.service.Patient;
 
 import org.example.clinic_system.dto.entityDTO.PatientDTO;
+import org.example.clinic_system.dto.responseDTO.PatientResponseDTO;
 import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.model.Patient;
+import org.example.clinic_system.util.Tuple;
 
 import java.util.List;
 import java.util.UUID;
 
 
 public interface PatientService {
-//
-//    Patient savePatient(PatientDTO patientDTO);
-//
-//    void deleteByDni(String dni) throws NotFoundException;
-//
-//    Patient findByDni(String dni) throws NotFoundException;
-//
-//    Patient findById(UUID id) throws NotFoundException;
-//
-//    List<Patient> findAll();
-//
-//    Patient updatePatient(UUID id_patient, PatientDTO patientDTO) throws NotFoundException;
+
+    Tuple<PatientResponseDTO,UUID> savePatient(UUID id_admin,PatientResponseDTO patientResponseDTO) throws NotFoundException;
+
+    PatientDTO getPatientDTOById(UUID id_patient) throws NotFoundException;
+
+    PatientDTO getPatientDTOByDni(String dni) throws NotFoundException;
+
+    Patient getPatientById(UUID id_patient) throws NotFoundException;
+
+    PatientResponseDTO updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException;
+
+    void deletePatient(UUID id_patient) throws NotFoundException;
+
+    List<PatientDTO> getAllPatients();
+
 }

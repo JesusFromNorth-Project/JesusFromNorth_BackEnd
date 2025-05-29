@@ -2,14 +2,17 @@ package org.example.clinic_system.service.Patient;
 
 import lombok.RequiredArgsConstructor;
 import org.example.clinic_system.dto.entityDTO.PatientDTO;
+import org.example.clinic_system.dto.responseDTO.PatientResponseDTO;
 import org.example.clinic_system.handler.NotFoundException;
+import org.example.clinic_system.model.Admin;
 import org.example.clinic_system.model.Patient;
 import org.example.clinic_system.repository.PatientRepository;
+import org.example.clinic_system.service.Admin.AdminService;
 import org.example.clinic_system.util.PatientProcesses;
+import org.example.clinic_system.util.Tuple;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,60 +20,57 @@ import java.util.UUID;
 public class PatientServiceImp implements PatientService{
 
     private final PatientRepository patientRepository;
+    private final AdminService adminService;
 
-//    @Override
-//    public Patient savePatient(PatientDTO patientDTO) {
-//        Patient patient = PatientProcesses.createPatient(patientDTO);
-//        return patientRepository.save(patient);
-//    }
-//
-//    @Override
-//    public void deleteByDni(String dni) throws NotFoundException {
-//        Optional<Patient> patientOptional = patientRepository.findByDni(dni);
-//        if(!patientOptional.isPresent()) {
-//            throw new NotFoundException("Patient not found");
-//        }
-//        Patient Patient = patientOptional.get();
-//        Patient.setIs_deleted(true);
-//        patientRepository.save(Patient);
-//    }
-//
-//    @Override
-//    public Patient findByDni(String dni) throws NotFoundException  {
-//        Optional<Patient> patientOptional = patientRepository.findByDni(dni);
-//        if(!patientOptional.isPresent() || patientOptional.get().getIs_deleted() ) {
-//            throw new NotFoundException("Patient not found or deleted");
-//        }
-//        return patientOptional.get();
-//    }
-//
-//    @Override
-//    public Patient findById(UUID id) throws NotFoundException {
-//        Optional<Patient> patientOptional = patientRepository.findById(id);
-//        if(!patientOptional.isPresent() || patientOptional.get().getIs_deleted() ) {
-//            throw new NotFoundException("Patient not found or deleted");
-//        }
-//        return patientOptional.get();
-//    }
-//
-//    @Override
-//    public List<Patient> findAll() {
-//        List<Patient>list = patientRepository.findAll()
-//                .stream()
-//                .filter(patient -> !patient.getIs_deleted())
-//                .toList();
-//        return list;
-//    }
-//
-//    @Override
-//    public Patient updatePatient(UUID id_patient, PatientDTO patientDTO) throws NotFoundException  {
-//        Optional<Patient> patientOptional = patientRepository.findById(id_patient);
-//        if(!patientOptional.isPresent() || patientOptional.get().getIs_deleted() ) {
-//            throw new NotFoundException("Patient not found");
-//        }
-//        Patient patient = patientOptional.get();
-//        Patient patientUpdated = PatientProcesses.updatePatient(patient, patientDTO);
-//        return patientRepository.save(patientUpdated);
-//    }
+    @Override
+    public Tuple<PatientResponseDTO, UUID> savePatient(UUID id_admin, PatientResponseDTO patientResponseDTO) throws NotFoundException {
+        Admin admin = adminService.findById(id_admin);
+        Patient patient = patientRepository.save(
+                PatientProcesses.CreatePatient(patientResponseDTO,admin)
+        );
+        return new Tuple<>(PatientProcesses.createPatientResponseDTO(patient),patient.getId_patient());
+    }
 
+    @Override
+    public PatientDTO getPatientDTOById(UUID id_patient) throws NotFoundException {
+        Patient patient = patientRepository.findByIdPatient(id_patient)
+                .orElseThrow( () -> new NotFoundException("No se encontro al paciente con el id: " + id_patient));
+        return PatientProcesses.createPatientDTO(patient);
+    }
+
+    @Override
+    public PatientDTO getPatientDTOByDni(String dni) throws NotFoundException {
+        Patient patient =patientRepository.findByDni(dni)
+                .orElseThrow( () -> new NotFoundException("No se encontro al paciente con el dni: " + dni));
+        return PatientProcesses.createPatientDTO(patient);
+    }
+
+    @Override
+    public Patient getPatientById(UUID id_patient) throws NotFoundException {
+        return patientRepository.findByIdPatient(id_patient)
+                .orElseThrow( () -> new NotFoundException("No se encontro al paciente con el id: " + id_patient));
+    }
+
+    @Override
+    public PatientResponseDTO updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException {
+        Patient patient = PatientProcesses.updatePatient(
+                patientRepository.findByIdPatient(id_patient).orElseThrow( () -> new NotFoundException("No se encontro al paciente con el id: " + id_patient)),
+                patientResponseDTO
+        );
+        patientRepository.save(patient);
+        return PatientProcesses.createPatientResponseDTO(patient);
+    }
+
+    @Override
+    public void deletePatient(UUID id_patient) throws NotFoundException {
+        Patient patient = patientRepository.findByIdPatient(id_patient)
+                .orElseThrow( () -> new NotFoundException("No se encontro al paciente con el id: " + id_patient));
+        patient.setIs_deleted(true);
+        patientRepository.save(patient);
+    }
+
+    @Override
+    public List<PatientDTO> getAllPatients() {
+        return PatientProcesses.CreatePatientResponseDTO(patientRepository.findAllPatients());
+    }
 }
