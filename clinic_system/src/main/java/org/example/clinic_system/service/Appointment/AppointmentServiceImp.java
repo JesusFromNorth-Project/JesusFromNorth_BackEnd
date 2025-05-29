@@ -101,6 +101,8 @@ public class AppointmentServiceImp implements AppointmentService{
         final Pageable pageable = PageRequest.of(0, 10);
         return appointmentRepository.findAll(pageable).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
     }
+    
+    // return paginacion(appointmentRepository,CreateAppointment,10);
 
     @Override
     public void deleteAppointment(UUID id_appointment) throws NotFoundException {
