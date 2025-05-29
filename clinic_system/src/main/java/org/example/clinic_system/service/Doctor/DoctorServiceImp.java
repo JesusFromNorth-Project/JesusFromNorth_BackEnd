@@ -39,7 +39,7 @@ public class DoctorServiceImp implements DoctorService {
 
     //Este crear al doctor con su usuario pero necesita que le ingrese el username y el password para crear : retorna (entidad,uuid)
     @Override
-    public Tuple SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+    public Tuple<DoctorResponseDTO, UUID> SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
 
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
 
@@ -65,7 +65,7 @@ public class DoctorServiceImp implements DoctorService {
 
     //Este crear al doctor con su usuario pero necesitas solo el password para crear ya que su usename es su dni : retorna (entidad,uuid)
     @Override
-    public Tuple SaveDoctor(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+    public Tuple<DoctorResponseDTO, UUID> SaveDoctor(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
 
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
         Admin admin = adminService.findById(id_admin);

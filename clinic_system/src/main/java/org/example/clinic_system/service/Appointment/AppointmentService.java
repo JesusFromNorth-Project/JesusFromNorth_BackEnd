@@ -15,10 +15,10 @@ public interface AppointmentService {
     AppointmentResponseDTO updateAppointment(UUID id_appointment, AppointmentResponseDTO appointmentResponseDTO) throws NotFoundException;
     AppointmentDTO getAppointmentDTOById(UUID id_appointment) throws NotFoundException;
     Appointment getAppointmentById(UUID id_appointment) throws NotFoundException;
-    List<AppointmentDTO> getAllAppointmentsByIdPatient(UUID id_patient) throws NotFoundException;
-    List<AppointmentDTO> getAllAppointmentsByIdDoctor(UUID id_doctor) throws NotFoundException;
-    List<AppointmentDTO> getAllAppointmentsByCmpDoctor(String cmp) throws NotFoundException;
-    List<AppointmentDTO> getAllAppointmentsByDniPatient(String cmp) throws NotFoundException;
-    List<AppointmentDTO> getAllAppointments();
+    List<AppointmentDTO> getAllAppointmentsByIdPatient(UUID id_patient,int page) throws NotFoundException;
+    List<AppointmentDTO> getAllAppointmentsByIdDoctor(UUID id_doctor,int page) throws NotFoundException;
+    List<AppointmentDTO> getAllAppointmentsByCmpDoctor(String cmp,int page) throws NotFoundException;
+    List<AppointmentDTO> getAllAppointmentsByDniPatient(String dni,int page) throws NotFoundException;
+    List<AppointmentDTO> getAllAppointments(int page);
     void deleteAppointment(UUID id_appointment) throws NotFoundException;
 }
