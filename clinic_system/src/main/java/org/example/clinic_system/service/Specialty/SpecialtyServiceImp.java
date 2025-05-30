@@ -33,19 +33,20 @@ public class SpecialtyServiceImp implements SpecialtyService{
                 .build();
     }
 
-    //Me borra una especiliadad
+    //Marca una especialidad como eliminada (borrado lógico)
     @Override
     public void deleteSpecialty(UUID id_specialty) throws NotFoundException {
         Specialty specialty = specialtyRepository.findById(id_specialty)
                 .orElseThrow( () -> new NotFoundException("No se encontro la especialidad con el id: " + id_specialty));
-        specialtyRepository.delete(specialty);
+        specialty.setIs_deleted(true);
+        specialtyRepository.save(specialty);
     }
 
-    //Me devuelve la lista de especualdades
+    //Me devuelve la lista de especialidades activas (no eliminadas)
     @Override
     public List<SpecialtyDTO> getAllSpecialties() {
         return SpecialtyProcesses
-                .TransformListSpecialtyDTO(specialtyRepository.findAll());
+                .TransformListSpecialtyDTO(specialtyRepository.findAllActive());
     }
 
     //Este lo usa otro servicio, No va ser Usado en el controlador se especialidad
