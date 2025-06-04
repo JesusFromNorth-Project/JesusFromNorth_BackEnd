@@ -51,8 +51,8 @@ public class DoctorController {
             @RequestBody RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO,
             @PathVariable("adminId") UUID adminId,
             @PathVariable("specialistId") UUID specialistId) throws NotFoundException {
-        Tuple<String, String> response = doctorService.SaveDoctor(registerDoctorNoUsernameDTO, adminId, specialistId);
-        return ResponseEntity.ok(SuccessMessage.<Tuple<String, String>>builder()
+        Tuple<DoctorResponseDTO, UUID> response = doctorService.SaveDoctorWithoutUsername(registerDoctorNoUsernameDTO, adminId, specialistId);
+        return ResponseEntity.ok(SuccessMessage.<Tuple<DoctorResponseDTO, UUID>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor creado con DNI como nombre de usuario.")
                 .data(response)
@@ -72,9 +72,9 @@ public class DoctorController {
     }
 
     // Para obtener todos los doctores
-    @GetMapping("list")
-    public ResponseEntity<?> getAllDoctors() {
-        List<DoctorDTO> doctors = doctorService.getAllDoctors();
+    @GetMapping("/list")
+    public ResponseEntity<?> getAllDoctors(@PathVariable int page) {
+        List<DoctorDTO> doctors = doctorService.getAllDoctors(page);
         return ResponseEntity.ok(SuccessMessage.<List<DoctorDTO>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Lista de todos los doctores obtenida con éxito.")
@@ -87,11 +87,11 @@ public class DoctorController {
     public ResponseEntity<?> updateDoctor(
             @PathVariable("doctorId") UUID doctorId,
             @RequestBody DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException {
-        DoctorResponseWithIDSpecialtyDTO updatedDoctor = doctorService.updateDoctor(doctorId, doctorResponseDTO);
-            return ResponseEntity.ok(SuccessMessage.<DoctorResponseWithIDSpecialtyDTO>builder()
+        doctorService.updateDoctor(doctorId, doctorResponseDTO);
+            return ResponseEntity.ok(SuccessMessage.<String>builder()
                     .status(HttpStatus.OK.value())
                     .message("Doctor actualizado con éxito.")
-                    .data(updatedDoctor)
+                    .data("Actualiza la lista")
                     .build());
     }
 

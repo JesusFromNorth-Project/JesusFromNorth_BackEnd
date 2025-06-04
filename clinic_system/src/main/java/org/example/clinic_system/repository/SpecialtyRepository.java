@@ -10,6 +10,10 @@ import java.util.UUID;
 
 @Repository
 public interface SpecialtyRepository extends JpaRepository<Specialty, UUID> {
-    @Query("SELECT s FROM Specialty s WHERE s.specialty_name = ?1")
+
+    @Query("SELECT s FROM Specialty s WHERE s.id_specialty=?1 AND s.is_deleted=false")
+    Optional<Specialty> findById(UUID id_specialty);
+
+    @Query("SELECT s FROM Specialty s WHERE s.specialty_name = ?1 AND s.is_deleted=false")
     Optional<Specialty> findByName(String name);
 }

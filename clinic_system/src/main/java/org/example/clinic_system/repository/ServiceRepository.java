@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface ServiceRepository extends JpaRepository<ServiceSpecialty, UUID> {
 
-    @Query("SELECT s FROM ServiceSpecialty s WHERE s.specialty.id_specialty=?1")
+    @Query("SELECT s FROM ServiceSpecialty s WHERE s.specialty.id_specialty=?1 AND s.specialty.is_deleted=false")
     List<ServiceSpecialty> findBySpecialtyId(UUID id_specialty);
 
 }

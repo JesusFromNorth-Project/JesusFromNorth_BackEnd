@@ -23,9 +23,8 @@ public class SpecialtyServiceImp implements SpecialtyService{
 
     //Guarda una especialidad
     @Override
-    public Tuple saveSpecialty(SpecialtyResponseDTO specialtyDTO) {
+    public Tuple<SpecialtyResponseDTO,UUID> saveSpecialty(SpecialtyResponseDTO specialtyDTO) {
         Specialty specialty = specialtyRepository.save(SpecialtyProcesses.CreateSpecialty(specialtyDTO));
-
         return Tuple.
                 <SpecialtyResponseDTO,UUID>builder()
                 .first(SpecialtyProcesses.CreateSpecialtyDTO(specialty))
@@ -33,12 +32,13 @@ public class SpecialtyServiceImp implements SpecialtyService{
                 .build();
     }
 
-    //Me borra una especiliadad
+    //Me borra una especiliadad: El repositorio ya filtra los que no esten eliminados
     @Override
     public void deleteSpecialty(UUID id_specialty) throws NotFoundException {
         Specialty specialty = specialtyRepository.findById(id_specialty)
                 .orElseThrow( () -> new NotFoundException("No se encontro la especialidad con el id: " + id_specialty));
-        specialtyRepository.delete(specialty);
+        specialty.setIs_deleted(true);
+        specialtyRepository.save(specialty);
     }
 
     //Me devuelve la lista de especualdades
@@ -55,7 +55,7 @@ public class SpecialtyServiceImp implements SpecialtyService{
                 .orElseThrow( () -> new NotFoundException("No se encontro la especialidad con el id: " + id_specialty));
     }
 
-    //Esto lo usa otro servicio,No va ser usando en el controlador
+    //Esto lo usa otro servicio, No va a ser usando en el controlador
     @Override
     public Specialty getSpecialtyByName(String name) throws NotFoundException {
         return specialtyRepository.findByName(name)

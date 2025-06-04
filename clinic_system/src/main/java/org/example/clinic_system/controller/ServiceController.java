@@ -5,7 +5,7 @@ import org.example.clinic_system.dto.entityDTO.ServiceDTO;
 import org.example.clinic_system.dto.responseDTO.ServiceResponseDTO;
 import org.example.clinic_system.dto.responseDTO.SuccessMessage;
 import org.example.clinic_system.handler.NotFoundException;
-import org.example.clinic_system.service.Service.ServiceService;
+import org.example.clinic_system.service.ServiceSpecialty.ServiceService;
 import org.example.clinic_system.util.Tuple;
 import org.example.clinic_system.util.UriGeneric;
 import org.springframework.http.HttpStatus;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,6 +39,11 @@ public class ServiceController {
         return ResponseEntity.created(location).body(successMessage);
     }
 
+    @GetMapping("/list/bySpeciality/{id_specialty}")
+    public ResponseEntity<?> getListServices(UUID id_specialty) {
+        return null;
+    }
+
 
     // Endpoint para obtener un servicio por ID (Sin logica)
     @GetMapping("/{id}")
@@ -56,28 +62,13 @@ public class ServiceController {
     // Endpoint para actualizar un servicio de una especialidad (Sin logica)
     @PutMapping("/{specialtyId}")
     public ResponseEntity<?> updateService(@RequestBody ServiceDTO serviceDTO, @PathVariable("specialtyId") UUID specialtyId) throws NotFoundException {
-        ServiceResponseDTO updatedService = serviceService.updateService(serviceDTO, specialtyId);
-        SuccessMessage<ServiceResponseDTO> successMessage = SuccessMessage.<ServiceResponseDTO>builder()
-                .status(HttpStatus.OK.value())
-                .message("Servicio actualizado exitosamente")
-                .data(updatedService)
-                .build();
-        return ResponseEntity.ok(successMessage);
+        return null;
     }
 
     // Endpoint para eliminar un servicio por ID(Sin logica)
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteService(@PathVariable("id") UUID id) throws NotFoundException {
-        if (!serviceService.existsServiceById(id)) { // Verificamos si el ID existe
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("El servicio con el ID proporcionado no existe");
-        }
-        serviceService.deleteService(id); // Procedemos a eliminar el recurso
-        SuccessMessage<Void> successMessage = SuccessMessage.<Void>builder()
-                .status(HttpStatus.NO_CONTENT.value())
-                .message("El servicio fue eliminado exitosamente")
-                .build();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(successMessage);
+        return null;
     }
 
 
