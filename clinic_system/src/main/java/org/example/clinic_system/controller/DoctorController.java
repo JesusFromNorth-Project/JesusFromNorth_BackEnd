@@ -59,7 +59,6 @@ public class DoctorController {
                 .build());
     }
 
-
     // Para obtener un doctor por su ID
     @GetMapping("/{doctorId}")
     public ResponseEntity<?> getDoctorById(@PathVariable("doctorId") UUID doctorId) throws NotFoundException {
@@ -73,7 +72,7 @@ public class DoctorController {
 
     // Para obtener todos los doctores
     @GetMapping("/list")
-    public ResponseEntity<?> getAllDoctors(@PathVariable int page) {
+    public ResponseEntity<?> getAllDoctors(@RequestParam int page) {
         List<DoctorDTO> doctors = doctorService.getAllDoctors(page);
         return ResponseEntity.ok(SuccessMessage.<List<DoctorDTO>>builder()
                 .status(HttpStatus.OK.value())
@@ -82,8 +81,18 @@ public class DoctorController {
                 .build());
     }
 
+    @GetMapping("/list/{specialistId}")
+    public ResponseEntity<?> getAllDoctorsBySpecialty(@PathVariable UUID specialistId,@RequestParam int page) {
+        List<DoctorDTO> doctors = doctorService.getAllDoctorsBySpecialist(specialistId,page);
+        return ResponseEntity.ok(SuccessMessage.<List<DoctorDTO>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Lista de todos los doctores obtenida con éxito.")
+                .data(doctors)
+                .build());
+    }
+
     // Para actualizar un doctor por su ID
-    @PutMapping("/{doctorId}")
+    @PatchMapping("/{doctorId}")
     public ResponseEntity<?> updateDoctor(
             @PathVariable("doctorId") UUID doctorId,
             @RequestBody DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException {
@@ -95,15 +104,35 @@ public class DoctorController {
                     .build());
     }
 
+    @DeleteMapping("/{doctorId}")
+    public ResponseEntity<?> deleteDoctor(@PathVariable("doctorId") UUID doctorId) throws NotFoundException {
+        doctorService.deleteDoctor(doctorId);
+        return ResponseEntity.ok(SuccessMessage.<String>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor actualizado con éxito.")
+                .data("Se borro adecuadamente el doctor")
+                .build());
+    }
+
     // Endpoint para buscar un doctor por CMP
-    @GetMapping("/cmp/{cmp}")
-    public ResponseEntity<?> getDoctorByCmp(@PathVariable("cmp") String cmp) throws NotFoundException {
+    @GetMapping("/getCMP")
+    public ResponseEntity<?> getDoctorByCmp(@RequestParam String cmp) throws NotFoundException {
             DoctorDTO doctor = doctorService.getDoctorByCmp(cmp);
             return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
                     .status(HttpStatus.OK.value())
                     .message("Doctor obtenido con éxito por CMP.")
                     .data(doctor)
                     .build());
+    }
+
+    @GetMapping("/getDNI")
+    public ResponseEntity<?> getDoctorByDni(@RequestParam String dni) throws NotFoundException {
+        DoctorDTO doctor = doctorService.getDoctorByDni(dni);
+        return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor obtenido con éxito por CMP.")
+                .data(doctor)
+                .build());
     }
 
 }

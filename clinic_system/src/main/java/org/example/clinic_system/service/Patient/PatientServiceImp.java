@@ -50,6 +50,7 @@ public class PatientServiceImp implements PatientService{
         return PatientProcesses.createPatientDTO(patient);
     }
 
+    //Sirve para otro servicio (NO USAR EN CONTROLADOR)
     @Override
     public Patient getPatientById(UUID id_patient) throws NotFoundException {
         return patientRepository.findByIdPatient(id_patient)

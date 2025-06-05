@@ -22,8 +22,8 @@ public class PrescriptionItem {
     @Column(name = "id_prescription_item")
     private UUID id_prescription_item;
 
-    @OneToOne(
-            fetch = FetchType.LAZY,
+    @ManyToOne(
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
     @JoinColumn(
