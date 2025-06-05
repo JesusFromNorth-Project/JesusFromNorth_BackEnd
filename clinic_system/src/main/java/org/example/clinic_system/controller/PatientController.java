@@ -32,7 +32,7 @@ public class PatientController {
             @PathVariable UUID id_admin
     ) throws NotFoundException {
         Tuple<PatientResponseDTO, UUID> patient = patientService.savePatient(id_admin, patientResponseDTO);
-        URI location = UriGeneric.CreateUri("/{id}",patient.getSecond());
+        URI location = UriGeneric.CreateUri("/{id_patient}",patient.getSecond());
         return ResponseEntity.created(location).body(SuccessMessage.<PatientResponseDTO>builder()
                         .status(HttpStatus.CREATED.value())
                         .message("Paciente creado con exito")
