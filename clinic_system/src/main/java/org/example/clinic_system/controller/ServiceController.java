@@ -94,7 +94,7 @@ public class ServiceController {
         return ResponseEntity.ok(successMessage);
     }
 
-    @Operation(summary = "Actualizar servicio",
+    @Operation(summary = "Actualizar servicio (NO FUNCIONAL)",
             description = "Actualiza los datos de un servicio médico asociado a una especialidad.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Servicio actualizado exitosamente",
@@ -107,16 +107,16 @@ public class ServiceController {
             @RequestBody ServiceDTO serviceDTO,
             @PathVariable("specialtyId") UUID specialtyId) throws NotFoundException {
 
-        ServiceResponseDTO updatedService = serviceService.updateService(serviceDTO, specialtyId);
-        SuccessMessage<ServiceResponseDTO> successMessage = SuccessMessage.<ServiceResponseDTO>builder()
+        serviceService.updateService(serviceDTO, specialtyId);
+        SuccessMessage<String> successMessage = SuccessMessage.<String>builder()
                 .status(HttpStatus.OK.value())
                 .message("Servicio actualizado exitosamente")
-                .data(updatedService)
+                .data("Actualiza tu lista")
                 .build();
         return ResponseEntity.ok(successMessage);
     }
 
-    @Operation(summary = "Eliminar servicio por ID",
+    @Operation(summary = "Eliminar servicio por ID (NO FUNCIONAL)",
             description = "Elimina un servicio médico específico mediante su ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Servicio eliminado exitosamente",
@@ -126,10 +126,6 @@ public class ServiceController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteService(@PathVariable("id") UUID id) throws NotFoundException {
-        if (!serviceService.existsServiceById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("El servicio con el ID proporcionado no existe");
-        }
         serviceService.deleteService(id);
         SuccessMessage<Void> successMessage = SuccessMessage.<Void>builder()
                 .status(HttpStatus.NO_CONTENT.value())

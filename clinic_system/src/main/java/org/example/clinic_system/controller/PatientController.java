@@ -1,5 +1,11 @@
 package org.example.clinic_system.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 import org.example.clinic_system.dto.entityDTO.PatientDTO;
@@ -26,20 +32,34 @@ public class PatientController {
 
     private final PatientService patientService;
 
+    @Operation(summary = "Crear paciente",
+            description = "Registra un nuevo paciente asociado a un administrador.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Paciente creado con éxito",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Administrador no encontrado", content = @Content)
+    })
     @PostMapping("/{id_admin}")
     public ResponseEntity<?> createPatient(
             @RequestBody PatientResponseDTO patientResponseDTO,
             @PathVariable UUID id_admin
     ) throws NotFoundException {
         Tuple<PatientResponseDTO, UUID> patient = patientService.savePatient(id_admin, patientResponseDTO);
-        URI location = UriGeneric.CreateUri("/{id_patient}",patient.getSecond());
+        URI location = UriGeneric.CreateUri("/{id_patient}", patient.getSecond());
         return ResponseEntity.created(location).body(SuccessMessage.<PatientResponseDTO>builder()
-                        .status(HttpStatus.CREATED.value())
-                        .message("Paciente creado con exito")
-                        .data(patient.getFirst())
-                        .build());
+                .status(HttpStatus.CREATED.value())
+                .message("Paciente creado con éxito")
+                .data(patient.getFirst())
+                .build());
     }
 
+    @Operation(summary = "Buscar paciente por ID",
+            description = "Devuelve los datos de un paciente según su identificador único.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Paciente encontrado",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content)
+    })
     @GetMapping("/{id_patient}")
     public ResponseEntity<?> getPatientById(
             @PathVariable UUID id_patient
@@ -48,24 +68,37 @@ public class PatientController {
         return ResponseEntity.ok().body(
                 SuccessMessage.<PatientDTO>builder()
                         .status(HttpStatus.OK.value())
-                        .message("Paciente encontrado con exito")
+                        .message("Paciente encontrado con éxito")
                         .data(patientDTO)
                         .build()
         );
     }
 
+    @Operation(summary = "Buscar paciente por DNI",
+            description = "Devuelve los datos de un paciente usando su número de DNI.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Paciente encontrado",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content)
+    })
     @GetMapping("/")
     public ResponseEntity<?> getPatientById(@RequestParam String dni) throws NotFoundException {
         PatientDTO patientDTO = patientService.getPatientDTOByDni(dni);
         return ResponseEntity.ok().body(
                 SuccessMessage.<PatientDTO>builder()
                         .status(HttpStatus.OK.value())
-                        .message("Paciente encontrado con exito")
+                        .message("Paciente encontrado con éxito")
                         .data(patientDTO)
                         .build()
         );
     }
 
+    @Operation(summary = "Actualizar paciente",
+            description = "Actualiza los datos de un paciente existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Paciente actualizado con éxito"),
+            @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content)
+    })
     @PatchMapping("/{id_patient}")
     public ResponseEntity<?> updatePatient(
             @RequestBody PatientResponseDTO patientResponseDTO,
@@ -75,6 +108,12 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(summary = "Eliminar paciente",
+            description = "Elimina un paciente del sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Paciente eliminado con éxito"),
+            @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content)
+    })
     @DeleteMapping("/{id_patient}")
     public ResponseEntity<?> deletePatient(
             @PathVariable UUID id_patient
@@ -83,26 +122,39 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(summary = "Listar pacientes",
+            description = "Obtiene una lista paginada de todos los pacientes.")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+            content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
     @GetMapping("/list")
-    public ResponseEntity<?> getAllPatients(@RequestParam int page) {
-        List<PatientDTO>ListPatientDTO = patientService.getAllPatients(page);
+    public ResponseEntity<?> getAllPatients(@Parameter(description = "Número de página a consultar", example = "0")
+                                            @RequestParam int page) {
+        List<PatientDTO> ListPatientDTO = patientService.getAllPatients(page);
         return ResponseEntity.ok().body(
                 SuccessMessage.<List<PatientDTO>>builder()
                         .status(HttpStatus.OK.value())
-                        .message("Lista de los pacientes de pagina: "+page)
+                        .message("Lista de los pacientes de página: " + page)
                         .data(ListPatientDTO)
+                        .build()
         );
     }
 
+    @Operation(summary = "Listar pacientes por apellido",
+            description = "Obtiene una lista paginada de pacientes filtrada por apellido.")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+            content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
     @GetMapping("/list/")
-    public ResponseEntity<?> getAllPatientsByLastName(@RequestParam String lastName,@RequestParam int page) {
-        List<PatientDTO>ListPatientDTO = patientService.getAllPatientsByLastName(lastName,page);
+    public ResponseEntity<?> getAllPatientsByLastName(
+            @Parameter(description = "Apellido del paciente", example = "Gonzalez") @RequestParam String lastName,
+            @Parameter(description = "Número de página", example = "0") @RequestParam int page) {
+        List<PatientDTO> ListPatientDTO = patientService.getAllPatientsByLastName(lastName, page);
         return ResponseEntity.ok().body(
                 SuccessMessage.<List<PatientDTO>>builder()
                         .status(HttpStatus.OK.value())
-                        .message("Lista de los pacientes de pagina: "+page)
+                        .message("Lista de los pacientes de página: " + page)
                         .data(ListPatientDTO)
+                        .build()
         );
     }
-
 }
+

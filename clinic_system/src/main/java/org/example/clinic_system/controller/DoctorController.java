@@ -95,9 +95,11 @@ public class DoctorController {
     }
 
     @Operation(summary = "Obtener todos los doctores",
-            description = "Devuelve una lista de todos los doctores registrados.")
-    @ApiResponse(responseCode = "200", description = "Lista de doctores obtenida",
-            content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+            description = "Devuelve una lista paginada de todos los doctores registrados. El parámetro 'page' indica la página deseada.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de doctores obtenida",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    })
     @GetMapping("/list")
     public ResponseEntity<?> getAllDoctors(@RequestParam int page) {
         List<DoctorDTO> doctors = doctorService.getAllDoctors(page);
@@ -108,10 +110,12 @@ public class DoctorController {
                 .build());
     }
 
-    @Operation(summary = "Obtener todos los doctores por especialidad",
-            description = "Devuelve una lista de doctores filtrada por especialidad.")
-    @ApiResponse(responseCode = "200", description = "Lista de doctores obtenida",
-            content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    @Operation(summary = "Obtener doctores por especialidad",
+            description = "Devuelve una lista paginada de doctores filtrada por especialidad. El parámetro 'page' indica la página deseada.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de doctores obtenida",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    })
     @GetMapping("/list/{specialistId}")
     public ResponseEntity<?> getAllDoctorsBySpecialty(@PathVariable UUID specialistId, @RequestParam int page) {
         List<DoctorDTO> doctors = doctorService.getAllDoctorsBySpecialist(specialistId, page);
@@ -134,11 +138,11 @@ public class DoctorController {
     public ResponseEntity<?> updateDoctor(
             @PathVariable("doctorId") UUID doctorId,
             @RequestBody DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException {
-        DoctorResponseWithIDSpecialtyDTO updatedDoctor = doctorService.updateDoctor(doctorId, doctorResponseDTO);
-        return ResponseEntity.ok(SuccessMessage.<DoctorResponseWithIDSpecialtyDTO>builder()
+        doctorService.updateDoctor(doctorId, doctorResponseDTO);
+        return ResponseEntity.ok(SuccessMessage.<String>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor actualizado con éxito.")
-                .data(updatedDoctor)
+                .data("Actualiza la lista")
                 .build());
     }
 

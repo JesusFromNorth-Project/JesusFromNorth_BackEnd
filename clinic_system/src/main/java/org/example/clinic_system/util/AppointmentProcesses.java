@@ -8,10 +8,12 @@ import org.example.clinic_system.model.Appointment;
 import org.example.clinic_system.model.Doctor;
 import org.example.clinic_system.model.Patient;
 
+import java.time.LocalDateTime;
+
 public class AppointmentProcesses {
     public static Appointment CreateAppointment(AppointmentResponseDTO appointmentDTO, Doctor doctor, Patient patient, Admin admin) {
         return Appointment.builder()
-                .date_appointment(appointmentDTO.getDate_appointment())
+                .date_appointment(LocalDateTime.now())
                 .date_attention(appointmentDTO.getDate_appointment())
                 .description(appointmentDTO.getDescription())
                 .admin(admin)
