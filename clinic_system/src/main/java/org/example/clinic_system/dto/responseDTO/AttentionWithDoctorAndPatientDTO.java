@@ -14,9 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Builder
-public class AttentionResponseDTO {
+public class AttentionWithDoctorAndPatientDTO {
     private String diagnosis;
     private String treatment;
     private AttentionType attentionType;
+    private DoctorDTO doctorDTO;
+    private PatientDTO patientDTO;
     private LocalDateTime date_attention;
 }

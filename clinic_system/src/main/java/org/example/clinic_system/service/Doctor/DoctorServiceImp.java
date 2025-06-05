@@ -1,7 +1,7 @@
 package org.example.clinic_system.service.Doctor;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
+
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.dto.responseDTO.DoctorResponseDTO;
 import org.example.clinic_system.dto.responseDTO.DoctorResponseWithIDSpecialtyDTO;
@@ -19,6 +19,8 @@ import org.example.clinic_system.service.Admin.AdminService;
 import org.example.clinic_system.service.Specialty.SpecialtyService;
 import org.example.clinic_system.util.DoctorProcesses;
 import org.example.clinic_system.util.Tuple;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +36,19 @@ public class DoctorServiceImp implements DoctorService {
     private final SpecialtyService specialtyService;
     private final AdminService adminService;
 
+    @Value("${page-size}")
+    private int size;
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    //Este crear al doctor con su usuario pero necesita que le ingrese el username y el password para crear : retorna (entidad,uuid)
+    //Este crear al doctor con su usuario, pero necesita que le ingrese el username y el password para crear: retorna (entidad, uuid)
     @Override
-    public Tuple SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+    public Tuple<DoctorResponseDTO, UUID> SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+
+        if(userRepository.existsByUsername(registerDoctorDTO.getUsername())){
+            throw new IllegalArgumentException("El usename ya esta registrado");
+        }
 
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
 
@@ -63,9 +72,13 @@ public class DoctorServiceImp implements DoctorService {
 
     }
 
-    //Este crear al doctor con su usuario pero necesitas solo el password para crear ya que su usename es su dni : retorna (entidad,uuid)
+    //Este crear al doctor con su usuario, pero necesitas solo el password para crear, ya que su username es su dni: retorna (entidad, uuid)
     @Override
-    public Tuple SaveDoctor(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+    public Tuple<DoctorResponseDTO, UUID> SaveDoctorWithoutUsername(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+
+        if(userRepository.existsByUsername(registerDoctorNoUsernameDTO.getDni())){
+            throw new IllegalArgumentException("El usename ya esta registrado");
+        }
 
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
         Admin admin = adminService.findById(id_admin);
@@ -87,22 +100,40 @@ public class DoctorServiceImp implements DoctorService {
 
     //Me trae todos los doctores
     @Override
-    public List<DoctorDTO> getAllDoctors() {
+    public List<DoctorDTO> getAllDoctors(int page) {
         return DoctorProcesses
-                .CreateDoctorResponseDTO(doctorRepository.findAll());
+                .CreateDoctorResponseDTO(
+                        doctorRepository.findAll(
+                                PageRequest.of(page,size)
+                        ).getContent()
+                );
+    }
+
+    @Override
+    public List<DoctorDTO> getAllDoctorsBySpecialist(UUID id_specialist, int page) {
+        return DoctorProcesses.CreateDoctorResponseDTO(
+                doctorRepository.findAllBySpecialty(
+                        id_specialist,
+                        PageRequest.of(page, size)
+                ).getContent()
+        );
     }
 
     //Este es para actualizar el doctor incluso su tipo de especialidad
     @Override
-    public DoctorResponseWithIDSpecialtyDTO updateDoctor(UUID id_doctor, DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException {
+    public void updateDoctor(UUID id_doctor, DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException {
         Doctor doc = doctorRepository.findById(id_doctor)
                 .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
-
         Specialty specialty = specialtyService.getSpecialtyById(doctorResponseDTO.getId_specialty());
+        doctorRepository.save(DoctorProcesses.UpdateDoctor(doc,doctorResponseDTO,specialty));
+    }
 
-        doc = doctorRepository.save(DoctorProcesses.UpdateDoctor(doc,doctorResponseDTO,specialty));
-
-        return DoctorProcesses.CreateDoctorEntityWithIDSpecialty(doc);
+    @Override
+    public void deleteDoctor(UUID id_doctor) throws NotFoundException {
+        Doctor doc = doctorRepository.findById(id_doctor)
+                .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
+        doc.setIs_deleted(true);
+        doctorRepository.save(doc);
     }
 
     @Override
@@ -121,17 +152,16 @@ public class DoctorServiceImp implements DoctorService {
     }
 
     @Override
+    public DoctorDTO getDoctorByDni(String dni) throws NotFoundException {
+        Doctor doctor = doctorRepository.findByDni(dni)
+                .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
+        return DoctorProcesses.CreateDoctorDTO(doctor);
+    }
+
+    @Override
     public Doctor getDoctorByIdUser(UUID id_user) throws NotFoundException {
         return doctorRepository.findByUser(id_user)
                 .orElseThrow( () -> new NotFoundException("No se encontro al doctor"));
     }
-
-    //para obtener por nombres
-//    @Override
-//    public List<DoctorDTO> getDoctorByName(String name) {
-//        List<Doctor> doctors = doctorRepository.findByNameContainingIgnoreCase(name);
-//        return DoctorProcesses.CreateDoctorResponseDTO(doctors);
-//    }
-
 
 }

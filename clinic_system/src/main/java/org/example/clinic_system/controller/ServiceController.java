@@ -5,7 +5,7 @@ import org.example.clinic_system.dto.entityDTO.ServiceDTO;
 import org.example.clinic_system.dto.responseDTO.ServiceResponseDTO;
 import org.example.clinic_system.dto.responseDTO.SuccessMessage;
 import org.example.clinic_system.handler.NotFoundException;
-import org.example.clinic_system.service.Service.ServiceService;
+import org.example.clinic_system.service.ServiceSpecialty.ServiceService;
 import org.example.clinic_system.util.Tuple;
 import org.example.clinic_system.util.UriGeneric;
 import org.springframework.http.HttpStatus;
@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -52,6 +53,25 @@ public class ServiceController {
 
         URI location = UriGeneric.CreateUri("/{serviceId}", response.getSecond());
         return ResponseEntity.created(location).body(successMessage);
+    }
+
+    @Operation(summary = "Obtener servicios por especialidad",
+            description = "Devuelve una lista de servicios de una especialidad específica.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de servicios obtenida",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Especialidad no encontrada",
+                    content = @Content)
+    })
+    @GetMapping("/list/bySpeciality/{id_specialty}")
+    public ResponseEntity<?> getListServices(@PathVariable UUID id_specialty) {
+        List<ServiceDTO> list = serviceService.getAllServicesBySpecialty(id_specialty);
+        SuccessMessage<?> successMessage = SuccessMessage.builder()
+                .status(HttpStatus.OK.value())
+                .message("Lista de servicio por la especialidad")
+                .data(list)
+                .build();
+        return ResponseEntity.ok(successMessage);
     }
 
     @Operation(summary = "Obtener servicio por ID",

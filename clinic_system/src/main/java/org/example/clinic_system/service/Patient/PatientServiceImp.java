@@ -10,6 +10,8 @@ import org.example.clinic_system.repository.PatientRepository;
 import org.example.clinic_system.service.Admin.AdminService;
 import org.example.clinic_system.util.PatientProcesses;
 import org.example.clinic_system.util.Tuple;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,9 @@ public class PatientServiceImp implements PatientService{
 
     private final PatientRepository patientRepository;
     private final AdminService adminService;
+
+    @Value("${page-size}")
+    private int size;
 
     @Override
     public Tuple<PatientResponseDTO, UUID> savePatient(UUID id_admin, PatientResponseDTO patientResponseDTO) throws NotFoundException {
@@ -45,6 +50,7 @@ public class PatientServiceImp implements PatientService{
         return PatientProcesses.createPatientDTO(patient);
     }
 
+    //Sirve para otro servicio (NO USAR EN CONTROLADOR)
     @Override
     public Patient getPatientById(UUID id_patient) throws NotFoundException {
         return patientRepository.findByIdPatient(id_patient)
@@ -52,13 +58,12 @@ public class PatientServiceImp implements PatientService{
     }
 
     @Override
-    public PatientResponseDTO updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException {
+    public void updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException {
         Patient patient = PatientProcesses.updatePatient(
                 patientRepository.findByIdPatient(id_patient).orElseThrow( () -> new NotFoundException("No se encontro al paciente con el id: " + id_patient)),
                 patientResponseDTO
         );
         patientRepository.save(patient);
-        return PatientProcesses.createPatientResponseDTO(patient);
     }
 
     @Override
@@ -70,7 +75,21 @@ public class PatientServiceImp implements PatientService{
     }
 
     @Override
-    public List<PatientDTO> getAllPatients() {
-        return PatientProcesses.CreatePatientResponseDTO(patientRepository.findAllPatients());
+    public List<PatientDTO> getAllPatients(int page) {
+        return PatientProcesses.CreatePatientResponseDTO(
+                patientRepository.findAllPatients(
+                        PageRequest.of(page, size)
+                ).getContent()
+        );
+    }
+
+    @Override
+    public List<PatientDTO> getAllPatientsByLastName(String lastName,int page) {
+        return PatientProcesses.CreatePatientResponseDTO(
+                patientRepository.findAllPatientsByLastName(
+                        lastName,
+                        PageRequest.of(page, size)
+                ).getContent()
+        );
     }
 }

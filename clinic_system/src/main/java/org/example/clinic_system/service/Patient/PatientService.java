@@ -20,10 +20,11 @@ public interface PatientService {
 
     Patient getPatientById(UUID id_patient) throws NotFoundException;
 
-    PatientResponseDTO updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException;
+    void updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException;
 
     void deletePatient(UUID id_patient) throws NotFoundException;
 
-    List<PatientDTO> getAllPatients();
+    List<PatientDTO> getAllPatients(int page);
 
+    List<PatientDTO> getAllPatientsByLastName(String lastName,int page);
 }

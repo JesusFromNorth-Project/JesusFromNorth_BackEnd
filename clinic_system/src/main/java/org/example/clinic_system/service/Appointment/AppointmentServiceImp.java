@@ -16,9 +16,11 @@ import org.example.clinic_system.service.Doctor.DoctorService;
 import org.example.clinic_system.service.Patient.PatientService;
 import org.example.clinic_system.util.AppointmentProcesses;
 import org.example.clinic_system.util.Tuple;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +38,15 @@ public class AppointmentServiceImp implements AppointmentService{
     private final DoctorService doctorService;
 
     private final PatientService patientService;
+
+    @Value("${appointment-size}")
+    private int size;
+
+    @Value("${appointment-doctor-size}")
+    private int sizeDoctor;
+
+    @Value("${appointment-patient-size}")
+    private int sizePatient;
 
     @Override
     public Tuple<AppointmentResponseDTO, UUID> saveAppointment(
@@ -77,32 +88,43 @@ public class AppointmentServiceImp implements AppointmentService{
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointmentsByIdPatient(UUID id_patient) throws NotFoundException {
-        return List.of();
+    public List<AppointmentDTO> getAllAppointmentsByIdPatient(UUID id_patient,int page) throws NotFoundException {
+        return appointmentRepository.findByIdPatient(
+                id_patient,
+                PageRequest.of(page,sizePatient)
+        ).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointmentsByIdDoctor(UUID id_doctor) throws NotFoundException {
-        return List.of();
+    public List<AppointmentDTO> getAllAppointmentsByIdDoctor(UUID id_doctor,int page) throws NotFoundException {
+        return appointmentRepository.findByIdDoctor(
+                id_doctor,
+                PageRequest.of(page,sizeDoctor)
+        ).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointmentsByCmpDoctor(String cmp) throws NotFoundException {
-        return List.of();
+    public List<AppointmentDTO> getAllAppointmentsByCmpDoctor(String cmp,int page) throws NotFoundException {
+        return appointmentRepository.findByCmpDoctor(
+                cmp,
+                PageRequest.of(page,sizeDoctor)
+        ).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointmentsByDniPatient(String cmp) throws NotFoundException {
-        return List.of();
+    public List<AppointmentDTO> getAllAppointmentsByDniPatient(String dni,int page) throws NotFoundException {
+        return appointmentRepository.findByDniPatient(
+                dni,
+                PageRequest.of(page,sizePatient)
+        ).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointments() {
-        final Pageable pageable = PageRequest.of(0, 10);
-        return appointmentRepository.findAll(pageable).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
+    public List<AppointmentDTO> getAllAppointments(int page) {
+        return appointmentRepository.findAll(
+                PageRequest.of(page,size)
+        ).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
     }
-    
-    // return paginacion(appointmentRepository,CreateAppointment,10);
 
     @Override
     public void deleteAppointment(UUID id_appointment) throws NotFoundException {

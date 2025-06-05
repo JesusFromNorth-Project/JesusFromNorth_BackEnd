@@ -1,5 +1,6 @@
 package org.example.clinic_system.util;
 
+import org.example.clinic_system.dto.entityDTO.ServiceDTO;
 import org.example.clinic_system.dto.entityDTO.SpecialtyDTO;
 import org.example.clinic_system.dto.responseDTO.ServiceResponseDTO;
 import org.example.clinic_system.dto.responseDTO.SpecialtyResponseDTO;
@@ -36,7 +37,7 @@ public class SpecialtyProcesses {
                 .toList();
     }
 
-    public static SpecialtyWithServicesDTO TransformSpecialtyWithServiceDTO(Specialty specialty, List<ServiceResponseDTO>serviceResponseDTOS) {
+    public static SpecialtyWithServicesDTO TransformSpecialtyWithServiceDTO(Specialty specialty, List<ServiceDTO>serviceResponseDTOS) {
         return SpecialtyWithServicesDTO.builder()
                 .id_specialty(specialty.getId_specialty())
                 .name_specialty(specialty.getSpecialty_name())

@@ -68,9 +68,8 @@ public class DoctorController {
             @RequestBody RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO,
             @PathVariable("adminId") UUID adminId,
             @PathVariable("specialistId") UUID specialistId) throws NotFoundException {
-
-        Tuple<String, String> response = doctorService.SaveDoctor(registerDoctorNoUsernameDTO, adminId, specialistId);
-        return ResponseEntity.ok(SuccessMessage.<Tuple<String, String>>builder()
+        Tuple<DoctorResponseDTO, UUID> response = doctorService.SaveDoctorWithoutUsername(registerDoctorNoUsernameDTO, adminId, specialistId);
+        return ResponseEntity.ok(SuccessMessage.<Tuple<DoctorResponseDTO, UUID>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor creado con DNI como nombre de usuario.")
                 .data(response)
@@ -99,9 +98,23 @@ public class DoctorController {
             description = "Devuelve una lista de todos los doctores registrados.")
     @ApiResponse(responseCode = "200", description = "Lista de doctores obtenida",
             content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
-    @GetMapping("list")
-    public ResponseEntity<?> getAllDoctors() {
-        List<DoctorDTO> doctors = doctorService.getAllDoctors();
+    @GetMapping("/list")
+    public ResponseEntity<?> getAllDoctors(@RequestParam int page) {
+        List<DoctorDTO> doctors = doctorService.getAllDoctors(page);
+        return ResponseEntity.ok(SuccessMessage.<List<DoctorDTO>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Lista de todos los doctores obtenida con éxito.")
+                .data(doctors)
+                .build());
+    }
+
+    @Operation(summary = "Obtener todos los doctores por especialidad",
+            description = "Devuelve una lista de doctores filtrada por especialidad.")
+    @ApiResponse(responseCode = "200", description = "Lista de doctores obtenida",
+            content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    @GetMapping("/list/{specialistId}")
+    public ResponseEntity<?> getAllDoctorsBySpecialty(@PathVariable UUID specialistId, @RequestParam int page) {
+        List<DoctorDTO> doctors = doctorService.getAllDoctorsBySpecialist(specialistId, page);
         return ResponseEntity.ok(SuccessMessage.<List<DoctorDTO>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Lista de todos los doctores obtenida con éxito.")
@@ -117,16 +130,33 @@ public class DoctorController {
             @ApiResponse(responseCode = "404", description = "Doctor no encontrado",
                     content = @Content)
     })
-    @PutMapping("/{doctorId}")
+    @PatchMapping("/{doctorId}")
     public ResponseEntity<?> updateDoctor(
             @PathVariable("doctorId") UUID doctorId,
             @RequestBody DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException {
-
         DoctorResponseWithIDSpecialtyDTO updatedDoctor = doctorService.updateDoctor(doctorId, doctorResponseDTO);
         return ResponseEntity.ok(SuccessMessage.<DoctorResponseWithIDSpecialtyDTO>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor actualizado con éxito.")
                 .data(updatedDoctor)
+                .build());
+    }
+
+    @Operation(summary = "Eliminar doctor",
+            description = "Elimina un doctor del sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Doctor eliminado con éxito",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Doctor no encontrado",
+                    content = @Content)
+    })
+    @DeleteMapping("/{doctorId}")
+    public ResponseEntity<?> deleteDoctor(@PathVariable("doctorId") UUID doctorId) throws NotFoundException {
+        doctorService.deleteDoctor(doctorId);
+        return ResponseEntity.ok(SuccessMessage.<String>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor eliminado con éxito.")
+                .data("Se borro adecuadamente el doctor")
                 .build());
     }
 
@@ -138,12 +168,30 @@ public class DoctorController {
             @ApiResponse(responseCode = "404", description = "Doctor no encontrado por CMP",
                     content = @Content)
     })
-    @GetMapping("/cmp/{cmp}")
-    public ResponseEntity<?> getDoctorByCmp(@PathVariable("cmp") String cmp) throws NotFoundException {
+    @GetMapping("/getCMP")
+    public ResponseEntity<?> getDoctorByCmp(@RequestParam String cmp) throws NotFoundException {
         DoctorDTO doctor = doctorService.getDoctorByCmp(cmp);
         return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor obtenido con éxito por CMP.")
+                .data(doctor)
+                .build());
+    }
+
+    @Operation(summary = "Buscar doctor por DNI",
+            description = "Devuelve los datos de un doctor usando su DNI.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Doctor encontrado",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Doctor no encontrado por DNI",
+                    content = @Content)
+    })
+    @GetMapping("/getDNI")
+    public ResponseEntity<?> getDoctorByDni(@RequestParam String dni) throws NotFoundException {
+        DoctorDTO doctor = doctorService.getDoctorByDni(dni);
+        return ResponseEntity.ok(SuccessMessage.<DoctorDTO>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor obtenido con éxito por DNI.")
                 .data(doctor)
                 .build());
     }
