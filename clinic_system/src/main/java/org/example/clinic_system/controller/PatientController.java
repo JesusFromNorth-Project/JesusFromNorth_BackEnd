@@ -14,12 +14,16 @@ import org.example.clinic_system.dto.responseDTO.SuccessMessage;
 import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.model.Patient;
 import org.example.clinic_system.service.Patient.PatientService;
+import org.example.clinic_system.util.ExcelExporter;
 import org.example.clinic_system.util.Tuple;
 import org.example.clinic_system.util.UriGeneric;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -156,5 +160,25 @@ public class PatientController {
                         .build()
         );
     }
+
+    @GetMapping("/export/excel")
+    public ResponseEntity<byte[]> exportPatientsToExcel() {
+        try {
+            List<PatientDTO> patients = patientService.getAllPatients(0); // Puedes paginar según necesidad
+            ByteArrayInputStream stream = ExcelExporter.patientsToExcel(patients);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment; filename=pacientes.xlsx");
+
+            return ResponseEntity
+                    .ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .body(stream.readAllBytes());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 }
 
