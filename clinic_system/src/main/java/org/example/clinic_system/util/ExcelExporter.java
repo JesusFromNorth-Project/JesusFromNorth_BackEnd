@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ExcelExporter {
 
-    public static ByteArrayInputStream patientToExcel(List<PatientDTO> patients) throws IOException {
+    public static ByteArrayInputStream patientsToExcel(List<PatientDTO> patients) throws IOException {
         String[] columns = { "ID", "Nombre", "Apellido", "DNI", "Email", "Teléfono" };
 
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
