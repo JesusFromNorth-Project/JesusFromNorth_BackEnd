@@ -3,16 +3,21 @@ package org.example.clinic_system.controller;
 import lombok.RequiredArgsConstructor;
 
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
+import org.example.clinic_system.dto.entityDTO.PatientDTO;
 import org.example.clinic_system.dto.responseDTO.*;
 import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.service.Doctor.DoctorService;
 
+import org.example.clinic_system.util.ExcelExporter;
 import org.example.clinic_system.util.Tuple;
 import org.example.clinic_system.util.UriGeneric;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -133,6 +138,25 @@ public class DoctorController {
                 .message("Doctor obtenido con éxito por CMP.")
                 .data(doctor)
                 .build());
+    }
+
+    @GetMapping("/export/excel")
+    public ResponseEntity<byte[]> exportDoctorsToExcel() {
+        try {
+            List<DoctorDTO> doctors = doctorService.getAllDoctors(0); // Puedes paginar según necesidad
+            ByteArrayInputStream stream = ExcelExporter.doctorsToExcel(doctors);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment; filename=doctores.xlsx");
+
+            return ResponseEntity
+                    .ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .body(stream.readAllBytes());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.dto.entityDTO.PatientDTO;
 import org.example.clinic_system.model.Patient;
 
@@ -36,7 +37,7 @@ public class ExcelExporter {
 
             // Crear estilo para la cabecera
             CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
             headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
             // Estilo de fuente para la cabecera
@@ -87,4 +88,70 @@ public class ExcelExporter {
             return new ByteArrayInputStream(out.toByteArray());
         }
     }
+
+    public static ByteArrayInputStream doctorsToExcel(List<DoctorDTO> doctors) throws IOException {
+        String[] columns = {
+                "ID",
+                "Nombre",
+                "Apellido",
+                "Email",
+                "Dirección",
+                "Teléfono",
+                "Teléfono fijo",
+                "DNI",
+        };
+
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            Sheet sheet = workbook.createSheet("Doctores");
+
+            // Crear estilo para la cabecera
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            // Estilo de fuente para la cabecera
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+
+            // Alinear texto al centro
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+            // Crear fila de cabecera
+            Row headerRow = sheet.createRow(0);
+            for (int col = 0; col < columns.length; col++) {
+                Cell cell = headerRow.createCell(col);
+                cell.setCellValue(columns[col]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            //Datos
+            int rowIdx = 1;
+            for (DoctorDTO doctor : doctors) {
+                Row row = sheet.createRow(rowIdx);
+
+                row.createCell(0).setCellValue(rowIdx);
+                row.createCell(1).setCellValue(doctor.getFirst_name());
+                row.createCell(2).setCellValue(doctor.getLast_name());
+                row.createCell(3).setCellValue(doctor.getEmail());
+                row.createCell(4).setCellValue(doctor.getAddress());
+                row.createCell(5).setCellValue(doctor.getPhone());
+                row.createCell(6).setCellValue(doctor.getLandline_phone());
+                row.createCell(7).setCellValue(doctor.getDni());
+
+                rowIdx++;
+            }
+
+            // autoajustar columnas
+            for (int i = 0; i < columns.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+        }
+    }
+
 }
