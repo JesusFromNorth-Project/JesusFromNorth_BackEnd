@@ -37,7 +37,7 @@ public class ExcelExporter {
 
             // Crear estilo para la cabecera
             CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+            headerStyle.setFillForegroundColor(IndexedColors.DARK_GREEN.getIndex());
             headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
             // Estilo de fuente para la cabecera
