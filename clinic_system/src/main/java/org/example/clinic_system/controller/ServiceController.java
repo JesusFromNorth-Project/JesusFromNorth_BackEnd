@@ -40,8 +40,14 @@ public class ServiceController {
     }
 
     @GetMapping("/list/bySpeciality/{id_specialty}")
-    public ResponseEntity<?> getListServices(UUID id_specialty) {
-        return null;
+    public ResponseEntity<?> getListServices(@PathVariable UUID id_specialty) {
+        List<ServiceDTO> list= serviceService.getAllServicesBySpecialty(id_specialty);
+        SuccessMessage<?> successMessage = SuccessMessage.builder()
+                .status(HttpStatus.OK.value())
+                .message("Lista de servicio por la especiliadad")
+                .data(list)
+                .build();
+        return ResponseEntity.ok(successMessage);
     }
 
 

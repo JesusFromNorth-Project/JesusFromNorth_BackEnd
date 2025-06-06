@@ -6,8 +6,10 @@ import org.example.clinic_system.jwt.JwtEntryPoint;
 import org.example.clinic_system.service.User.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -36,7 +38,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/doctor/**","/service/**","/specialty/**").hasRole("ADMIN")
+                        .requestMatchers("/doctor/**", "/service/**", "/specialty/**").hasRole("ADMIN")
                         .requestMatchers("/attention/**").hasRole("DOCTOR")
                         .anyRequest().authenticated()
                 )
@@ -57,6 +59,7 @@ public class SecurityConfig {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
+
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

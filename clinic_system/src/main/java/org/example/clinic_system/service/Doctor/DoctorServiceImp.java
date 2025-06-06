@@ -46,6 +46,10 @@ public class DoctorServiceImp implements DoctorService {
     @Override
     public Tuple<DoctorResponseDTO, UUID> SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
 
+        if(userRepository.existsByUsername(registerDoctorDTO.getUsername())){
+            throw new IllegalArgumentException("El usename ya esta registrado");
+        }
+
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
 
         Admin admin = adminService.findById(id_admin);
@@ -71,6 +75,10 @@ public class DoctorServiceImp implements DoctorService {
     //Este crear al doctor con su usuario, pero necesitas solo el password para crear, ya que su username es su dni: retorna (entidad, uuid)
     @Override
     public Tuple<DoctorResponseDTO, UUID> SaveDoctorWithoutUsername(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+
+        if(userRepository.existsByUsername(registerDoctorNoUsernameDTO.getDni())){
+            throw new IllegalArgumentException("El usename ya esta registrado");
+        }
 
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
         Admin admin = adminService.findById(id_admin);
