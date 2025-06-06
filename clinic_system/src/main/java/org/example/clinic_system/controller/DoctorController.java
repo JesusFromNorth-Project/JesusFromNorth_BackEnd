@@ -205,6 +205,10 @@ public class DoctorController {
                 .build());
     }
 
+    @Operation(summary = "Exportar doctores en excel",
+            description = "Obtiene una archivo excel de doctores.")
+    @ApiResponse(responseCode = "200", description = "Excel exportado con éxito",
+            content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
     @GetMapping("/export/excel")
     public ResponseEntity<byte[]> exportDoctorsToExcel() {
         try {
