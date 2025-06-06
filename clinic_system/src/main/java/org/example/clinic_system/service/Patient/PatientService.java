@@ -27,4 +27,6 @@ public interface PatientService {
     List<PatientDTO> getAllPatients(int page);
 
     List<PatientDTO> getAllPatientsByLastName(String lastName,int page);
+
+
 }
