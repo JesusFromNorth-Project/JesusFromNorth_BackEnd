@@ -1,6 +1,9 @@
 package org.example.clinic_system.util;
 
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.clinic_system.dto.entityDTO.PatientDTO;
 import org.example.clinic_system.model.Patient;
@@ -57,9 +60,9 @@ public class ExcelExporter {
             // Datos
             int rowIdx = 1;
             for (PatientDTO patient : patients) {
-                Row row = sheet.createRow(rowIdx++);
+                Row row = sheet.createRow(rowIdx);
 
-                row.createCell(0).setCellValue(patient.getId_patient().toString());
+                row.createCell(0).setCellValue(rowIdx);
                 row.createCell(1).setCellValue(patient.getFirst_name());
                 row.createCell(2).setCellValue(patient.getLast_name());
                 row.createCell(3).setCellValue(patient.getEmail());
@@ -67,13 +70,15 @@ public class ExcelExporter {
                 row.createCell(5).setCellValue(patient.getPhone());
                 row.createCell(6).setCellValue(patient.getLandline_phone());
                 row.createCell(7).setCellValue(patient.getDni());
-                row.createCell(8).setCellValue(patient.getBirthdate().toString());
-                row.createCell(9).setCellValue(patient.getGender().toString());
-                row.createCell(10).setCellValue(patient.getAge());
-                row.createCell(11).setCellValue(patient.getAntecedent());
+                row.createCell(8).setCellValue(patient.getBirthdate() != null ? patient.getBirthdate().toString() : "");
+                row.createCell(9).setCellValue(patient.getGender() != null ? patient.getGender().toString() : "");
+                row.createCell(10).setCellValue(patient.getAge() != null ? patient.getAge() : 0);
+                row.createCell(11).setCellValue(patient.getAntecedent() != null ? patient.getAntecedent() : "");
+
+                rowIdx++;
             }
 
-            // Ajustar columnas
+            // autoajustar columnas
             for (int i = 0; i < columns.length; i++) {
                 sheet.autoSizeColumn(i);
             }
