@@ -161,6 +161,10 @@ public class PatientController {
         );
     }
 
+    @Operation(summary = "Exportar pacientes en excel",
+            description = "Obtiene una archivo excel de pacientes.")
+    @ApiResponse(responseCode = "200", description = "Excel exportado con éxito",
+            content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
     @GetMapping("/export/excel")
     public ResponseEntity<byte[]> exportPatientsToExcel() {
         try {
