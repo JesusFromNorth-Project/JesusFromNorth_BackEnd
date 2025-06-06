@@ -57,6 +57,7 @@ public class PatientProcesses {
                 .first_name(patient.getFirst_name())
                 .last_name(patient.getLast_name())
                 .email(patient.getEmail())
+                .gender(patient.getGender())
                 .address(patient.getAddress())
                 .antecedent(patient.getAntecedent())
                 .phone(patient.getPhone())
