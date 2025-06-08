@@ -1,9 +1,11 @@
 package org.example.clinic_system.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.clinic_system.dto.entityDTO.DoctorDTO;
 import org.example.clinic_system.dto.responseDTO.*;
 import org.example.clinic_system.handler.NotFoundException;
+import org.example.clinic_system.jwt.JwtUtils;
 import org.example.clinic_system.service.Doctor.DoctorService;
 import org.example.clinic_system.util.Tuple;
 import org.example.clinic_system.util.UriGeneric;
@@ -21,6 +23,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "doctor")
 @RequiredArgsConstructor
@@ -28,53 +31,89 @@ import java.util.UUID;
 public class DoctorController {
 
     private final DoctorService doctorService;
+    private final JwtUtils jwtUtils;
 
     @Operation(summary = "Crear doctor con usuario y contraseña personalizados",
-            description = "Crea un doctor asignando un administrador y una especialidad, con username y contraseña definidos por el usuario.")
+            description = "Crea un doctor asignando un administrador (extraído del token) y una especialidad, con username y contraseña definidos por el usuario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Doctor creado exitosamente",
                     content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
-            @ApiResponse(responseCode = "404", description = "Administrador o especialidad no encontrada",
+            @ApiResponse(responseCode = "403", description = "No autorizado",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Especialidad no encontrada",
                     content = @Content)
     })
-    @PostMapping("/save/assignAdmin/{adminId}/assignSpecialty/{specialistId}")
+    @PostMapping("/save/assignSpecialty/{specialistId}")
     public ResponseEntity<?> saveDoctorWithUsername(
             @RequestBody RegisterDoctorDTO registerDoctorDTO,
-            @PathVariable("adminId") UUID adminId,
+            @RequestHeader("Authorization") String authorizationHeader,
             @PathVariable("specialistId") UUID specialistId) throws NotFoundException {
+        
+        try {
+            // Extraer el token del header
+            String token = authorizationHeader.replace("Bearer ", "");
+            // Obtener el username del token
+            String username = jwtUtils.extractUsername(token);
+            
+            log.info("Creando doctor con username: {}", username);
+            log.info("Datos del doctor: {}", registerDoctorDTO);
+            
+            // Llamar al servicio con el username del admin
+            Tuple<DoctorResponseDTO, UUID> response = doctorService.SaveDoctorWithUsername(
+                    registerDoctorDTO, username, specialistId);
 
-        Tuple<DoctorResponseDTO, UUID> response = doctorService.SaveDoctorWithUsername(registerDoctorDTO, adminId, specialistId);
+            SuccessMessage<DoctorResponseDTO> successMessage = SuccessMessage.<DoctorResponseDTO>builder()
+                    .status(HttpStatus.CREATED.value())
+                    .message("Se agregó el doctor exitosamente")
+                    .data(response.getFirst())
+                    .build();
 
-        SuccessMessage<DoctorResponseDTO> successMessage = SuccessMessage.<DoctorResponseDTO>builder()
-                .status(HttpStatus.OK.value())
-                .message("Se agregó el doctor")
-                .data(response.getFirst())
-                .build();
-
-        URI location = UriGeneric.CreateUri("/{doctorId}", response.getSecond());
-        return ResponseEntity.created(location).body(successMessage);
+            URI location = UriGeneric.CreateUri("/{doctorId}", response.getSecond());
+            return ResponseEntity.created(location).body(successMessage);
+            
+        } catch (Exception e) {
+            log.error("Error al crear doctor", e);
+            throw e;
+        }
     }
 
     @Operation(summary = "Crear doctor con DNI como usuario",
-            description = "Crea un doctor asignando un administrador y una especialidad. El DNI será usado como username y password.")
+            description = "Crea un doctor asignando un administrador (extraído del token) y una especialidad. El DNI será usado como username y password.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Doctor creado correctamente",
                     content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
-            @ApiResponse(responseCode = "404", description = "Administrador o especialidad no encontrada",
+            @ApiResponse(responseCode = "403", description = "No autorizado",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Especialidad no encontrada",
                     content = @Content)
     })
-    @PostMapping("/{adminId}/{specialistId}")
+    @PostMapping("/save/assignSpecialtyNoUsername/{specialistId}")
     public ResponseEntity<?> saveDoctor(
             @RequestBody RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO,
-            @PathVariable("adminId") UUID adminId,
+            @RequestHeader("Authorization") String authorizationHeader,
             @PathVariable("specialistId") UUID specialistId) throws NotFoundException {
-
-        Tuple<String, String> response = doctorService.SaveDoctor(registerDoctorNoUsernameDTO, adminId, specialistId);
-        return ResponseEntity.ok(SuccessMessage.<Tuple<String, String>>builder()
-                .status(HttpStatus.OK.value())
-                .message("Doctor creado con DNI como nombre de usuario.")
-                .data(response)
-                .build());
+        
+        try {
+            // Extraer el token del header
+            String token = authorizationHeader.replace("Bearer ", "");
+            // Obtener el username del token
+            String username = jwtUtils.extractUsername(token);
+            
+            log.info("Creando doctor con DNI como usuario. Admin: {}", username);
+            
+            Tuple<DoctorResponseDTO, UUID> response = doctorService.SaveDoctorWithoutUsername(
+                    registerDoctorNoUsernameDTO, username, specialistId);
+                    
+            return ResponseEntity.ok(SuccessMessage.<DoctorResponseDTO>builder()
+                    .status(HttpStatus.OK.value())
+                    .message("Doctor creado con DNI como nombre de usuario.")
+                    .data(response.getFirst())
+                    .build());
+                    
+        } catch (Exception e) {
+            log.error("Error al crear doctor con DNI como usuario", e);
+            throw e;
+        }
     }
 
     @Operation(summary = "Obtener doctor por ID",

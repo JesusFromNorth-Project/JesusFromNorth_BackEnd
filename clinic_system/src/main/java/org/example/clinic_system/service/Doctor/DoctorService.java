@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DoctorService {
-    Tuple SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException;
-    Tuple SaveDoctor(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO,UUID id_admin,UUID id_specialist) throws NotFoundException;
-
-    DoctorDTO getDoctorById(UUID id_doctor) throws NotFoundException;
-    List<DoctorDTO> getAllDoctors();
-    DoctorResponseWithIDSpecialtyDTO updateDoctor(UUID id_doctor, DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException;
-
-    //NEW METHODS
+    Tuple <DoctorResponseDTO, UUID> SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, String adminUsername, UUID id_specialist) throws NotFoundException;
+    Tuple <DoctorResponseDTO, UUID> SaveDoctorWithoutUsername(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, String adminUsername, UUID id_specialist) throws NotFoundException;
+    DoctorDTO getDoctorDTOById(UUID id_doctor) throws NotFoundException;
+    List<DoctorDTO> getAllDoctors(int page);
+    List<DoctorDTO> getAllDoctorsBySpecialist(UUID id_specialist,int page);
+    void updateDoctor(UUID id_doctor, DoctorResponseWithIDSpecialtyDTO doctorResponseDTO) throws NotFoundException;
+    void deleteDoctor(UUID id_doctor) throws NotFoundException;
+    Doctor getDoctorById (UUID id_doctor) throws NotFoundException;
     DoctorDTO getDoctorByCmp(String cmp) throws NotFoundException;
 //    DoctorDTO getDoctorByName(String name) throws NotFoundException;
     Doctor getDoctorByIdUser(UUID id_user) throws NotFoundException;

@@ -39,11 +39,17 @@ public class DoctorServiceImp implements DoctorService {
 
     //Este crear al doctor con su usuario pero necesita que le ingrese el username y el password para crear : retorna (entidad,uuid)
     @Override
-    public Tuple SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
+    public Tuple<DoctorResponseDTO, UUID> SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, String adminUsername, UUID id_specialist) throws NotFoundException {
+
+        if(userRepository.existsByUsername(registerDoctorDTO.getUsername())){
+            throw new IllegalArgumentException("El username ya está registrado");
+        }
 
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
-
-        Admin admin = adminService.findById(id_admin);
+        
+        // Obtener el admin por su nombre de usuario
+        Admin admin = adminService.findByUsername(adminUsername)
+                .orElseThrow(() -> new NotFoundException("Administrador no encontrado con el usuario: " + adminUsername));
 
         User user = User.builder()
                 .username(registerDoctorDTO.getUsername())
@@ -53,26 +59,34 @@ public class DoctorServiceImp implements DoctorService {
 
         user = userRepository.save(user);
 
-        Doctor doctorResponseDTO = doctorRepository.save(DoctorProcesses.CreateDoctorWithUsername(registerDoctorDTO,specialty,admin,user));
+        Doctor doctorResponseDTO = doctorRepository.save(DoctorProcesses.CreateDoctorWithUsername(registerDoctorDTO, specialty, admin, user));
 
-        return Tuple.
-                <DoctorResponseDTO,UUID>builder()
+        return Tuple.<DoctorResponseDTO, UUID>builder()
                 .first(DoctorProcesses.CreateDoctorEntity(doctorResponseDTO))
                 .second(doctorResponseDTO.getId_doctor())
                 .build();
-
     }
 
     //Este crear al doctor con su usuario pero necesitas solo el password para crear ya que su usename es su dni : retorna (entidad,uuid)
     @Override
-    public Tuple SaveDoctor(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, UUID id_admin, UUID id_specialist) throws NotFoundException {
-
+    public Tuple<DoctorResponseDTO, UUID> SaveDoctorWithoutUsername(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, String adminUsername, UUID id_specialist) throws NotFoundException {
+        if(userRepository.existsByUsername(registerDoctorNoUsernameDTO.getDni())){
+            throw new IllegalArgumentException("El username ya está registrado");
+        }
         Specialty specialty = specialtyService.getSpecialtyById(id_specialist);
-        Admin admin = adminService.findById(id_admin);
-        Doctor doctorResponseDTO = doctorRepository.save(DoctorProcesses.CreateDoctorNoUsername(registerDoctorNoUsernameDTO,specialty,admin));
-
-        return Tuple.
-                <DoctorResponseDTO,UUID>builder()
+        
+        // Obtener el admin por su nombre de usuario
+        Admin admin = adminService.findByUsername(adminUsername)
+                .orElseThrow(() -> new NotFoundException("Administrador no encontrado con el usuario: " + adminUsername));
+                
+        User user = User.builder()
+                .username(registerDoctorNoUsernameDTO.getDni())
+                .password(passwordEncoder.encode(registerDoctorNoUsernameDTO.getPassword()))
+                .role(Rol.DOCTOR)
+                .build();
+        user = userRepository.save(user);
+        Doctor doctorResponseDTO = doctorRepository.save(DoctorProcesses.CreateDoctorNoUsername(registerDoctorNoUsernameDTO, specialty, admin, user));
+        return Tuple.<DoctorResponseDTO, UUID>builder()
                 .first(DoctorProcesses.CreateDoctorEntity(doctorResponseDTO))
                 .second(doctorResponseDTO.getId_doctor())
                 .build();
