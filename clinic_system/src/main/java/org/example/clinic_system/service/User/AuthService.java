@@ -57,14 +57,17 @@ public class AuthService {
             Admin admin = adminService.findByUser(id_user);
             return AuthResponse.<AdminDTO>builder()
                     .token(jwt)
+                    .role(user.getRole())
                     .data(AdminProcesses.CreateAdminDTO(admin))
                     .build();
         }
 
+        //Si el dotor esta eliminado no puede iniciar sesion
         if (user.getRole() == Rol.DOCTOR) {
             Doctor doctor = doctorService.getDoctorByIdUser(id_user);
             return AuthResponse.<DoctorDTO>builder()
                     .token(jwt)
+                    .role(user.getRole())
                     .data(DoctorProcesses.CreateDoctorDTO(doctor))
                     .build();
         }

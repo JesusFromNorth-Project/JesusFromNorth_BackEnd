@@ -33,7 +33,7 @@ public class DoctorProcesses {
                 .build();
     }
 
-    public static Doctor CreateDoctorNoUsername(RegisterDoctorNoUsernameDTO doctorDTO, Specialty specialty, Admin admin) {
+    public static Doctor CreateDoctorNoUsername(RegisterDoctorNoUsernameDTO doctorDTO, Specialty specialty, Admin admin,User user ) {
         return Doctor.builder()
                 .first_name(doctorDTO.getFirst_name())
                 .last_name(doctorDTO.getLast_name())
@@ -44,13 +44,7 @@ public class DoctorProcesses {
                 .dni(doctorDTO.getDni())
                 .cmp(doctorDTO.getCmp())
                 .specialty(specialty)
-                .user(
-                        User.builder()
-                                .username(doctorDTO.getDni())
-                                .password(doctorDTO.getPassword())
-                                .role(Rol.DOCTOR)
-                                .build()
-                )
+                .user(user)
                 .admin(admin)
                 .build();
     }

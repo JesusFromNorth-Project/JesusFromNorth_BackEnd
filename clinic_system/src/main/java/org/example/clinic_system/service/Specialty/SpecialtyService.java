@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface SpecialtyService {
-    Tuple saveSpecialty(SpecialtyResponseDTO specialty);
+
+    Tuple<SpecialtyResponseDTO, UUID> saveSpecialty(SpecialtyResponseDTO specialty);
     void deleteSpecialty(UUID id_specialty) throws NotFoundException;
     List<SpecialtyDTO> getAllSpecialties();
     Specialty getSpecialtyById(UUID id_specialty) throws NotFoundException;

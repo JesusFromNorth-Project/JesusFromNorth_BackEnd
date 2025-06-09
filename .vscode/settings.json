@@ -1,5 +1,9 @@
 {
   "java.configuration.updateBuildConfiguration": "automatic",
+<<<<<<< HEAD
   "java.compile.nullAnalysis.mode": "automatic",
   "java.debug.settings.onBuildFailureProceed": true
+=======
+  "java.compile.nullAnalysis.mode": "automatic"
+>>>>>>> roberto-swagger-documentation
 }

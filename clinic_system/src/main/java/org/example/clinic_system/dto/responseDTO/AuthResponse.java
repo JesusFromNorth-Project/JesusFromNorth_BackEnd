@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.clinic_system.model.enums.Rol;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,5 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AuthResponse<T> {
     private String token;
+    private Rol role;
     private T data;
 }

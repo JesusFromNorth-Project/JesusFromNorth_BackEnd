@@ -1,11 +1,10 @@
 package org.example.clinic_system.service.ServiceAux;
 
 import lombok.RequiredArgsConstructor;
-import org.example.clinic_system.dto.responseDTO.SpecialtyResponseDTO;
 import org.example.clinic_system.dto.responseDTO.SpecialtyWithServicesDTO;
 import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.model.Specialty;
-import org.example.clinic_system.service.Service.ServiceService;
+import org.example.clinic_system.service.ServiceSpecialty.ServiceService;
 import org.example.clinic_system.service.Specialty.SpecialtyService;
 import org.example.clinic_system.util.SpecialtyProcesses;
 import org.springframework.stereotype.Service;

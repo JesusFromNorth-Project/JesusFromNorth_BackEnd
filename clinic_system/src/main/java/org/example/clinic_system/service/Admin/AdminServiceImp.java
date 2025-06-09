@@ -28,6 +28,10 @@ public class AdminServiceImp implements AdminService {
     @Override
     public void save(RegisterAdminDTO registerAdminDTO) {
         // Crear y guardar User directamente
+        if(userRepository.existsByUsername(registerAdminDTO.getUsername())){
+            throw new IllegalArgumentException("El usename ya esta registrado");
+        }
+
         User user = User.builder()
                 .username(registerAdminDTO.getUsername())
                 .password(passwordEncoder.encode(registerAdminDTO.getPassword()))

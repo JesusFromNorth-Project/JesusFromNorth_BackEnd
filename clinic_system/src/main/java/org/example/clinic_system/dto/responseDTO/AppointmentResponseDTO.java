@@ -1,17 +1,19 @@
 package org.example.clinic_system.dto.responseDTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
-public class SpecialtySavedResponseDTO {
-    private UUID idSpecialty;
-    private String nameSpecialty;
+@Builder
+public class AppointmentResponseDTO {
+    private LocalDateTime date_appointment;
+    private LocalDateTime date_attention;
+    private String description;
 }
