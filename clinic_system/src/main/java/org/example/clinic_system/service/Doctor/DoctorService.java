@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DoctorService {
-    Tuple <DoctorResponseDTO, UUID> SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, UUID id_admin, UUID id_specialist) throws NotFoundException;
+    Tuple <DoctorResponseDTO, UUID> SaveDoctorWithUsername(RegisterDoctorDTO registerDoctorDTO, String username, UUID id_specialist) throws NotFoundException;
     Tuple <DoctorResponseDTO, UUID> SaveDoctorWithoutUsername(RegisterDoctorNoUsernameDTO registerDoctorNoUsernameDTO, UUID id_admin, UUID id_specialist) throws NotFoundException;
     DoctorDTO getDoctorDTOById(UUID id_doctor) throws NotFoundException;
     List<DoctorDTO> getAllDoctors(int page);

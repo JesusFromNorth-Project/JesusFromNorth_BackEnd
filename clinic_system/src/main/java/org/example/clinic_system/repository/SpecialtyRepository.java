@@ -19,6 +19,9 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, UUID> {
 
     @Query("SELECT s FROM Specialty s WHERE s.specialty_name = ?1 AND s.is_deleted=false")
     Optional<Specialty> findByName(String name);
+    
+    @Query("SELECT s FROM Specialty s WHERE s.is_deleted = false")
+    List<Specialty> findAllActive();
 
     @Override
     @Query("SELECT s FROM Specialty s WHERE s.is_deleted=false")
