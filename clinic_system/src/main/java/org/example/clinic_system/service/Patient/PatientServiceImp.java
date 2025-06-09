@@ -58,6 +58,12 @@ public class PatientServiceImp implements PatientService{
     }
 
     @Override
+    public Patient getPatientByDni(String dni_patient) throws NotFoundException {
+        return patientRepository.findByDni(dni_patient)
+                .orElseThrow( () -> new NotFoundException("No se encontro al paciente con el id: " + dni_patient));
+    }
+
+    @Override
     public void updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException {
         Patient patient = PatientProcesses.updatePatient(
                 patientRepository.findByIdPatient(id_patient).orElseThrow( () -> new NotFoundException("No se encontro al paciente con el id: " + id_patient)),
