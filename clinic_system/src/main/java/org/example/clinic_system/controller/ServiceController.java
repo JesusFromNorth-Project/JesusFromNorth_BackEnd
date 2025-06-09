@@ -5,7 +5,7 @@ import org.example.clinic_system.dto.entityDTO.ServiceDTO;
 import org.example.clinic_system.dto.responseDTO.ServiceResponseDTO;
 import org.example.clinic_system.dto.responseDTO.SuccessMessage;
 import org.example.clinic_system.handler.NotFoundException;
-import org.example.clinic_system.service.Service.ServiceService;
+import org.example.clinic_system.service.ServiceSpecialty.ServiceService;
 import org.example.clinic_system.util.Tuple;
 import org.example.clinic_system.util.UriGeneric;
 import org.springframework.http.HttpStatus;
@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -54,6 +55,25 @@ public class ServiceController {
         return ResponseEntity.created(location).body(successMessage);
     }
 
+    @Operation(summary = "Obtener servicios por especialidad",
+            description = "Devuelve una lista de servicios de una especialidad específica.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de servicios obtenida",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Especialidad no encontrada",
+                    content = @Content)
+    })
+    @GetMapping("/list/bySpeciality/{id_specialty}")
+    public ResponseEntity<?> getListServices(@PathVariable UUID id_specialty) {
+        List<ServiceDTO> list = serviceService.getAllServicesBySpecialty(id_specialty);
+        SuccessMessage<?> successMessage = SuccessMessage.builder()
+                .status(HttpStatus.OK.value())
+                .message("Lista de servicio por la especialidad")
+                .data(list)
+                .build();
+        return ResponseEntity.ok(successMessage);
+    }
+
     @Operation(summary = "Obtener servicio por ID",
             description = "Devuelve los detalles de un servicio médico específico.")
     @ApiResponses(value = {
@@ -74,7 +94,7 @@ public class ServiceController {
         return ResponseEntity.ok(successMessage);
     }
 
-    @Operation(summary = "Actualizar servicio",
+    @Operation(summary = "Actualizar servicio (NO FUNCIONAL)",
             description = "Actualiza los datos de un servicio médico asociado a una especialidad.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Servicio actualizado exitosamente",
@@ -87,16 +107,16 @@ public class ServiceController {
             @RequestBody ServiceDTO serviceDTO,
             @PathVariable("specialtyId") UUID specialtyId) throws NotFoundException {
 
-        ServiceResponseDTO updatedService = serviceService.updateService(serviceDTO, specialtyId);
-        SuccessMessage<ServiceResponseDTO> successMessage = SuccessMessage.<ServiceResponseDTO>builder()
+        serviceService.updateService(serviceDTO, specialtyId);
+        SuccessMessage<String> successMessage = SuccessMessage.<String>builder()
                 .status(HttpStatus.OK.value())
                 .message("Servicio actualizado exitosamente")
-                .data(updatedService)
+                .data("Actualiza tu lista")
                 .build();
         return ResponseEntity.ok(successMessage);
     }
 
-    @Operation(summary = "Eliminar servicio por ID",
+    @Operation(summary = "Eliminar servicio por ID (NO FUNCIONAL)",
             description = "Elimina un servicio médico específico mediante su ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Servicio eliminado exitosamente",
@@ -106,10 +126,6 @@ public class ServiceController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteService(@PathVariable("id") UUID id) throws NotFoundException {
-        if (!serviceService.existsServiceById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("El servicio con el ID proporcionado no existe");
-        }
         serviceService.deleteService(id);
         SuccessMessage<Void> successMessage = SuccessMessage.<Void>builder()
                 .status(HttpStatus.NO_CONTENT.value())

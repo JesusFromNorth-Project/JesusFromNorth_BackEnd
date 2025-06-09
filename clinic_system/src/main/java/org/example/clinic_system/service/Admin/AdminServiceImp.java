@@ -8,12 +8,11 @@ import org.example.clinic_system.model.User;
 import org.example.clinic_system.model.enums.Rol;
 import org.example.clinic_system.repository.AdminRepository;
 import org.example.clinic_system.repository.UserRepository;
-import org.example.clinic_system.service.User.AuthService;
 import org.example.clinic_system.util.AdminProcesses;
-import org.example.clinic_system.util.UserProcesses;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,6 +28,10 @@ public class AdminServiceImp implements AdminService {
     @Override
     public void save(RegisterAdminDTO registerAdminDTO) {
         // Crear y guardar User directamente
+        if(userRepository.existsByUsername(registerAdminDTO.getUsername())){
+            throw new IllegalArgumentException("El usename ya esta registrado");
+        }
+
         User user = User.builder()
                 .username(registerAdminDTO.getUsername())
                 .password(passwordEncoder.encode(registerAdminDTO.getPassword()))
@@ -60,4 +63,10 @@ public class AdminServiceImp implements AdminService {
                 .orElseThrow(() -> new NotFoundException("No se encontro al admin"));
     }
 
+    @Override
+    public Optional<Admin> findByUsername(String username) {
+        // Primero buscar el usuario por su username
+        return userRepository.findByUsername(username)
+                .flatMap(user -> adminRepository.findByUser(user.getId_user()));
+    }
 }

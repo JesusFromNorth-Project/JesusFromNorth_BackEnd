@@ -24,10 +24,24 @@ public class ServiceProcesses {
                 .build();
     }
 
+    public static ServiceDTO getDTO(ServiceSpecialty serviceSpecialty) {
+        return ServiceDTO.builder()
+                .id_service(serviceSpecialty.getId_service())
+                .name_Service(serviceSpecialty.getService_name())
+                .price(serviceSpecialty.getPrice())
+                .build();
+    }
+
     public static List<ServiceResponseDTO> TransformListServiceResponseDTO(List<ServiceSpecialty> bySpecialtyId) {
         return bySpecialtyId
                 .stream()
                 .map(ServiceProcesses::getSpecialty)
+                .toList();
+    }
+
+    public static List<ServiceDTO> TransformListServiceDTO(List<ServiceSpecialty> bySpecialtyId) {
+        return bySpecialtyId.stream()
+                .map(ServiceProcesses::getDTO)
                 .toList();
     }
 }

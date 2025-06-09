@@ -21,6 +21,7 @@ public class AdminProcesses {
     }
     public static AdminDTO CreateAdminDTO(Admin admin) {
         return AdminDTO.builder()
+                .id_admin(admin.getId_admin())
                 .first_name(admin.getFirst_name())
                 .last_name(admin.getLast_name())
                 .email(admin.getEmail())
@@ -28,7 +29,6 @@ public class AdminProcesses {
                 .phone(admin.getPhone())
                 .landline_phone(admin.getLandline_phone())
                 .dni(admin.getDni())
-                .id_admin(admin.getId_admin())
                 .build();
     }
 }

@@ -18,8 +18,8 @@ class ClinicSystemApplicationTests {
 
     @Test
     void contextLoads() {
-    }
 
+    }
 
     @Test
     void addAdmin(){
