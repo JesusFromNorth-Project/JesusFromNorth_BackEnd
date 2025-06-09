@@ -94,6 +94,7 @@ public class ExcelExporter {
                 "ID",
                 "Nombre",
                 "Apellido",
+                "Especialidad",
                 "Email",
                 "Dirección",
                 "Teléfono",
@@ -135,11 +136,12 @@ public class ExcelExporter {
                 row.createCell(0).setCellValue(rowIdx);
                 row.createCell(1).setCellValue(doctor.getFirst_name());
                 row.createCell(2).setCellValue(doctor.getLast_name());
-                row.createCell(3).setCellValue(doctor.getEmail());
-                row.createCell(4).setCellValue(doctor.getAddress());
-                row.createCell(5).setCellValue(doctor.getPhone());
-                row.createCell(6).setCellValue(doctor.getLandline_phone());
-                row.createCell(7).setCellValue(doctor.getDni());
+                row.createCell(3).setCellValue(doctor.getSpecialty().getSpecialty_name());
+                row.createCell(4).setCellValue(doctor.getEmail());
+                row.createCell(5).setCellValue(doctor.getAddress());
+                row.createCell(6).setCellValue(doctor.getPhone());
+                row.createCell(7).setCellValue(doctor.getLandline_phone());
+                row.createCell(8).setCellValue(doctor.getDni());
 
                 rowIdx++;
             }
