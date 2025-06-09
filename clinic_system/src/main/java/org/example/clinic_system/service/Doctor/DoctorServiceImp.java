@@ -99,9 +99,11 @@ public class DoctorServiceImp implements DoctorService {
         return DoctorProcesses.CreateDoctorDTO(doc);
     }
 
-    //Me trae todos los doctores
+    //Me trae todos los doctores con paginación
     @Override
-    public List<DoctorDTO> getAllDoctors() {
+    public List<DoctorDTO> getAllDoctors(int page) {
+        // TODO: Implementar lógica de paginación adecuada
+        // Por ahora, simplemente devolvemos todos los doctores
         return DoctorProcesses
                 .CreateDoctorResponseDTO(doctorRepository.findAll());
     }

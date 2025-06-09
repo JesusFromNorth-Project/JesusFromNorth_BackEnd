@@ -135,12 +135,13 @@ public class DoctorController {
     }
 
     @Operation(summary = "Obtener todos los doctores",
-            description = "Devuelve una lista de todos los doctores registrados.")
+            description = "Devuelve una lista paginada de todos los doctores registrados.")
     @ApiResponse(responseCode = "200", description = "Lista de doctores obtenida",
             content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
     @GetMapping("list")
-    public ResponseEntity<?> getAllDoctors() {
-        List<DoctorDTO> doctors = doctorService.getAllDoctors();
+    public ResponseEntity<?> getAllDoctors(
+            @RequestParam(defaultValue = "0") int page) {
+        List<DoctorDTO> doctors = doctorService.getAllDoctors(page);
         return ResponseEntity.ok(SuccessMessage.<List<DoctorDTO>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Lista de todos los doctores obtenida con éxito.")
