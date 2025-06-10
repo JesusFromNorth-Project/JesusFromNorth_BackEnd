@@ -242,13 +242,15 @@ _Nota_: Vista general del prototipo funcional de la aplicación, basado en la So
 
 ## 9. Project Charter
 
-![Project Charter](https://github.com/user-attachments/assets/1ad7bd16-97a8-48f1-b4f0-d56086d9a091)
+![Project Charter](https://github.com/user-attachments/assets/6f857967-4996-4aff-8ce1-d8286395699c)
+
 
 ---
 
 ## 10. Diagrama de Gantt
 
-![Gantt](https://github.com/user-attachments/assets/3f3a4200-fb90-4100-9f96-5398fe9f364e)
+![Gantt](https://github.com/user-attachments/assets/280e73b0-f522-4af5-9542-5dedd9df2fd7)
+
 
 ---
 
