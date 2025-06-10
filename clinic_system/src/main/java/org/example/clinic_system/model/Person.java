@@ -25,7 +25,7 @@ public class Person {
     private String phone;
     @Column(nullable = true)
     private String landline_phone;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String dni;
 
 }

@@ -28,7 +28,7 @@ public class Doctor extends Person {
     )
     private Specialty specialty;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     protected String cmp;
 
     @OneToOne(

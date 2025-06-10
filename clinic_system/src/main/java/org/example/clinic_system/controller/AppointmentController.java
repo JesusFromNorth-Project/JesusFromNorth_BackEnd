@@ -22,13 +22,15 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-
 @RestController
-@RequestMapping(value = "appointment")
-@RequiredArgsConstructor
+@RequestMapping("/appointments")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
+
+    public AppointmentController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
+    }
 
     @Operation(summary = "Registrar una nueva cita médica",
             description = "Crea una nueva cita médica asignando un administrador, un doctor y un paciente. Retorna los datos de la cita creada.")
@@ -55,39 +57,69 @@ public class AppointmentController {
         return ResponseEntity.created(location).body(successMessage);
     }
 
+    @Operation(summary = "Actualizar una cita médica",
+            description = "Actualiza los datos de una cita médica existente por su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cita actualizada correctamente",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Cita no encontrada",
+                    content = @Content)
+    })
     @PatchMapping("/{id_appointment}")
     public ResponseEntity<?> updateAppointment(@PathVariable UUID id_appointment, @RequestBody AppointmentResponseDTO appointmentResponseDTO) throws NotFoundException {
         appointmentService.updateAppointment(id_appointment, appointmentResponseDTO);
         SuccessMessage<?> successMessage = SuccessMessage.builder()
                 .status(HttpStatus.OK.value())
-                .message("Se actualizo la cita correctamente")
+                .message("Se actualizó la cita correctamente")
                 .data("Actualiza la tabla")
                 .build();
         return ResponseEntity.ok(successMessage);
     }
 
+    @Operation(summary = "Eliminar una cita médica",
+            description = "Elimina una cita médica por su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cita eliminada correctamente",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Cita no encontrada",
+                    content = @Content)
+    })
     @DeleteMapping("/{id_appointment}")
     public ResponseEntity<?> deleteAppointment(@PathVariable UUID id_appointment) throws NotFoundException {
         appointmentService.deleteAppointment(id_appointment);
         SuccessMessage<?> successMessage = SuccessMessage.builder()
                 .status(HttpStatus.OK.value())
-                .message("Se elimino la cita correctamente")
+                .message("Se eliminó la cita correctamente")
                 .data("Actualiza la tabla")
                 .build();
         return ResponseEntity.ok(successMessage);
     }
 
+    @Operation(summary = "Obtener una cita médica por ID",
+            description = "Retorna los detalles de una cita médica específica usando su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cita encontrada correctamente",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class))),
+            @ApiResponse(responseCode = "404", description = "Cita no encontrada",
+                    content = @Content)
+    })
     @GetMapping("/{id_appointment}")
     public ResponseEntity<?> getAppointment(@PathVariable UUID id_appointment) throws NotFoundException {
         AppointmentDTO appointmentDTO = appointmentService.getAppointmentDTOById(id_appointment);
         SuccessMessage<?> successMessage = SuccessMessage.builder()
                 .status(HttpStatus.OK.value())
-                .message("Se encontro la cita correctamente")
+                .message("Se encontró la cita correctamente")
                 .data(appointmentDTO)
                 .build();
         return ResponseEntity.ok(successMessage);
     }
 
+    @Operation(summary = "Listar citas por ID del paciente",
+            description = "Obtiene todas las citas asociadas a un paciente usando su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Citas del paciente obtenidas correctamente",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    })
     @GetMapping("/patient/{id_patient}")
     public ResponseEntity<?> getAllAppointmentsByIdPatient(@PathVariable UUID id_patient, @RequestParam(defaultValue = "0") int page) throws NotFoundException {
         List<AppointmentDTO> appointments = appointmentService.getAllAppointmentsByIdPatient(id_patient, page);
@@ -99,6 +131,12 @@ public class AppointmentController {
         return ResponseEntity.ok(successMessage);
     }
 
+    @Operation(summary = "Listar citas por ID del doctor",
+            description = "Obtiene todas las citas asignadas a un doctor usando su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Citas del doctor obtenidas correctamente",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    })
     @GetMapping("/doctor/{id_doctor}")
     public ResponseEntity<?> getAllAppointmentsByIdDoctor(@PathVariable UUID id_doctor, @RequestParam(defaultValue = "0") int page) throws NotFoundException {
         List<AppointmentDTO> appointments = appointmentService.getAllAppointmentsByIdDoctor(id_doctor, page);
@@ -110,6 +148,12 @@ public class AppointmentController {
         return ResponseEntity.ok(successMessage);
     }
 
+    @Operation(summary = "Listar citas por CMP del doctor",
+            description = "Obtiene todas las citas asignadas a un doctor usando su CMP.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Citas del doctor (por CMP) obtenidas correctamente",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    })
     @GetMapping("/doctor/cmp/{cmp}")
     public ResponseEntity<?> getAllAppointmentsByCmpDoctor(@PathVariable String cmp, @RequestParam(defaultValue = "0") int page) throws NotFoundException {
         List<AppointmentDTO> appointments = appointmentService.getAllAppointmentsByCmpDoctor(cmp, page);
@@ -121,6 +165,12 @@ public class AppointmentController {
         return ResponseEntity.ok(successMessage);
     }
 
+    @Operation(summary = "Listar citas por DNI del paciente",
+            description = "Obtiene todas las citas asociadas a un paciente usando su DNI.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Citas del paciente (por DNI) obtenidas correctamente",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    })
     @GetMapping("/patient/dni/{dni}")
     public ResponseEntity<?> getAllAppointmentsByDniPatient(@PathVariable String dni, @RequestParam(defaultValue = "0") int page) throws NotFoundException {
         List<AppointmentDTO> appointments = appointmentService.getAllAppointmentsByDniPatient(dni, page);
@@ -132,6 +182,12 @@ public class AppointmentController {
         return ResponseEntity.ok(successMessage);
     }
 
+    @Operation(summary = "Listar todas las citas",
+            description = "Obtiene todas las citas registradas en el sistema con paginación.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Todas las citas obtenidas correctamente",
+                    content = @Content(schema = @Schema(implementation = SuccessMessage.class)))
+    })
     @GetMapping("/")
     public ResponseEntity<?> getAllAppointments(@RequestParam(defaultValue = "0") int page) {
         List<AppointmentDTO> appointments = appointmentService.getAllAppointments(page);
@@ -143,4 +199,3 @@ public class AppointmentController {
         return ResponseEntity.ok(successMessage);
     }
 }
-
