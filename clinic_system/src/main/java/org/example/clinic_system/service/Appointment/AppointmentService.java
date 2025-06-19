@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AppointmentService {
-    Tuple<AppointmentResponseDTO,UUID> saveAppointment(UUID id_admin,UUID id_doctor,UUID id_patient,AppointmentResponseDTO responseDTO) throws NotFoundException;
-    AppointmentResponseDTO updateAppointment(UUID id_appointment, AppointmentResponseDTO appointmentResponseDTO) throws NotFoundException;
+    Tuple<AppointmentResponseDTO,UUID> saveAppointment(UUID id_admin,UUID id_doctor,String dni_patient,AppointmentResponseDTO responseDTO) throws NotFoundException;
+    void updateAppointment(UUID id_appointment, AppointmentResponseDTO appointmentResponseDTO) throws NotFoundException;
     AppointmentDTO getAppointmentDTOById(UUID id_appointment) throws NotFoundException;
     Appointment getAppointmentById(UUID id_appointment) throws NotFoundException;
     List<AppointmentDTO> getAllAppointmentsByIdPatient(UUID id_patient,int page) throws NotFoundException;
