@@ -51,9 +51,8 @@ public class MedicineController {
                         .build());
     }
 
-    @GetMapping("/by-name")
+    @GetMapping("/")
     public ResponseEntity<?> getMedicineByName(@RequestParam String name_medicine) throws NotFoundException {
-        System.out.println("Entró al controlador getMedicineByName");
         MedicineDTO medicineDTO = medicineService.getMedicineDTOByName(name_medicine);
         return ResponseEntity.ok().body(
                 SuccessMessage.<MedicineDTO>builder()
