@@ -47,7 +47,7 @@ public class MedicineProcesses {
             medicine.setMedicine_name(medicineResponseDTO.getMedicine_name());
         }
         if(medicineResponseDTO.getMedicine_description() != null) {
-            medicine.setMedicine_type(medicineResponseDTO.getMedicine_description());
+            medicine.setMedicine_description(medicineResponseDTO.getMedicine_description());
         }
         if(medicineResponseDTO.getMedicine_type() != null) {
             medicine.setMedicine_type(medicineResponseDTO.getMedicine_type());
