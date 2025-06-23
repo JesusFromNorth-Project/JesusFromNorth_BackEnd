@@ -91,7 +91,7 @@ public class MedicineController {
         );
     }
 
-    @GetMapping("/list/")
+    @GetMapping("/list/by-type")
     public ResponseEntity<?> getAllMedicinesByType(
             @RequestParam String type_medicine,
             @RequestParam int page
@@ -105,7 +105,7 @@ public class MedicineController {
         );
     }
 
-    @GetMapping("/list/")
+    @GetMapping("/list/by-date")
     public ResponseEntity<?> getAllMedicinesByDate(
             @RequestParam LocalDate date,
             @RequestParam int page
