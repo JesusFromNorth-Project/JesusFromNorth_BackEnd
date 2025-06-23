@@ -33,6 +33,7 @@ public class MedicineProcesses {
 
     public static MedicineDTO createMedicineDTO(Medicine medicine) {
         return MedicineDTO.builder()
+                .id_medicine(medicine.getId_medicine())
                 .medicine_name(medicine.getMedicine_name())
                 .medicine_description(medicine.getMedicine_description())
                 .medicine_type(medicine.getMedicine_type())

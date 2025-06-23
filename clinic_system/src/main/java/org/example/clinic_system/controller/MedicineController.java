@@ -88,6 +88,7 @@ public class MedicineController {
                         .status(HttpStatus.OK.value())
                         .message("Lista de las medicinas de pagina: " + page)
                         .data(listMedicineDTO)
+                        .build()
         );
     }
 
@@ -102,6 +103,7 @@ public class MedicineController {
                         .status(HttpStatus.OK.value())
                         .message("Lista de las medicinas de pagina: " + page)
                         .data(listMedicineDTO)
+                        .build()
         );
     }
 
@@ -113,9 +115,10 @@ public class MedicineController {
         List<MedicineDTO> listMedicineDTO = medicineService.getAllMedicinesByDate(date, page);
         return ResponseEntity.ok().body(
                 SuccessMessage.<List<MedicineDTO>>builder()
-                .status(HttpStatus.OK.value())
-                .message("Lista de las medicinas de pagina: " + page)
-                .data(listMedicineDTO)
+                        .status(HttpStatus.OK.value())
+                        .message("Lista de las medicinas de pagina: " + page)
+                        .data(listMedicineDTO)
+                        .build()
         );
     }
 
