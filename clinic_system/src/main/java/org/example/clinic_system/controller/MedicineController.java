@@ -38,7 +38,7 @@ public class MedicineController {
                 .build());
     }
 
-    @GetMapping("/id_medicine")
+    @GetMapping("/{id_medicine}")
     public ResponseEntity<?> getMedicineById(
             @PathVariable UUID id_medicine
     ) throws NotFoundException {
@@ -51,8 +51,9 @@ public class MedicineController {
                         .build());
     }
 
-    @GetMapping("/")
+    @GetMapping("/by-name")
     public ResponseEntity<?> getMedicineByName(@RequestParam String name_medicine) throws NotFoundException {
+        System.out.println("Entró al controlador getMedicineByName");
         MedicineDTO medicineDTO = medicineService.getMedicineDTOByName(name_medicine);
         return ResponseEntity.ok().body(
                 SuccessMessage.<MedicineDTO>builder()
