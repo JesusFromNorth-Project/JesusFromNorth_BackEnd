@@ -20,6 +20,8 @@ public interface PatientService {
 
     Patient getPatientById(UUID id_patient) throws NotFoundException;
 
+    Patient getPatientByDni(String dni_patient) throws NotFoundException;
+
     void updatePatient(UUID id_patient, PatientResponseDTO patientResponseDTO) throws NotFoundException;
 
     void deletePatient(UUID id_patient) throws NotFoundException;
