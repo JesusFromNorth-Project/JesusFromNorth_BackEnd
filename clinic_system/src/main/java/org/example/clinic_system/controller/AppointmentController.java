@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
 import org.example.clinic_system.dto.entityDTO.AppointmentDTO;
 import org.example.clinic_system.dto.responseDTO.AppointmentResponseDTO;
 import org.example.clinic_system.dto.responseDTO.RegisterAppointment;
@@ -14,8 +15,7 @@ import org.example.clinic_system.handler.NotFoundException;
 import org.example.clinic_system.service.Appointment.AppointmentService;
 import org.example.clinic_system.util.Tuple;
 import org.example.clinic_system.util.UriGeneric;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -198,4 +198,26 @@ public class AppointmentController {
                 .build();
         return ResponseEntity.ok(successMessage);
     }
+
+    @Operation(summary = "Generar boleta en PDF de una cita médica",
+            description = "Genera una boleta en formato PDF para una cita específica utilizando JasperReports.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Boleta generada correctamente",
+                    content = @Content(mediaType = "application/pdf")),
+            @ApiResponse(responseCode = "404", description = "Cita médica no encontrada")
+    })
+    @GetMapping("/invoice/{id_appointment}")
+    public ResponseEntity<byte[]> generateInvoice(@PathVariable UUID id_appointment) throws NotFoundException, JRException {
+        byte[] pdfBytes = appointmentService.generateInvoice(id_appointment);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition
+                .inline()
+                .filename("boleta_" + id_appointment + ".pdf")
+                .build());
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+    }
+
 }

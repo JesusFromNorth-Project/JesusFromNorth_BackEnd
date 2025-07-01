@@ -1,5 +1,6 @@
 package org.example.clinic_system.service.Appointment;
 
+import net.sf.jasperreports.engine.JRException;
 import org.example.clinic_system.dto.entityDTO.AppointmentDTO;
 import org.example.clinic_system.dto.responseDTO.AppointmentResponseDTO;
 import org.example.clinic_system.handler.NotFoundException;
@@ -21,4 +22,5 @@ public interface AppointmentService {
     List<AppointmentDTO> getAllAppointmentsByDniPatient(String dni,int page) throws NotFoundException;
     List<AppointmentDTO> getAllAppointments(int page);
     void deleteAppointment(UUID id_appointment) throws NotFoundException;
+    byte[] generateInvoice(UUID id_appointment) throws NotFoundException, JRException;
 }

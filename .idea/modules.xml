@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/JesusFromNoth_BackEnd.iml" filepath="$PROJECT_DIR$/.idea/JesusFromNoth_BackEnd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/clinic_system/clinic_system.iml" filepath="$PROJECT_DIR$/clinic_system/clinic_system.iml" />
     </modules>
   </component>
 </project>
