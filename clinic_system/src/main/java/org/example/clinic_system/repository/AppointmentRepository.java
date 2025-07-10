@@ -31,4 +31,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     Page<Appointment> findByIdDoctor(UUID id,
                                      Pageable pageable);
 
+    @Query("SELECT a FROM Appointment a WHERE a.is_deleted = false")
+    Page<Appointment> findAllActive(Pageable pageable);
+
 }

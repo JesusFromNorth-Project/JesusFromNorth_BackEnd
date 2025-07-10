@@ -133,7 +133,7 @@ public class AppointmentServiceImp implements AppointmentService{
 
     @Override
     public List<AppointmentDTO> getAllAppointments(int page) {
-        return appointmentRepository.findAll(
+        return appointmentRepository.findAllActive(
                 PageRequest.of(page,size)
         ).map(AppointmentProcesses::CreateAppointmentDTO).getContent();
     }
