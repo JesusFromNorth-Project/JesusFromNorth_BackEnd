@@ -83,7 +83,7 @@ public class AttentionServiceImp implements AttentionService{
     @Override
     public List<AttentionWithDoctorAndPatientDTO> getListAttentionByCmpDoctor(String Cmp_doctor, int page) {
         return AttentionProcesses.toListAttentionWithDoctorAndPatientDTO(
-                attentionRepository.findAllByDniPatient(
+                attentionRepository.findAllByCmpDoctor(
                         Cmp_doctor,
                         PageRequest.of(page,size)
                 ).getContent()
