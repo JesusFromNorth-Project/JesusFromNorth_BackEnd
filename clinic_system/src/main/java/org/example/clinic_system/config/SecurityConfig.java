@@ -44,8 +44,10 @@ public class SecurityConfig {
                                 "/swagger-ui.html")
                         .permitAll()
                         .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/doctor/**", "/service/**", "/specialty/**", "/medicine/**").hasRole("ADMIN")
-                        .requestMatchers("/attention/**").hasRole("DOCTOR")
+                        .requestMatchers("/doctor/**", "/service/**", "/specialty/**", "/medicine/**",
+                                "/appointments/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/attention/**", "/appointments/**").hasRole("DOCTOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
