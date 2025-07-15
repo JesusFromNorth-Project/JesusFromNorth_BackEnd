@@ -65,4 +65,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+    @Override
+protected boolean shouldNotFilter(HttpServletRequest request) {
+    String path = request.getRequestURI();
+    System.out.println("Evaluando filtro para ruta: " + path);
+
+    return path.startsWith("/system_clinic/api/v0.1/actuator")
+        || path.startsWith("/v3/api-docs")
+        || path.startsWith("/swagger-ui")
+        || path.equals("/auth/login");
+}
 }
