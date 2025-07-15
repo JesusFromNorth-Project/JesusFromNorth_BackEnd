@@ -39,7 +39,7 @@ public class Patient extends Person {
 
     @ManyToOne(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            cascade = {CascadeType.REFRESH, CascadeType.MERGE}
     )
     @JoinColumn(
             name = "id_admin",

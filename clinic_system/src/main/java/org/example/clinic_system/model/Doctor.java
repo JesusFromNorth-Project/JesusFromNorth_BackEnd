@@ -21,7 +21,8 @@ public class Doctor extends Person {
     @Column(name = "id_doctor")
     protected UUID id_doctor;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER,
+            cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(
             name = "id_specialty",
             referencedColumnName = "id_specialty"
@@ -43,7 +44,7 @@ public class Doctor extends Person {
 
     @ManyToOne(
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            cascade = {CascadeType.MERGE,CascadeType.REFRESH}
     )
     @JoinColumn(
             name = "id_admin",

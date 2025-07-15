@@ -41,7 +41,7 @@ public class Medicine {
 
     @ManyToOne(
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            cascade = {CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(
             name = "id_admin",
