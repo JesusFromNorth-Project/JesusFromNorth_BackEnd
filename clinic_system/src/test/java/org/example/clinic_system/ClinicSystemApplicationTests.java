@@ -59,7 +59,7 @@ class ClinicSystemApplicationTests {
     void CrearMedicamentos() throws NotFoundException {
 
         //Ponen el id del admin que le genere
-        UUID id_admin = UUID.fromString("a1e3af76-1d7f-4656-bad0-5f03920d4efa");
+        UUID id_admin = UUID.fromString("678749f1-470f-4f9d-b94e-78e614d8f117");
 
         MedicineResponseDTO medicamento1 = new MedicineResponseDTO();
         medicamento1.setMedicine_name("Medicamento 1");
@@ -144,7 +144,7 @@ class ClinicSystemApplicationTests {
 
     @Test
     void crearPacientes() throws NotFoundException {
-        UUID id_admin = UUID.fromString("a1e3af76-1d7f-4656-bad0-5f03920d4efa"); // Usa el UUID correcto de tu admin
+        UUID id_admin = UUID.fromString("678749f1-470f-4f9d-b94e-78e614d8f117"); // Usa el UUID correcto de tu admin
 
         PatientResponseDTO paciente1 = new PatientResponseDTO();
         paciente1.setFirst_name("Juan");
@@ -294,10 +294,10 @@ class ClinicSystemApplicationTests {
     @Test
     void crearDoctores() throws NotFoundException {
         
-        UUID adminId = UUID.fromString("a1e3af76-1d7f-4656-bad0-5f03920d4efa"); // reemplaza por un UUID válido
-        UUID specialistId1 = UUID.fromString("2911546d-7a2e-43c1-91c3-0e6555a9a249"); // Cardiología
-        UUID specialistId2 = UUID.fromString("8c6ab53b-6f1a-4ea8-be34-1805b7fac0dc"); // Dermatología
-        UUID specialistId3 = UUID.fromString("6a64d1b0-22a5-4843-98e8-76a2654f1226"); // Pediatría
+        UUID adminId = UUID.fromString("678749f1-470f-4f9d-b94e-78e614d8f117"); // reemplaza por un UUID válido
+        UUID specialistId1 = UUID.fromString("19063cd9-c293-462f-ab35-8269cea0fd80"); // Cardiología
+        UUID specialistId2 = UUID.fromString("a7199ec0-62eb-41a0-9607-16a09c093574"); // Dermatología
+        UUID specialistId3 = UUID.fromString("d0a00ea0-f709-41ed-90b4-b7cc75919f84"); // Pediatría
 
         RegisterDoctorDTO doctor1 = RegisterDoctorDTO.builder()
                 .first_name("Carlos")
