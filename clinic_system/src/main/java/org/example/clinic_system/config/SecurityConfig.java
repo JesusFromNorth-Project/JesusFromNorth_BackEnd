@@ -43,8 +43,11 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html")
                         .permitAll()
-                        .requestMatchers("/doctor/**", "/service/**", "/specialty/**").hasRole("ADMIN")
-                        .requestMatchers("/attention/**").hasRole("DOCTOR")
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/doctor/**", "/service/**", "/specialty/**", "/medicine/**",
+                                "/appointments/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/attention/**", "/appointments/**").hasRole("DOCTOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -66,17 +69,14 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-<<<<<<< HEAD
-        configuration.setAllowedOrigins(List.of(
-                "http://127.0.0.1:5500",
-                "http://localhost:5500",
-                "http://192.168.18.130:5500"
-        ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-=======
+
         configuration.setAllowedOrigins(List.of("http://192.168.18.55:5501"));
+
+        configuration
+                .setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:5501",
+                        "http://192.168.18.55:5501"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
->>>>>>> origin/ricardo-swagger-documentation
+
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
 

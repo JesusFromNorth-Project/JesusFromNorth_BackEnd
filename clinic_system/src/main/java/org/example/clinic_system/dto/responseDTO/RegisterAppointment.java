@@ -10,6 +10,6 @@ import java.util.UUID;
 public class RegisterAppointment {
     private UUID id_admin;
     private UUID id_doctor;
-    private UUID id_patient;
+    private String dni_patient;
     private AppointmentResponseDTO responseDTO;
 }
