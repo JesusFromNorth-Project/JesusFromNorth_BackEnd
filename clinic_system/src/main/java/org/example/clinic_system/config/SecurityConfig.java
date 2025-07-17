@@ -48,6 +48,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/medicine/list").hasAnyRole("DOCTOR", "ADMIN")
             .requestMatchers("/doctor/**", "/service/**", "/specialty/**").hasRole("ADMIN")
             .requestMatchers("/medicine/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/attention/appointment/**").hasRole("DOCTOR")
             .requestMatchers("/attention/**", "/appointments/**").hasAnyRole("DOCTOR", "ADMIN")
             .anyRequest().authenticated())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
