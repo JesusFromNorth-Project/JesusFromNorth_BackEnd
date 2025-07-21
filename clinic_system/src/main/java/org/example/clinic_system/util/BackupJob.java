@@ -14,7 +14,7 @@ public class BackupJob {
     // Ajusta estas variables según tu entorno
     private static final String MYSQLDUMP_PATH = "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe";
     private static final String USER = "root";
-    private static final String PASSWORD = "1134";
+    private static final String PASSWORD = "root";
     private static final String DATABASE = "system_clinic";
     private static final String OUTPUT_DIR = "C:\\backups\\";
 
@@ -25,7 +25,8 @@ public class BackupJob {
         String backupFile = OUTPUT_DIR + "backup_" + timestamp + ".sql";
 
         // Crear comando
-        String comando = "\"" + MYSQLDUMP_PATH + "\" -u " + USER + " -p" + PASSWORD + " " + DATABASE + " -r \"" + backupFile + "\"";
+        String comando = "\"" + MYSQLDUMP_PATH + "\" -u " + USER + " -p" + PASSWORD + " " + DATABASE + " -r \""
+                + backupFile + "\"";
 
         try {
             // Crear carpeta si no existe
